@@ -1,4 +1,8 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
-// Walking-skeleton stub — credentialed behavior is test-driven in Plan 01 Task 6.
-export const credentialsInterceptor: HttpInterceptorFn = (req, next) => next(req);
+/**
+ * Ensures the first-party session cookie (and the XSRF cookie) travel with
+ * every API call by setting withCredentials on each outgoing request.
+ */
+export const credentialsInterceptor: HttpInterceptorFn = (req, next) =>
+  next(req.clone({ withCredentials: true }));
