@@ -4,9 +4,9 @@
 
 **Goal:** Implement first-party session auth (email/password + Google OIDC) with the `User` model and default `Dashboard`, plus the Angular `AuthStore`, login/register UI, route guard, and non-Chromium browser notice.
 
-**Architecture:** Spring Security 7 runs a single stateful `SecurityFilterChain` backed by `spring-session-data-mongodb`; JSON `/auth/*` endpoints authenticate through an `AuthenticationManager` + delegating bcrypt encoder and persist the `SecurityContext` via an `HttpSessionSecurityContextRepository`, while `oauth2Login()` upserts a `User` keyed on `googleSub`. The Angular side is a zoneless `@ngrx/signals` `AuthStore` fed by a thin `AuthApi`, Signal-Forms login/register components, and a `CanActivateFn` guard that redirects anonymous users to `/login`.
+**Architecture:** Spring Security 7 runs a single stateful `SecurityFilterChain` backed by the custom MongoDB `SessionRepository` (Spring Session core) provided by Plan 01 (`SessionConfig` / `MongoSessionRepository`); JSON `/auth/*` endpoints authenticate through an `AuthenticationManager` + delegating bcrypt encoder and persist the `SecurityContext` via an `HttpSessionSecurityContextRepository`, while `oauth2Login()` upserts a `User` keyed on `googleSub`. The Angular side is a zoneless `@ngrx/signals` `AuthStore` fed by a thin `AuthApi`, Signal-Forms login/register components, and a `CanActivateFn` guard that redirects anonymous users to `/login`.
 
-**Tech Stack:** Java 25 · Spring Boot 4.1 · Spring Security 7 · Spring Data MongoDB · `spring-session-data-mongodb` · JUnit 5 + Spring Boot Test + Testcontainers-Mongo + Mockito · Angular 22 (standalone, zoneless, signals, Signal Forms) · `@ngrx/signals` · Vitest.
+**Tech Stack:** Java 25 · Spring Boot 4.1 · Spring Security 7 · Spring Data MongoDB · the custom MongoDB `SessionRepository` (Spring Session core) from Plan 01 · JUnit 5 + Spring Boot Test + Testcontainers-Mongo + Mockito · Angular 22 (standalone, zoneless, signals, Signal Forms) · `@ngrx/signals` · Vitest.
 
 **Depends on:** 01 (repo, Gradle build, `DashdashApplication`, `SecurityConfig`/`CorsConfig`/`MongoIndexConfig`/`SessionConfig` skeletons, `/health`, `ApiError`/`GlobalExceptionHandler`, Angular scaffold, `credentials.interceptor.ts`, `environment*.ts`, `app.config.ts`/`app.routes.ts`/`app.component.ts`).
 

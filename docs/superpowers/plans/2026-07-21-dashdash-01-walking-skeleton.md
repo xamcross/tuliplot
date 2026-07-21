@@ -6,7 +6,7 @@
 
 **Architecture:** A single Git monorepo holds four concerns (`frontend/`, `backend/`, `extension/`, `content/`). The backend is a Spring Boot 4.1 modular monolith exposing only `/api/v1/**`, with credentialed CORS to the UI origin, CSRF via a cookie/header pair, and a MongoDB-backed HTTP session. The frontend is an Angular 22 standalone/zoneless app whose HTTP layer always sends credentials and echoes the CSRF header. Both run locally (API `:8080`, UI `:4200`) and share the registrable domain `dashdash.app` in production.
 
-**Tech Stack:** Java 25 · Spring Boot 4.1 (Gradle Kotlin DSL) · Spring Security 7 · Spring Data MongoDB · spring-session-data-mongodb · Testcontainers-Mongo · JUnit 5 · Angular 22 (zoneless, signals) · Vitest · GitHub Actions · Fly.io · Cloudflare Pages · MongoDB Atlas.
+**Tech Stack:** Java 25 · Spring Boot 4.1 (Gradle Kotlin DSL) · Spring Security 7 · Spring Data MongoDB · Spring Session core (custom MongoDB `SessionRepository`) · Testcontainers-Mongo · JUnit 5 · Angular 22 (zoneless, signals) · Vitest · GitHub Actions · Fly.io · Cloudflare Pages · MongoDB Atlas.
 
 **Depends on:** — (this is the first plan; nothing precedes it. Plans 02–06 assume the repo, Gradle build, Angular scaffold, security/CORS/CSRF config, `/api/v1/health`, `ApiError`, `credentialsInterceptor`, CI, and deploy configs produced here.)
 
@@ -436,22 +436,30 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
 
 ---
 
-### Task 3: Mongo + Spring Session + Testcontainers context test
+### Task 3: Mongo + custom Spring Session store + Testcontainers context test
 
 **Files:**
-- Modify: `C:\Users\xamcr\DashDash\backend\build.gradle.kts` (add data-mongodb, spring-session, testcontainers dependencies)
+- Modify: `C:\Users\xamcr\DashDash\backend\build.gradle.kts` (add data-mongodb, `spring-session-core`, testcontainers dependencies)
 - Create: `C:\Users\xamcr\DashDash\backend\src\main\resources\application.yml`
-- Create: `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\MongoIndexConfig.java`
+- Create: `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\auth\session\MongoSession.java`
+- Create: `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\auth\session\MongoSessionRepository.java`
 - Create: `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\SessionConfig.java`
+- Create: `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\MongoIndexConfig.java`
 - Test: `C:\Users\xamcr\DashDash\backend\src\test\java\com\dashdash\SkeletonContextTest.java`
+
+> **Why a custom store?** Spring Session dropped its MongoDB module in 4.0, so Spring Boot 4.1 ships **no** MongoDB-backed Spring Session store, and `spring.session.store-type: mongodb` and `spring.session.mongodb.*` are gone as well. Per the shared contract's **"Spring Boot 4.1 reality notes"**, session persistence is a **custom `SessionRepository` on Spring Session core** (which the Boot 4.1 BOM manages, so no version pin). Spring Session core still generates/secures session IDs and runs the `SessionRepositoryFilter`; only the storage is ours. Plan 02's `HttpSession` / `HttpSessionSecurityContextRepository` auth is transparently Mongo-backed through this store and re-implements none of it.
+>
+> The Spring Session `Session` / `SessionRepository` / `MapSession` method signatures below follow the stable Spring Session core API. If the exact Spring Session core version resolved by the Boot 4.1 BOM differs on a signature, adjust that call to the resolved API — the **round-trip test in Step 3 is the correctness gate** (create → set attribute → save → find → delete → find null).
 
 **Interfaces:**
 - Consumes: `com.dashdash.DashdashApplication`, `GET /api/v1/health` (Task 2).
 - Produces:
-  - `application.yml` — env-driven `MONGODB_URI`, Mongo pool cap, Spring Session store on Mongo, session cookie property placeholders (`dashdash.session.*`).
-  - `com.dashdash.config.MongoIndexConfig` — startup index hook (empty/extensible; plans 02 & 05 register indexes here).
-  - `com.dashdash.config.SessionConfig` — `CookieSerializer` bean applying `httpOnly` + `SameSite=Lax` + env-driven `Secure`/domain + cookie name `DASHSESSION`.
-  - Proof the full Spring context boots against a real MongoDB and round-trips a document.
+  - `application.yml` — env-driven `spring.data.mongodb.uri` (from `MONGODB_URI`, prod value must include `?maxPoolSize=50`) plus `dashdash.session.*` cookie/store properties and a `dev` profile. **No** `spring.session.store-type` / `spring.session.mongodb.*` (removed on Boot 4.1).
+  - `com.dashdash.auth.session.MongoSession` — `implements org.springframework.session.Session` by delegating to an internal `org.springframework.session.MapSession`; `@Document("sessions")`, `@Id` = session id; carries a persisted `expireAt` `Instant` (= lastAccessedTime + maxInactiveInterval) for the TTL index.
+  - `com.dashdash.auth.session.MongoSessionRepository` — `implements SessionRepository<MongoSession>` (`createSession` / `save` / `findById` / `deleteById`) against the `sessions` collection via `MongoOperations`; `findById` returns null (and deletes the doc) when the session is expired.
+  - `com.dashdash.config.SessionConfig` — `@Configuration @EnableSpringHttpSession`; provides the `MongoSessionRepository` bean and a `DefaultCookieSerializer` (cookie `DASHSESSION`, `httpOnly`, `SameSite=Lax`, env-driven `Secure`/domain, path `/`).
+  - `com.dashdash.config.MongoIndexConfig` — startup index hook that creates the TTL index on `sessions.expireAt` (`expireAfter = 0s` → Mongo expires each doc at its own `expireAt`). Extensible: Plan 02 (users) & Plan 05 (`stripe_events` TTL) add index blocks here.
+  - Proof the full Spring context boots against a real MongoDB and the custom session store round-trips.
 
 - [ ] **Step 1: Add the dependencies** — replace the `dependencies { … }` block in `C:\Users\xamcr\DashDash\backend\build.gradle.kts` with:
   ```kotlin
@@ -459,10 +467,15 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
       implementation("org.springframework.boot:spring-boot-starter-web")
       implementation("org.springframework.boot:spring-boot-starter-actuator")
       implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-      implementation("org.springframework.session:spring-session-data-mongodb")
+      // Spring Session *core* only — managed by the Spring Boot 4.1 BOM (no version). Boot 4.1 ships no
+      // MongoDB-backed Spring Session store; storage is the custom MongoSessionRepository added below.
+      implementation("org.springframework.session:spring-session-core")
 
       testImplementation("org.springframework.boot:spring-boot-starter-test")
       testImplementation("org.springframework.boot:spring-boot-testcontainers")
+      // Carried from Task 2: the relocated @WebMvcTest slice
+      // (org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest) lives in this module on Boot 4.1.
+      testImplementation("org.springframework.boot:spring-boot-webmvc-test")
       testImplementation("org.testcontainers:junit-jupiter")
       testImplementation("org.testcontainers:mongodb")
       testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -476,109 +489,55 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
       name: dashdash-backend
     data:
       mongodb:
+        # Prod MONGODB_URI MUST include ?maxPoolSize=50 (shared contract: cap the Mongo pool 20–50).
         uri: ${MONGODB_URI:mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5}
-    session:
-      store-type: mongodb
-      mongodb:
-        collection-name: sessions
+    # NOTE: no `spring.session.store-type` / `spring.session.mongodb.*` — those were removed with
+    # Spring Session's MongoDB module in 4.0 and do not exist on Boot 4.1. Session persistence is the
+    # custom MongoSessionRepository wired by SessionConfig (@EnableSpringHttpSession).
 
   server:
     port: 8080
-    servlet:
-      session:
-        timeout: 30d
 
-  # DashDash-specific, env-driven cookie settings consumed by SessionConfig (and CorsConfig/SecurityConfig in Task 4).
+  # DashDash session settings (env-driven). SessionConfig reads these for the session cookie + store;
+  # SecurityConfig (Task 4 / Plan 02) reads `cookie-domain` + `cookie-secure` for the CSRF cookie.
+  # Prod sets COOKIE_SECURE=true and COOKIE_DOMAIN=.dashdash.app.
   dashdash:
     session:
       cookie-name: DASHSESSION
       cookie-domain: ${COOKIE_DOMAIN:}
-      cookie-secure: ${COOKIE_SECURE:false}
+      secure: ${COOKIE_SECURE:false}          # session-cookie Secure flag (SessionConfig)
+      cookie-secure: ${COOKIE_SECURE:false}   # CSRF-cookie Secure flag (SecurityConfig) — same source
+      max-inactive-interval: ${SESSION_TIMEOUT:PT30M}   # ISO-8601 Duration; default 30 minutes
+
+  ---
+  # Local dev profile: `SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun` → local Mongo, insecure cookie.
+  spring:
+    config:
+      activate:
+        on-profile: dev
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5
+  dashdash:
+    session:
+      cookie-domain: ""
+      secure: false
+      cookie-secure: false
   ```
 
-- [ ] **Step 3: Write `MongoIndexConfig`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\MongoIndexConfig.java`:
-  ```java
-  package com.dashdash.config;
-
-  import org.springframework.boot.context.event.ApplicationReadyEvent;
-  import org.springframework.context.annotation.Configuration;
-  import org.springframework.context.event.EventListener;
-  import org.springframework.data.mongodb.core.MongoTemplate;
-
-  /**
-   * Central, extensible place to declare MongoDB indexes explicitly at startup.
-   * The walking skeleton has no application collections yet, so this hook is
-   * intentionally empty. Later plans register indexes here, e.g.:
-   *
-   * <pre>
-   *   mongoTemplate.indexOps("users")
-   *       .createIndex(new Index().on("email", Sort.Direction.ASC).unique());
-   * </pre>
-   */
-  @Configuration
-  public class MongoIndexConfig {
-
-      private final MongoTemplate mongoTemplate;
-
-      public MongoIndexConfig(MongoTemplate mongoTemplate) {
-          this.mongoTemplate = mongoTemplate;
-      }
-
-      @EventListener(ApplicationReadyEvent.class)
-      public void ensureIndexes() {
-          // No-op for the walking skeleton. Plans 02 (users) and 05 (stripe_events TTL)
-          // add createIndex(...) calls here using this.mongoTemplate.indexOps(...).
-      }
-  }
-  ```
-
-- [ ] **Step 4: Write `SessionConfig`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\SessionConfig.java`:
-  ```java
-  package com.dashdash.config;
-
-  import org.springframework.beans.factory.annotation.Value;
-  import org.springframework.context.annotation.Bean;
-  import org.springframework.context.annotation.Configuration;
-  import org.springframework.session.web.http.CookieSerializer;
-  import org.springframework.session.web.http.DefaultCookieSerializer;
-
-  /** Configures the Spring Session cookie: httpOnly + SameSite=Lax, env-driven Secure/domain. */
-  @Configuration
-  public class SessionConfig {
-
-      @Bean
-      public CookieSerializer cookieSerializer(
-              @Value("${dashdash.session.cookie-name:DASHSESSION}") String cookieName,
-              @Value("${dashdash.session.cookie-domain:}") String cookieDomain,
-              @Value("${dashdash.session.cookie-secure:false}") boolean cookieSecure) {
-
-          DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-          serializer.setCookieName(cookieName);
-          serializer.setUseHttpOnlyCookie(true);
-          serializer.setUseSecureCookie(cookieSecure);
-          serializer.setSameSite("Lax");
-          serializer.setCookiePath("/");
-          if (cookieDomain != null && !cookieDomain.isBlank()) {
-              serializer.setDomainName(cookieDomain);
-          }
-          return serializer;
-      }
-  }
-  ```
-
-- [ ] **Step 5: Write the failing Testcontainers context test** — write `C:\Users\xamcr\DashDash\backend\src\test\java\com\dashdash\SkeletonContextTest.java`:
+- [ ] **Step 3: Write the failing Testcontainers context + round-trip test** — write `C:\Users\xamcr\DashDash\backend\src\test\java\com\dashdash\SkeletonContextTest.java`. This is the **correctness gate**: (a) the context boots against a real MongoDB and `/api/v1/health` returns `200 {status:"UP"}`, and (b) the custom store round-trips a session directly.
   ```java
   package com.dashdash;
 
   import static org.assertj.core.api.Assertions.assertThat;
 
-  import org.bson.Document;
+  import com.dashdash.auth.session.MongoSession;
+  import com.dashdash.auth.session.MongoSessionRepository;
   import org.junit.jupiter.api.Test;
   import org.springframework.beans.factory.annotation.Autowired;
   import org.springframework.boot.test.context.SpringBootTest;
   import org.springframework.boot.test.web.client.TestRestTemplate;
   import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-  import org.springframework.data.mongodb.core.MongoTemplate;
   import org.springframework.http.HttpStatus;
   import org.springframework.http.ResponseEntity;
   import org.testcontainers.containers.MongoDBContainer;
@@ -597,7 +556,7 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
       TestRestTemplate rest;
 
       @Autowired
-      MongoTemplate mongoTemplate;
+      MongoSessionRepository sessions;
 
       @Test
       void contextBootsAndHealthIsUp() {
@@ -608,39 +567,330 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
       }
 
       @Test
-      void roundTripsADocument() {
-          mongoTemplate.getCollection("skeleton_pings")
-                  .insertOne(new Document("_id", "ping-1").append("note", "hello"));
+      void sessionStoreRoundTrips() {
+          MongoSession session = sessions.createSession();
+          session.setAttribute("user", "alice");
+          sessions.save(session);
 
-          Document found = mongoTemplate.getCollection("skeleton_pings")
-                  .find(new Document("_id", "ping-1"))
-                  .first();
+          MongoSession loaded = sessions.findById(session.getId());
+          assertThat(loaded).isNotNull();
+          assertThat(loaded.<String>getAttribute("user")).isEqualTo("alice");
 
-          assertThat(found).isNotNull();
-          assertThat(found.getString("note")).isEqualTo("hello");
+          sessions.deleteById(session.getId());
+          assertThat(sessions.findById(session.getId())).isNull();
       }
   }
   ```
 
-- [ ] **Step 6: Run the test to verify it fails** — (Docker must be running.)
+- [ ] **Step 4: Run the test to verify it fails** — (Docker must be running.)
   ```bash
   cd /c/Users/xamcr/DashDash/backend
   ./gradlew test --tests "com.dashdash.SkeletonContextTest"
   ```
-  Expected before `application.yml` / config classes are picked up correctly, this **must be run after Steps 2–4 are in place**; if you run it with Steps 2–4 missing it fails at context startup (`Failed to load ApplicationContext` / no `MongoTemplate` bean). With Steps 2–4 present but the Mongo starter absent it fails to compile (`MongoTemplate` not found). Confirm you see a red run first if you temporarily comment out the `spring-boot-starter-data-mongodb` line; then restore it.
+  Expected: **compilation failure** — `cannot find symbol: class MongoSession` / `class MongoSessionRepository` (the store classes and the `SessionConfig` bean that wires them do not exist yet). This is the intended red state.
 
-- [ ] **Step 7: Run the test to verify it passes** —
+- [ ] **Step 5: Implement `MongoSession`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\auth\session\MongoSession.java`. It implements `Session` by delegating every method to an internal `MapSession`, and recomputes `expireAt` (= lastAccessedTime + maxInactiveInterval) whenever the last-accessed time or interval changes:
+  ```java
+  package com.dashdash.auth.session;
+
+  import java.time.Duration;
+  import java.time.Instant;
+  import java.util.Set;
+  import org.springframework.data.annotation.Id;
+  import org.springframework.data.annotation.Transient;
+  import org.springframework.data.mongodb.core.mapping.Document;
+  import org.springframework.session.MapSession;
+  import org.springframework.session.Session;
+
+  /**
+   * A Spring Session {@link Session} persisted in MongoDB. All session behaviour is delegated to an
+   * internal {@link MapSession}; the only extra state is {@code expireAt}, the absolute instant used
+   * by the {@code sessions.expireAt} TTL index (see {@link com.dashdash.config.MongoIndexConfig}).
+   * (De)serialization is done explicitly by {@link MongoSessionRepository}, so {@code @Document}/{@code @Id}
+   * here are declarative — they name the collection and the id property the repository and index use.
+   */
+  @Document("sessions")
+  public class MongoSession implements Session {
+
+      @Id
+      private String id;
+
+      private Instant expireAt;
+
+      @Transient
+      private final MapSession delegate;
+
+      public MongoSession() {
+          this(new MapSession());
+      }
+
+      public MongoSession(MapSession delegate) {
+          this.delegate = delegate;
+          this.id = delegate.getId();
+          this.expireAt = computeExpireAt();
+      }
+
+      private Instant computeExpireAt() {
+          Duration interval = delegate.getMaxInactiveInterval();
+          if (interval == null || interval.isZero() || interval.isNegative()) {
+              // A non-positive interval means "never expires"; store a far-future marker so the TTL
+              // index keeps the document. isExpired() (delegated) still governs read-time expiry.
+              return delegate.getLastAccessedTime().plus(Duration.ofDays(3650));
+          }
+          return delegate.getLastAccessedTime().plus(interval);
+      }
+
+      /** Package-private accessor used by {@link MongoSessionRepository} for (de)serialization. */
+      MapSession getDelegate() { return delegate; }
+
+      public Instant getExpireAt() { return expireAt; }
+      public void setExpireAt(Instant expireAt) { this.expireAt = expireAt; }
+
+      @Override public String getId() { return delegate.getId(); }
+
+      @Override
+      public String changeSessionId() {
+          String newId = delegate.changeSessionId();
+          this.id = newId;
+          return newId;
+      }
+
+      @Override public <T> T getAttribute(String attributeName) { return delegate.getAttribute(attributeName); }
+      @Override public Set<String> getAttributeNames() { return delegate.getAttributeNames(); }
+      @Override public void setAttribute(String attributeName, Object attributeValue) { delegate.setAttribute(attributeName, attributeValue); }
+      @Override public void removeAttribute(String attributeName) { delegate.removeAttribute(attributeName); }
+
+      @Override public Instant getCreationTime() { return delegate.getCreationTime(); }
+
+      @Override
+      public void setLastAccessedTime(Instant lastAccessedTime) {
+          delegate.setLastAccessedTime(lastAccessedTime);
+          this.expireAt = computeExpireAt();
+      }
+
+      @Override public Instant getLastAccessedTime() { return delegate.getLastAccessedTime(); }
+
+      @Override
+      public void setMaxInactiveInterval(Duration interval) {
+          delegate.setMaxInactiveInterval(interval);
+          this.expireAt = computeExpireAt();
+      }
+
+      @Override public Duration getMaxInactiveInterval() { return delegate.getMaxInactiveInterval(); }
+
+      @Override public boolean isExpired() { return delegate.isExpired(); }
+  }
+  ```
+
+- [ ] **Step 6: Implement `MongoSessionRepository`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\auth\session\MongoSessionRepository.java`. It upserts each session as a BSON document via `MongoOperations`, storing attribute values as JDK-serialized `Binary` (so arbitrary attributes — including the Spring Security `SecurityContext` — round-trip). `findById` deletes and returns null for an expired session:
+  ```java
+  package com.dashdash.auth.session;
+
+  import java.time.Duration;
+  import java.util.Date;
+  import com.mongodb.client.model.Filters;
+  import com.mongodb.client.model.ReplaceOptions;
+  import org.bson.Document;
+  import org.bson.types.Binary;
+  import org.springframework.core.serializer.support.DeserializingConverter;
+  import org.springframework.core.serializer.support.SerializingConverter;
+  import org.springframework.data.mongodb.core.MongoOperations;
+  import org.springframework.session.MapSession;
+  import org.springframework.session.SessionRepository;
+
+  /**
+   * Custom Spring Session store: persists {@link MongoSession} documents in the {@code sessions}
+   * collection. Spring Session core keeps running the SessionRepositoryFilter and id generation;
+   * only storage lives here. Attribute values are JDK-serialized to a {@code Binary} so any
+   * serializable attribute (e.g. Spring Security's SecurityContext) survives the round-trip.
+   */
+  public class MongoSessionRepository implements SessionRepository<MongoSession> {
+
+      static final String COLLECTION = "sessions";
+
+      private final MongoOperations mongoOperations;
+      private final Duration defaultMaxInactiveInterval;
+
+      private final SerializingConverter serializer = new SerializingConverter();
+      private final DeserializingConverter deserializer = new DeserializingConverter();
+
+      public MongoSessionRepository(MongoOperations mongoOperations, Duration defaultMaxInactiveInterval) {
+          this.mongoOperations = mongoOperations;
+          this.defaultMaxInactiveInterval = defaultMaxInactiveInterval;
+      }
+
+      @Override
+      public MongoSession createSession() {
+          MapSession delegate = new MapSession();
+          delegate.setMaxInactiveInterval(defaultMaxInactiveInterval);
+          return new MongoSession(delegate);
+      }
+
+      @Override
+      public void save(MongoSession session) {
+          mongoOperations.getCollection(COLLECTION).replaceOne(
+                  Filters.eq("_id", session.getId()),
+                  toDocument(session),
+                  new ReplaceOptions().upsert(true));
+      }
+
+      @Override
+      public MongoSession findById(String id) {
+          Document doc = mongoOperations.getCollection(COLLECTION)
+                  .find(Filters.eq("_id", id))
+                  .first();
+          if (doc == null) {
+              return null;
+          }
+          MongoSession session = fromDocument(doc);
+          if (session.isExpired()) {
+              deleteById(id);
+              return null;
+          }
+          return session;
+      }
+
+      @Override
+      public void deleteById(String id) {
+          mongoOperations.getCollection(COLLECTION).deleteOne(Filters.eq("_id", id));
+      }
+
+      private Document toDocument(MongoSession session) {
+          MapSession delegate = session.getDelegate();
+          Document attributes = new Document();
+          for (String name : delegate.getAttributeNames()) {
+              attributes.put(name, new Binary(serializer.convert(delegate.getAttribute(name))));
+          }
+          return new Document("_id", delegate.getId())
+                  .append("creationTime", Date.from(delegate.getCreationTime()))
+                  .append("lastAccessedTime", Date.from(delegate.getLastAccessedTime()))
+                  .append("maxInactiveIntervalSeconds", delegate.getMaxInactiveInterval().getSeconds())
+                  .append("expireAt", Date.from(session.getExpireAt()))
+                  .append("attributes", attributes);
+      }
+
+      private MongoSession fromDocument(Document doc) {
+          MapSession delegate = new MapSession(doc.getString("_id"));
+          delegate.setCreationTime(doc.getDate("creationTime").toInstant());
+          delegate.setLastAccessedTime(doc.getDate("lastAccessedTime").toInstant());
+          delegate.setMaxInactiveInterval(
+                  Duration.ofSeconds(((Number) doc.get("maxInactiveIntervalSeconds")).longValue()));
+          Document attributes = doc.get("attributes", Document.class);
+          if (attributes != null) {
+              for (String name : attributes.keySet()) {
+                  Binary value = (Binary) attributes.get(name);
+                  delegate.setAttribute(name, deserializer.convert(value.getData()));
+              }
+          }
+          return new MongoSession(delegate);
+      }
+  }
+  ```
+
+- [ ] **Step 7: Implement `SessionConfig`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\SessionConfig.java`. `@EnableSpringHttpSession` wires the `SessionRepositoryFilter` around our repository bean and applies the `CookieSerializer`:
+  ```java
+  package com.dashdash.config;
+
+  import java.time.Duration;
+  import com.dashdash.auth.session.MongoSessionRepository;
+  import org.springframework.beans.factory.annotation.Value;
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.data.mongodb.core.MongoOperations;
+  import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+  import org.springframework.session.web.http.CookieSerializer;
+  import org.springframework.session.web.http.DefaultCookieSerializer;
+
+  /**
+   * Spring Session on a custom MongoDB store. Provides the {@link MongoSessionRepository} bean and the
+   * session cookie: name DASHSESSION, httpOnly + SameSite=Lax, env-driven Secure/domain, path "/".
+   */
+  @Configuration
+  @EnableSpringHttpSession
+  public class SessionConfig {
+
+      @Bean
+      public MongoSessionRepository sessionRepository(
+              MongoOperations mongoOperations,
+              @Value("${dashdash.session.max-inactive-interval:PT30M}") Duration maxInactiveInterval) {
+          return new MongoSessionRepository(mongoOperations, maxInactiveInterval);
+      }
+
+      @Bean
+      public CookieSerializer cookieSerializer(
+              @Value("${dashdash.session.cookie-name:DASHSESSION}") String cookieName,
+              @Value("${dashdash.session.cookie-domain:}") String cookieDomain,
+              @Value("${dashdash.session.secure:false}") boolean cookieSecure) {
+
+          DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+          serializer.setCookieName(cookieName);
+          serializer.setUseHttpOnlyCookie(true);
+          serializer.setUseSecureCookie(cookieSecure);
+          serializer.setSameSite("Lax");
+          serializer.setCookiePath("/");
+          if (cookieDomain != null && !cookieDomain.isBlank()) {
+              serializer.setDomainName(cookieDomain);
+          }
+          return serializer;
+      }
+  }
+  ```
+
+- [ ] **Step 8: Implement `MongoIndexConfig`** — write `C:\Users\xamcr\DashDash\backend\src\main\java\com\dashdash\config\MongoIndexConfig.java`. It creates indexes explicitly at startup; the session TTL index (`expireAfter = 0s`) makes Mongo expire each document at its own `expireAt`:
+  ```java
+  package com.dashdash.config;
+
+  import java.util.concurrent.TimeUnit;
+  import com.mongodb.client.model.IndexOptions;
+  import org.bson.Document;
+  import org.springframework.boot.context.event.ApplicationReadyEvent;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.context.event.EventListener;
+  import org.springframework.data.mongodb.core.MongoTemplate;
+
+  /**
+   * Central, extensible place to declare MongoDB indexes explicitly at startup (auto-index-creation
+   * stays off). The walking skeleton creates the Spring Session TTL index; later plans add their own
+   * blocks here, e.g. Plan 02 adds {@code ensureUserIndexes()} and Plan 05 the {@code stripe_events} TTL.
+   */
+  @Configuration
+  public class MongoIndexConfig {
+
+      private final MongoTemplate mongoTemplate;
+
+      public MongoIndexConfig(MongoTemplate mongoTemplate) {
+          this.mongoTemplate = mongoTemplate;
+      }
+
+      @EventListener(ApplicationReadyEvent.class)
+      public void ensureIndexes() {
+          ensureSessionIndexes();
+          // Plan 02 adds ensureUserIndexes(); Plan 05 adds the stripe_events TTL index here.
+      }
+
+      /** TTL index so MongoDB deletes each session document at its own {@code expireAt} instant. */
+      private void ensureSessionIndexes() {
+          mongoTemplate.getCollection("sessions").createIndex(
+                  new Document("expireAt", 1),
+                  new IndexOptions().expireAfter(0L, TimeUnit.SECONDS).name("session_ttl"));
+      }
+  }
+  ```
+
+- [ ] **Step 9: Run the test to verify it passes** — (Docker must be running.)
   ```bash
   cd /c/Users/xamcr/DashDash/backend
   ./gradlew test --tests "com.dashdash.SkeletonContextTest"
   ```
-  Expected: Testcontainers pulls `mongo:7`, starts a single-node replica set, the Spring context boots, and both tests pass — `BUILD SUCCESSFUL`, 2 tests, 0 failures. (First run downloads the Mongo image.)
+  Expected: Testcontainers pulls `mongo:7`, starts a single-node replica set, the Spring context boots, and both tests pass — `BUILD SUCCESSFUL`, 2 tests, 0 failures. `sessionStoreRoundTrips` proves `createSession → setAttribute → save → findById` (attribute intact) → `deleteById → findById == null`. (First run downloads the Mongo image.)
 
-- [ ] **Step 8: Commit** —
+- [ ] **Step 10: Commit** —
   ```bash
   cd /c/Users/xamcr/DashDash
   git add -A
-  git commit -m "feat(backend): add MongoDB + Spring Session with Testcontainers context test"
+  git commit -m "feat(backend): custom MongoDB Spring Session store + Testcontainers context test
+
+  DashDash-Task: 01/T3"
   ```
 
 ---
@@ -670,10 +920,15 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
       implementation("org.springframework.boot:spring-boot-starter-actuator")
       implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
       implementation("org.springframework.boot:spring-boot-starter-security")
-      implementation("org.springframework.session:spring-session-data-mongodb")
+      // Spring Session core only (managed by the Boot 4.1 BOM, no version). Storage is the custom
+      // MongoSessionRepository from Task 3; Boot 4.1 ships no MongoDB-backed Spring Session store.
+      implementation("org.springframework.session:spring-session-core")
 
       testImplementation("org.springframework.boot:spring-boot-starter-test")
       testImplementation("org.springframework.boot:spring-boot-testcontainers")
+      // Boot 4.1 relocated the @WebMvcTest slice to org.springframework.boot.webmvc.test.autoconfigure;
+      // it needs this dependency (added in Task 2). See the contract's "Spring Boot 4.1 reality notes".
+      testImplementation("org.springframework.boot:spring-boot-webmvc-test")
       testImplementation("org.springframework.security:spring-security-test")
       testImplementation("org.testcontainers:junit-jupiter")
       testImplementation("org.testcontainers:mongodb")
@@ -867,6 +1122,9 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
   ```
 
 - [ ] **Step 7: Write the failing security baseline test** — write `C:\Users\xamcr\DashDash\backend\src\test\java\com\dashdash\config\SecurityBaselineTest.java`:
+
+  > **Boot 4.1 note:** this slice imports `@WebMvcTest` from `org.springframework.boot.webmvc.test.autoconfigure` (its relocated 4.1 package, backed by the `spring-boot-webmvc-test` dependency added in Task 2), per the shared contract's **"Spring Boot 4.1 reality notes"**. The old `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest` path does not compile on 4.1.
+
   ```java
   package com.dashdash.config;
 
@@ -879,7 +1137,7 @@ See `2026-07-21-dashdash-00-shared-contract.md` (authoritative for names/types/s
   import com.dashdash.common.HealthController;
   import org.junit.jupiter.api.Test;
   import org.springframework.beans.factory.annotation.Autowired;
-  import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+  import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
   import org.springframework.context.annotation.Import;
   import org.springframework.test.web.servlet.MockMvc;
 

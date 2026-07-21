@@ -18,7 +18,7 @@ Read the **Symbol Ownership Map** to see which plan *defines* each symbol vs.
 - **Extension:** Chrome **MV3** · `declarativeNetRequestWithHostAccess` + `optional_host_permissions` · single **static** DNR ruleset.
 - **Hosting/domains:** UI `https://dashdash.app` (Cloudflare Pages) · API `https://api.dashdash.app` (Fly.io) · cookie domain `.dashdash.app` · dev origins `http://localhost:4200` (UI) and `http://localhost:8080` (API).
 - **API base path:** all REST endpoints are under `/api/v1`.
-- **Auth model:** first-party server session (`spring-session-data-mongodb`), cookie `httpOnly` + `Secure` + `SameSite=Lax` (domain `.dashdash.app` in prod). CSRF cookie `XSRF-TOKEN` (readable by JS), request header `X-XSRF-TOKEN`. Credentialed CORS from the UI origin only.
+- **Auth model:** first-party server session backed by a **custom MongoDB `SessionRepository`** on Spring Session **core** (`spring-session-data-mongodb` does NOT exist for Spring Boot 4.1 — Spring Session dropped MongoDB in 4.0; see "Spring Boot 4.1 reality notes"). Session cookie `DASHSESSION`, `httpOnly` + `Secure` + `SameSite=Lax` (domain `.dashdash.app` in prod). CSRF cookie `XSRF-TOKEN` (readable by JS), request header `X-XSRF-TOKEN`. Credentialed CORS from the UI origin only.
 - **Free-tier posture:** prefer the free option unless it blocks a feature; note any spend. Cap Spring Mongo pool at 20–50. Atlas M0 has no backups.
 - **Copy/naming:** product name is **DashDash**. Ad cell label is exactly **"Advertisements"**. Upgrade CTA copy: **"Remove ad — go Premium"**.
 - **TDD/commits:** every task is test-first; commit at the end of each task with a Conventional Commit message (`feat:`/`test:`/`chore:` …). Repo is created in Plan 01 Task 1 — plans 02–06 assume `git` is initialized.
@@ -419,6 +419,38 @@ From any file under `src/app/**` (i.e. `core/api/*`, `core/services/*`, `feature
 ### Password reset (spec: Auth password-reset endpoints) — owner Plan 02
 
 Endpoints (public): `POST /api/v1/auth/password-reset/request` (`{email}` → 204 always, to avoid account enumeration) and `POST /api/v1/auth/password-reset/confirm` (`{token, newPassword}` → 204, 400 on invalid/expired token). Backed by `@Document("password_reset_tokens")` `PasswordResetToken {@Id String id; String userId; String tokenHash; Instant expiresAt;}` with a TTL index on `expiresAt` (added in `MongoIndexConfig`). Delivery via an `EmailSender` interface (`void send(String to, String subject, String body)`) with a dev `LoggingEmailSender` impl (logs the reset link); the prod SMTP/SES impl is a config-only swap (out of scope for v1 code, noted in the cost table as $0 dev). Tokens are random 256-bit, stored only as a SHA-256 hash, single-use, 30-min expiry.
+
+## Spring Boot 4.1 reality notes (discovered during execution — authoritative)
+
+The plans were drafted against Spring Boot 3.x idioms in places. Boot 4.1 relocations that every backend task must apply:
+
+- **Test slices moved to per-module packages.** `@WebMvcTest` is now `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest` (NOT `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest`), and it requires the dependency `testImplementation("org.springframework.boot:spring-boot-webmvc-test")`. Apply this wherever a plan's test code uses the old `@WebMvcTest` import (Plan 01 Task 4, Plan 02 controller tests, Plan 03/05/06 controller tests). Reviewers must NOT flag the new package/dependency as drift — the old path does not compile on 4.1.
+- **Toolchain:** Gradle wrapper is pinned to **9.0.0** (as committed in Task 2; builds succeed), and `org.gradle.toolchains.foojay-resolver-convention` is **1.0.0** (0.9.0 references the removed `JvmVendorSpec.IBM_SEMERU` and fails on Gradle 9.x). JDK 25 is provisioned by the toolchain.
+- **Session store = custom Mongo repository.** Use these exact shapes:
+
+```java
+// config/SessionConfig.java  (Plan 01) — @Configuration @EnableSpringHttpSession
+//   registers the MongoSessionRepository bean + a DefaultCookieSerializer:
+//   cookie name "DASHSESSION", httpOnly, sameSite "Lax", useSecureCookie + domainName from env
+//   (dashdash.session.secure / dashdash.session.cookie-domain), path "/".
+
+// auth/session/MongoSession.java  (Plan 01) — implements org.springframework.session.Session
+//   by delegating to an internal org.springframework.session.MapSession; adds an `expireAt`
+//   Instant (= lastAccessedTime + maxInactiveInterval) persisted for the TTL index.
+//   @Document("sessions"); @Id is the session id.
+
+// auth/session/MongoSessionRepository.java  (Plan 01) — implements SessionRepository<MongoSession>
+class MongoSessionRepository /* implements SessionRepository<MongoSession> */ {
+  MongoSession createSession();                 // new MongoSession, honoring configured default maxInactiveInterval
+  void save(MongoSession session);              // upsert the session document
+  MongoSession findById(String id);             // null if absent OR expired (delete-on-read if expired)
+  void deleteById(String id);                   // remove document
+}
+// MongoIndexConfig adds a TTL index on sessions.expireAt (expireAfter = 0s → Mongo expires at that instant).
+// spring-session-core is in the Boot 4.1 BOM; add testImplementation for the session + Testcontainers-Mongo round-trip test.
+```
+
+Spring Session core still generates/secures session IDs and runs the `SessionRepositoryFilter`; only persistence is custom. Plan 02's auth flows rely on the standard `HttpSession`/`SecurityContextRepository` being transparently Mongo-backed via this store — Plan 02 does not re-implement any of it.
 
 ## Plan documents
 
