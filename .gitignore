@@ -1,0 +1,26 @@
+# ---- Java / Gradle ----
+backend/.gradle/
+backend/build/
+backend/out/
+backend/bin/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ---- Node / Angular ----
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+extension/node_modules/
+
+# ---- Env / secrets ----
+*.env
+.env
+.env.*
+!/.env.example
+
+# ---- IDE / OS ----
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
