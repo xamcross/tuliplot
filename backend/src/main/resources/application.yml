@@ -22,6 +22,8 @@ dashdash:
     secure: ${COOKIE_SECURE:false}          # session-cookie Secure flag (SessionConfig)
     cookie-secure: ${COOKIE_SECURE:false}   # CSRF-cookie Secure flag (SecurityConfig) — same source
     max-inactive-interval: ${SESSION_TIMEOUT:PT30M}   # ISO-8601 Duration; default 30 minutes
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dashdash.app,http://localhost:4200}
 
 ---
 # Local dev profile: `SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun` → local Mongo, insecure cookie.

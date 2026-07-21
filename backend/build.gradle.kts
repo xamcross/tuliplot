@@ -21,11 +21,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     // Spring Session *core* only — managed by the Spring Boot 4.1 BOM (no version). Boot 4.1 ships no
     // MongoDB-backed Spring Session store; storage is the custom MongoSessionRepository added below.
     implementation("org.springframework.session:spring-session-core")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     // Carried from Task 2: the relocated @WebMvcTest slice
     // (org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest) lives in this module on Boot 4.1.
