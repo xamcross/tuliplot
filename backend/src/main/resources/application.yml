@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: dashdash-backend
+  data:
+    mongodb:
+      # Prod MONGODB_URI MUST include ?maxPoolSize=50 (shared contract: cap the Mongo pool 20–50).
+      uri: ${MONGODB_URI:mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5}
+  # NOTE: no `spring.session.store-type` / `spring.session.mongodb.*` — those were removed with
+  # Spring Session's MongoDB module in 4.0 and do not exist on Boot 4.1. Session persistence is the
+  # custom MongoSessionRepository wired by SessionConfig (@EnableSpringHttpSession).
+
+server:
+  port: 8080
+
+# DashDash session settings (env-driven). SessionConfig reads these for the session cookie + store;
+# SecurityConfig (Task 4 / Plan 02) reads `cookie-domain` + `cookie-secure` for the CSRF cookie.
+# Prod sets COOKIE_SECURE=true and COOKIE_DOMAIN=.dashdash.app.
+dashdash:
+  session:
+    cookie-name: DASHSESSION
+    cookie-domain: ${COOKIE_DOMAIN:}
+    secure: ${COOKIE_SECURE:false}          # session-cookie Secure flag (SessionConfig)
+    cookie-secure: ${COOKIE_SECURE:false}   # CSRF-cookie Secure flag (SecurityConfig) — same source
+    max-inactive-interval: ${SESSION_TIMEOUT:PT30M}   # ISO-8601 Duration; default 30 minutes
+
+---
+# Local dev profile: `SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun` → local Mongo, insecure cookie.
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5
+dashdash:
+  session:
+    cookie-domain: ""
+    secure: false
+    cookie-secure: false
