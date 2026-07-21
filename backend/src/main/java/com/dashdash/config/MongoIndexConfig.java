@@ -1,12 +1,15 @@
 package com.dashdash.config;
 
 import java.util.concurrent.TimeUnit;
+import com.dashdash.auth.User;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
 
 /**
  * Central, extensible place to declare MongoDB indexes explicitly at startup (auto-index-creation
@@ -25,7 +28,8 @@ public class MongoIndexConfig {
     @EventListener(ApplicationReadyEvent.class)
     public void ensureIndexes() {
         ensureSessionIndexes();
-        // Plan 02 adds ensureUserIndexes(); Plan 05 adds the stripe_events TTL index here.
+        ensureUserIndexes();
+        // Plan 05 adds the stripe_events TTL index here.
     }
 
     /** TTL index so MongoDB deletes each session document at its own {@code expireAt} instant. */
@@ -33,5 +37,16 @@ public class MongoIndexConfig {
         mongoTemplate.getCollection("sessions").createIndex(
                 new Document("expireAt", 1),
                 new IndexOptions().expireAfter(0L, TimeUnit.SECONDS).name("session_ttl"));
+    }
+
+    // --- users (Plan 02) ---
+    private void ensureUserIndexes() {
+        var ops = mongoTemplate.indexOps(User.class);
+        ops.ensureIndex(new Index().on("email", Sort.Direction.ASC).unique());
+        ops.ensureIndex(new Index().on("googleSub", Sort.Direction.ASC).unique().sparse());
+        ops.ensureIndex(new Index()
+                .on("subscription.stripeCustomerId", Sort.Direction.ASC).unique().sparse());
+        ops.ensureIndex(new Index()
+                .on("subscription.stripeSubscriptionId", Sort.Direction.ASC).unique().sparse());
     }
 }

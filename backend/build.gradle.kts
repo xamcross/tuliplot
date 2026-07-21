@@ -32,6 +32,8 @@ dependencies {
     // Carried from Task 2: the relocated @WebMvcTest slice
     // (org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest) lives in this module on Boot 4.1.
     testImplementation("org.springframework.boot:spring-boot-webmvc-test")
+    // Relocated @DataMongoTest slice on Boot 4.1 (per-module test package, like spring-boot-webmvc-test).
+    testImplementation("org.springframework.boot:spring-boot-data-mongodb-test")
     // Testcontainers 2.x (managed by the Boot 4.1 BOM) renamed these modules with a
     // testcontainers- prefix; the old org.testcontainers:junit-jupiter / :mongodb coords do not resolve.
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
