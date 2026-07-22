@@ -1,17 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/services/seo.service';
+import { SiteHeaderComponent } from './site-header.component';
+import { SiteFooterComponent } from './site-footer.component';
 
 @Component({
   selector: 'tl-about',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, SiteHeaderComponent, SiteFooterComponent],
   template: `
-    <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
-      <h1>About TulipLot</h1>
-      <p>
+    <tl-site-header />
+    <div class="tl-hero-band">
+      <div class="tl-hero-band__inner">
+        <a routerLink="/" class="tl-back">← TulipLot home</a>
+        <h1>About TulipLot</h1>
+      </div>
+    </div>
+    <main class="tl-prose">
+      <p class="tl-lead">
         TulipLot is an independent productivity tool built for people who live
         in a handful of web apps all day. Instead of a wall of browser tabs, you
         get a single fixed grid — a personal cockpit for the sites you actually
@@ -42,7 +49,12 @@ import { SeoService } from '../../core/services/seo.service';
         <a href="mailto:hello&#64;tuliplot.com">hello&#64;tuliplot.com</a>.
       </p>
     </main>
+    <tl-site-footer />
   `,
+  styles: [`
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    main { flex: 1; }
+  `],
 })
 export class AboutComponent {
   constructor() {

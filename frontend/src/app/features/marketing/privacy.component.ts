@@ -1,18 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/services/seo.service';
+import { SiteHeaderComponent } from './site-header.component';
+import { SiteFooterComponent } from './site-footer.component';
 
 @Component({
   selector: 'tl-privacy',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, SiteHeaderComponent, SiteFooterComponent],
   template: `
-    <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
-      <h1>Privacy Policy</h1>
-      <p class="doc-page__meta">Last updated: 21 July 2026</p>
-
+    <tl-site-header />
+    <div class="tl-hero-band tl-hero-band--tight">
+      <div class="tl-hero-band__inner">
+        <a routerLink="/" class="tl-back">← TulipLot home</a>
+        <h1>Privacy Policy</h1>
+        <span class="tl-updated">Last updated: 21 July 2026</span>
+      </div>
+    </div>
+    <main class="tl-prose tl-prose--legal">
       <p>
         This policy explains what TulipLot collects, why, and the choices you
         have. It covers the TulipLot web app, the public content site, and the
@@ -106,7 +112,13 @@ import { SeoService } from '../../core/services/seo.service';
         updated” date above.
       </p>
     </main>
+    <tl-site-footer />
   `,
+  styles: [`
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    main { flex: 1; }
+    .tl-hero-band h1 { font-size: 44px; }
+  `],
 })
 export class PrivacyComponent {
   constructor() {
