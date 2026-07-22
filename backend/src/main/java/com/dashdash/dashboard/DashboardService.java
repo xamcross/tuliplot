@@ -110,6 +110,81 @@ public class DashboardService {
         return c;
     }
 
+    public Dashboard reconcileForTier(Dashboard current, boolean premium) {
+        List<Cell> cells = new ArrayList<>(6);
+        for (Cell c : current.getCells()) {
+            cells.add(copyOf(c));
+        }
+        cells.sort(Comparator.comparingInt(Cell::getSlot));
+
+        // Carry any existing parked app across unchanged; only a no-free-slot downgrade overwrites it.
+        Cell parked = current.getParkedApp() == null ? null : copyOf(current.getParkedApp());
+        Cell slot5 = cells.get(5);
+
+        if (premium) {
+            if (slot5.getType() == CellType.AD) {
+                clearContent(slot5);
+                slot5.setType(CellType.EMPTY);
+            }
+            // parkedApp is left untouched on upgrade.
+        } else {
+            if (slot5.getType() == CellType.APP) {
+                int target = firstEmptySlot(cells);
+                if (target >= 0) {
+                    copyContentInto(cells.get(target), slot5);
+                } else {
+                    parked = copyOf(slot5); // no free slot: park the displaced app, never discard it
+                }
+            }
+            clearContent(slot5);
+            slot5.setType(CellType.AD);
+        }
+
+        Dashboard result = new Dashboard();
+        result.setCells(cells);
+        result.setParkedApp(parked); // whole Dashboard, including parkedApp, is what gets returned and persisted
+        return result;
+    }
+
+    private static int firstEmptySlot(List<Cell> cells) {
+        for (int i = 0; i < 5; i++) {
+            if (cells.get(i).getType() == CellType.EMPTY) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static Cell copyOf(Cell c) {
+        Cell n = new Cell();
+        n.setSlot(c.getSlot());
+        n.setType(c.getType());
+        n.setUrl(c.getUrl());
+        n.setTitle(c.getTitle());
+        n.setCatalogAppId(c.getCatalogAppId());
+        n.setIconUrl(c.getIconUrl());
+        n.setOpenMode(c.getOpenMode());
+        return n;
+    }
+
+    private static void copyContentInto(Cell dest, Cell src) {
+        dest.setType(src.getType());
+        dest.setUrl(src.getUrl());
+        dest.setTitle(src.getTitle());
+        dest.setCatalogAppId(src.getCatalogAppId());
+        dest.setIconUrl(src.getIconUrl());
+        dest.setOpenMode(src.getOpenMode());
+        // dest.slot deliberately unchanged
+    }
+
+    private static void clearContent(Cell c) {
+        c.setUrl(null);
+        c.setTitle(null);
+        c.setCatalogAppId(null);
+        c.setIconUrl(null);
+        c.setOpenMode(OpenMode.FRAME);
+    }
+
     static DashboardDto toDto(Dashboard dashboard) {
         List<CellDto> cells = dashboard.getCells().stream()
                 .map(DashboardService::toCellDto)
