@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "generate:content": "node scripts/build-content.mjs",
+    "prebuild": "node scripts/build-content.mjs",
+    "serve:ssr:frontend": "node dist/frontend/server/server.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
@@ -18,8 +21,11 @@
     "@angular/core": "^22.0.0",
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
+    "@angular/platform-server": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@angular/ssr": "^22.0.7",
     "@ngrx/signals": "^22.0.0-beta.0",
+    "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -28,7 +34,10 @@
     "@angular/build": "^22.0.7",
     "@angular/cli": "^22.0.7",
     "@angular/compiler-cli": "^22.0.0",
+    "@types/express": "^5.0.1",
+    "@types/node": "^20.17.19",
     "jsdom": "^28.1.0",
+    "marked": "^12.0.2",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
     "vitest": "^4.1.10"
