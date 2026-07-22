@@ -80,7 +80,7 @@ public class SubscriptionService {
 
   // ---- state transitions ----------------------------------------------------
 
-  /** Re-fetch the subscription, recompute premium, persist the user, reconcile on downgrade. */
+  /** Re-fetch the subscription, recompute premium, persist the user, reconcile on any tier change. */
   public void applyFromStripe(String stripeSubscriptionId) {
     StripeSubscriptionSnapshot snap = gateway.retrieveSubscription(stripeSubscriptionId);
     User user = userRepository.findBySubscriptionStripeCustomerId(snap.customerId()).orElse(null);
@@ -101,11 +101,15 @@ public class SubscriptionService {
         ? null : Instant.ofEpochSecond(snap.currentPeriodEnd()));
     sub.setCancelAtPeriodEnd(snap.cancelAtPeriodEnd());
 
-    if (wasPremium && !premium) {
+    if (wasPremium != premium) {
+      // Reconcile on ANY tier change, both directions:
+      //  - downgrade PREMIUM->FREE: slot 5 -> AD (a displaced app is parked, never discarded);
+      //  - upgrade FREE->PREMIUM: slot 5 AD -> EMPTY, so a premium dashboard never keeps a dead
+      //    AD cell (which would also make every later updateCells 400).
       // Persist the WHOLE reconciled Dashboard returned by reconcileForTier — it may set
       // Dashboard.parkedApp when slot 5 held an app and no empty slot was free. Never copy out
       // only cells; setDashboard(...) keeps parkedApp so the page can later prompt to place it.
-      Dashboard reconciled = dashboardService.reconcileForTier(user.getDashboard(), false);
+      Dashboard reconciled = dashboardService.reconcileForTier(user.getDashboard(), premium);
       user.setDashboard(reconciled);
     }
     userRepository.save(user);

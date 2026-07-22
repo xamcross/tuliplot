@@ -99,6 +99,37 @@ class AuthControllerLoginTest {
     }
 
     @Test
+    void loginRotatesSessionIdToPreventFixation() throws Exception {
+        LoginRequest body = new LoginRequest("carol@example.com", "correct-horse");
+
+        // First login establishes a session and its DASHSESSION cookie...
+        MvcResult first = mvc.perform(post("/api/v1/auth/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andReturn();
+        Cookie preExisting = first.getResponse().getCookie("DASHSESSION");
+        assertThat(preExisting).as("first login establishes the DASHSESSION cookie").isNotNull();
+
+        // ...a second login while CARRYING that pre-existing cookie must rotate the id: the
+        // authenticated session id must differ from the one presented before authentication.
+        MvcResult second = mvc.perform(post("/api/v1/auth/login")
+                        .with(csrf())
+                        .cookie(preExisting)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andReturn();
+        Cookie rotated = second.getResponse().getCookie("DASHSESSION");
+        assertThat(rotated).as("login must emit a rotated DASHSESSION cookie").isNotNull();
+        assertThat(rotated.getValue())
+                .as("session id must change on authentication (no session fixation)")
+                .isNotBlank()
+                .isNotEqualTo(preExisting.getValue());
+    }
+
+    @Test
     void loginWithBadPasswordReturns401() throws Exception {
         LoginRequest body = new LoginRequest("carol@example.com", "wrong-password");
 

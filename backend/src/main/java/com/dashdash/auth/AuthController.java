@@ -74,6 +74,7 @@ public class AuthController {
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication);
         securityContextHolderStrategy.setContext(context);
+        rotateSessionId(request);
         securityContextRepository.saveContext(context, request, response);
 
         DashPrincipal principal = (DashPrincipal) authentication.getPrincipal();
@@ -115,7 +116,19 @@ public class AuthController {
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(auth);
         securityContextHolderStrategy.setContext(context);
+        rotateSessionId(request);
         securityContextRepository.saveContext(context, request, response);
+    }
+
+    /**
+     * Rotate the session id on successful authentication to defeat session fixation: an attacker who
+     * planted a known pre-auth DASHSESSION id must not have that id survive into the authenticated
+     * session. Ensures a session exists (reusing the one carried by the cookie, if any) and then
+     * assigns it a fresh id — the old id's store document is removed by MongoSessionRepository.save.
+     */
+    private static void rotateSessionId(HttpServletRequest request) {
+        request.getSession();
+        request.changeSessionId();
     }
 
     @ExceptionHandler(EmailInUseException.class)

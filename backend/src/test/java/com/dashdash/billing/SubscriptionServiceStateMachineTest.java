@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -55,11 +54,14 @@ class SubscriptionServiceStateMachineTest {
   }
 
   @Test
-  void activateSetsPremiumWithoutReconcile() {
+  void activateReconcilesDashboardOnUpgrade() {
     User u = user(Tier.FREE, SubStatus.NONE, "cus_1");
+    // A FREE dashboard has an AD cell in slot 5; the premium reconcile turns it into EMPTY.
+    Dashboard reconciled = Dashboard.defaultFor(true);
     when(gateway.retrieveSubscription("sub_1")).thenReturn(
         new StripeSubscriptionSnapshot("sub_1", "cus_1", "active", "price_abc", 1893456000L, false));
     when(userRepository.findBySubscriptionStripeCustomerId("cus_1")).thenReturn(Optional.of(u));
+    when(dashboardService.reconcileForTier(any(), eq(true))).thenReturn(reconciled);
 
     service.applyFromStripe("sub_1");
 
@@ -69,8 +71,13 @@ class SubscriptionServiceStateMachineTest {
     assertThat(u.getSubscription().getPriceId()).isEqualTo("price_abc");
     assertThat(u.getSubscription().getCurrentPeriodEnd()).isEqualTo(Instant.ofEpochSecond(1893456000L));
     assertThat(u.getSubscription().isCancelAtPeriodEnd()).isFalse();
+    // On FREE->PREMIUM the dashboard MUST be reconciled for the premium tier...
+    verify(dashboardService).reconcileForTier(any(), eq(true));
+    // ...and the persisted user carries that reconciled dashboard, whose slot 5 is no longer an AD.
+    assertThat(u.getDashboard()).isSameAs(reconciled);
+    assertThat(u.getDashboard().getCells().get(5).getType()).isNotEqualTo(CellType.AD);
+    assertThat(u.getDashboard().getCells().get(5).getType()).isEqualTo(CellType.EMPTY);
     verify(userRepository).save(u);
-    verify(dashboardService, never()).reconcileForTier(any(), anyBoolean());
   }
 
   @Test

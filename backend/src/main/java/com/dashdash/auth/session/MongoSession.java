@@ -27,6 +27,15 @@ public class MongoSession implements Session {
     @Transient
     private final MapSession delegate;
 
+    /**
+     * The id under which this session is currently persisted (i.e. the id loaded from Mongo, or the
+     * id first written). Tracked separately from the delegate's live id so that after
+     * {@link #changeSessionId()} the repository can DELETE the stale document at the old id instead
+     * of leaving it readable until its TTL expires (a session-fixation risk).
+     */
+    @Transient
+    private String originalId;
+
     public MongoSession() {
         this(new MapSession());
     }
@@ -34,6 +43,7 @@ public class MongoSession implements Session {
     public MongoSession(MapSession delegate) {
         this.delegate = delegate;
         this.id = delegate.getId();
+        this.originalId = delegate.getId();
         this.expireAt = computeExpireAt();
     }
 
@@ -49,6 +59,12 @@ public class MongoSession implements Session {
 
     /** Package-private accessor used by {@link MongoSessionRepository} for (de)serialization. */
     MapSession getDelegate() { return delegate; }
+
+    /** The id this session is persisted under; may lag {@link #getId()} after a rotation. */
+    String getOriginalId() { return originalId; }
+
+    /** Called by the repository after it reconciles storage with the current id. */
+    void setOriginalId(String originalId) { this.originalId = originalId; }
 
     public Instant getExpireAt() { return expireAt; }
     public void setExpireAt(Instant expireAt) { this.expireAt = expireAt; }

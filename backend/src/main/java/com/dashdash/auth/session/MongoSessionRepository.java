@@ -42,6 +42,14 @@ public class MongoSessionRepository implements SessionRepository<MongoSession> {
 
     @Override
     public void save(MongoSession session) {
+        // If the id was rotated (e.g. request.changeSessionId() on login to defeat session
+        // fixation), the document under the OLD id must be removed — otherwise it stays readable
+        // until its TTL and the pre-rotation id would still authenticate.
+        String originalId = session.getOriginalId();
+        if (originalId != null && !originalId.equals(session.getId())) {
+            deleteById(originalId);
+            session.setOriginalId(session.getId());
+        }
         mongoOperations.getCollection(COLLECTION).replaceOne(
                 Filters.eq("_id", session.getId()),
                 toDocument(session),
