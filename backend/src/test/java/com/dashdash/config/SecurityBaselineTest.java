@@ -6,11 +6,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dashdash.auth.DashOidcUserService;
 import com.dashdash.common.HealthController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(HealthController.class)
@@ -19,6 +21,11 @@ class SecurityBaselineTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    // SecurityConfig's filter chain now depends on DashOidcUserService (a @Service not
+    // loaded by the @WebMvcTest slice); mock it so the chain can be instantiated.
+    @MockitoBean
+    DashOidcUserService oidcUserService;
 
     @Test
     void preflightReturnsCorsHeaders() throws Exception {

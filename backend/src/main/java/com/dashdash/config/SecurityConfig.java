@@ -1,5 +1,6 @@
 package com.dashdash.config;
 
+import com.dashdash.auth.DashOidcUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -17,11 +19,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 /**
- * Final DashDash security filter chain (Plan 02 owns this; it replaces the
- * Plan 01 walking-skeleton baseline). Stateful session auth: the SecurityContext
- * is persisted through an HttpSessionSecurityContextRepository so JSON /auth/login
- * and /auth/register establish a cookie-backed session. Google OIDC login
- * (oauth2Login) is layered in by Plan 02 Task 6.
+ * Final DashDash security filter chain (Plan 02 owns this). Stateful session auth
+ * (HttpSessionSecurityContextRepository) for JSON /auth/login + /auth/register,
+ * plus Google OIDC via oauth2Login. On OIDC success the browser is redirected to
+ * the UI /app route (env-driven, since UI and API are different origins).
  */
 @Configuration
 @EnableWebSecurity
@@ -33,9 +34,17 @@ public class SecurityConfig {
     @Value("${dashdash.session.cookie-secure:false}")
     private boolean cookieSecure;
 
+    @Value("${dashdash.oauth2.success-url:https://dashdash.app/app}")
+    private String oauth2SuccessUrl;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                            CorsConfigurationSource corsConfigurationSource) throws Exception {
+                                            CorsConfigurationSource corsConfigurationSource,
+                                            DashOidcUserService oidcUserService) throws Exception {
+        SimpleUrlAuthenticationSuccessHandler successHandler =
+                new SimpleUrlAuthenticationSuccessHandler(oauth2SuccessUrl);
+        successHandler.setAlwaysUseDefaultTargetUrl(true);
+
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .csrf(csrf -> csrf
@@ -56,6 +65,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated())
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
+            .oauth2Login(oauth -> oauth
+                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService))
+                .successHandler(successHandler))
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
@@ -63,11 +75,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * Built from the AuthenticationConfiguration, which auto-wires a
-     * DaoAuthenticationProvider around the DashUserDetailsService (@Service) and
-     * the PasswordEncoder bean (config.PasswordConfig).
-     */
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

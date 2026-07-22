@@ -22,6 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     // Spring Session *core* only — managed by the Spring Boot 4.1 BOM (no version). Boot 4.1 ships no
     // MongoDB-backed Spring Session store; storage is the custom MongoSessionRepository added below.
