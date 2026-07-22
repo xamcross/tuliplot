@@ -16,5 +16,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/dashboard-page.component').then((m) => m.DashboardPageComponent),
   },
-  // Plan 05 adds app/upgrade + app/settings; Plan 06 owns the marketing site + final /.
+  {
+    path: 'app/upgrade',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/billing/upgrade.component').then((m) => m.UpgradeComponent),
+  },
+  {
+    path: 'app/settings',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/billing/settings.component').then((m) => m.SettingsComponent),
+  },
+  // Plan 06 owns the marketing site + final /.
 ];
