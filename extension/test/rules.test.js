@@ -27,8 +27,8 @@ test('the rule removes both frame-blocking headers via modifyHeaders', () => {
   assert.deepEqual(removed, ['content-security-policy', 'x-frame-options']);
 });
 
-test('the rule is scoped to sub_frame requests initiated by dashdash.app and localhost', () => {
+test('the rule is scoped to sub_frame requests initiated by tuliplot.com and localhost', () => {
   const [rule] = loadRules();
   assert.deepEqual(rule.condition.resourceTypes, ['sub_frame']);
-  assert.deepEqual(rule.condition.initiatorDomains, ['dashdash.app', 'localhost']);
+  assert.deepEqual(rule.condition.initiatorDomains, ['tuliplot.com', 'localhost']);
 });

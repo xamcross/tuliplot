@@ -33,7 +33,7 @@ test('PING responds with PONG carrying the manifest version', () => {
   let response;
   const ret = handleMessage({ type: 'PING' }, {}, (r) => { response = r; });
   assert.equal(ret, false);
-  assert.deepEqual(response, { source: 'dashdash-ext', type: 'PONG', version: '1.0.0' });
+  assert.deepEqual(response, { source: 'tuliplot-ext', type: 'PONG', version: '1.0.0' });
 });
 
 test('REQUEST_HOST requests the origin wildcard and reports granted=true', () => {
@@ -46,7 +46,7 @@ test('REQUEST_HOST requests the origin wildcard and reports granted=true', () =>
   assert.equal(ret, true);
   assert.deepEqual(global.chrome.__lastRequest, { origins: ['https://mail.google.com/*'] });
   assert.deepEqual(response, {
-    source: 'dashdash-ext', type: 'HOST_RESULT', origin: 'https://mail.google.com', granted: true,
+    source: 'tuliplot-ext', type: 'HOST_RESULT', origin: 'https://mail.google.com', granted: true,
   });
 });
 

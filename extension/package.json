@@ -1,11 +1,11 @@
 {
-  "name": "dashdash-extension",
+  "name": "tuliplot-extension",
   "version": "1.0.0",
   "private": true,
-  "description": "DashDash Companion — strips frame-blocking headers for dashboard frames on dashdash.app.",
+  "description": "TulipLot Companion — strips frame-blocking headers for dashboard frames on tuliplot.com.",
   "scripts": {
     "test": "node --test",
-    "build": "bestzip dashdash-companion.zip manifest.json rules.json background.js content.js README.md"
+    "build": "bestzip tuliplot-companion.zip manifest.json rules.json background.js content.js README.md"
   },
   "devDependencies": {
     "bestzip": "^2.2.1",

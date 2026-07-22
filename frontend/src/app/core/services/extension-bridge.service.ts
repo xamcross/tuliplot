@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
-/** Chrome Web Store listing for the DashDash Companion extension. */
-export const EXTENSION_WEBSTORE_URL = 'https://chromewebstore.google.com/search/DashDash%20Companion';
+/** Chrome Web Store listing for the TulipLot Companion extension. */
+export const EXTENSION_WEBSTORE_URL = 'https://chromewebstore.google.com/search/TulipLot%20Companion';
 
 interface ExtMessage {
   source?: string;
@@ -27,7 +27,7 @@ export class ExtensionBridgeService {
 
       const listener = (event: MessageEvent): void => {
         const data = event.data as ExtMessage;
-        if (event.source !== window || !data || data.source !== 'dashdash-ext' || data.type !== 'PONG') {
+        if (event.source !== window || !data || data.source !== 'tuliplot-ext' || data.type !== 'PONG') {
           return;
         }
         settled = true;
@@ -48,7 +48,7 @@ export class ExtensionBridgeService {
       }, PING_TIMEOUT_MS);
 
       window.addEventListener('message', listener);
-      window.postMessage({ source: 'dashdash', type: 'PING' }, window.location.origin);
+      window.postMessage({ source: 'tuliplot', type: 'PING' }, window.location.origin);
     });
   }
 
@@ -62,7 +62,7 @@ export class ExtensionBridgeService {
         if (
           event.source !== window ||
           !data ||
-          data.source !== 'dashdash-ext' ||
+          data.source !== 'tuliplot-ext' ||
           data.type !== 'HOST_RESULT' ||
           data.origin !== origin
         ) {
@@ -83,7 +83,7 @@ export class ExtensionBridgeService {
       }, REQUEST_HOST_TIMEOUT_MS);
 
       window.addEventListener('message', listener);
-      window.postMessage({ source: 'dashdash', type: 'REQUEST_HOST', origin }, window.location.origin);
+      window.postMessage({ source: 'tuliplot', type: 'REQUEST_HOST', origin }, window.location.origin);
     });
   }
 }

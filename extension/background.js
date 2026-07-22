@@ -28,7 +28,7 @@ function isConcreteOrigin(origin) {
   return true;
 }
 
-// Handles messages forwarded from the dashdash.app content script.
+// Handles messages forwarded from the tuliplot.com content script.
 // Returning true keeps the message channel open for an async sendResponse.
 function handleMessage(message, sender, sendResponse) {
   if (!message || (message.type !== 'PING' && message.type !== 'REQUEST_HOST')) {
@@ -37,7 +37,7 @@ function handleMessage(message, sender, sendResponse) {
 
   if (message.type === 'PING') {
     const version = chrome.runtime.getManifest().version;
-    sendResponse({ source: 'dashdash-ext', type: 'PONG', version: version });
+    sendResponse({ source: 'tuliplot-ext', type: 'PONG', version: version });
     return false; // synchronous response
   }
 
@@ -47,7 +47,7 @@ function handleMessage(message, sender, sendResponse) {
   const origin = message.origin;
   if (!isConcreteOrigin(origin)) {
     sendResponse({
-      source: 'dashdash-ext',
+      source: 'tuliplot-ext',
       type: 'HOST_RESULT',
       origin: origin,
       granted: false,
@@ -57,7 +57,7 @@ function handleMessage(message, sender, sendResponse) {
 
   chrome.permissions.request({ origins: [origin + '/*'] }, function (granted) {
     sendResponse({
-      source: 'dashdash-ext',
+      source: 'tuliplot-ext',
       type: 'HOST_RESULT',
       origin: origin,
       granted: !!granted,

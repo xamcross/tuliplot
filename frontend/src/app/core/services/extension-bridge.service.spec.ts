@@ -19,7 +19,7 @@ describe('ExtensionBridgeService', () => {
       if ((msg as { type: string }).type === 'PING') {
         window.dispatchEvent(
           new MessageEvent('message', {
-            data: { source: 'dashdash-ext', type: 'PONG', version: '1.0.0' },
+            data: { source: 'tuliplot-ext', type: 'PONG', version: '1.0.0' },
             source: window,
           }),
         );
@@ -48,7 +48,7 @@ describe('ExtensionBridgeService', () => {
 
   it('ping() ignores the page echo of its own PING message', async () => {
     vi.spyOn(window, 'postMessage').mockImplementation(((msg: unknown) => {
-      // Echo the page->ext PING back on the bus (source 'dashdash'); must be ignored.
+      // Echo the page->ext PING back on the bus (source 'tuliplot'); must be ignored.
       window.dispatchEvent(new MessageEvent('message', { data: msg, source: window }));
     }) as typeof window.postMessage);
 
@@ -63,7 +63,7 @@ describe('ExtensionBridgeService', () => {
       if (m.type === 'REQUEST_HOST') {
         window.dispatchEvent(
           new MessageEvent('message', {
-            data: { source: 'dashdash-ext', type: 'HOST_RESULT', origin: m.origin, granted: true },
+            data: { source: 'tuliplot-ext', type: 'HOST_RESULT', origin: m.origin, granted: true },
             source: window,
           }),
         );
@@ -95,14 +95,14 @@ describe('ExtensionBridgeService', () => {
         // Response for a DIFFERENT origin must be ignored.
         window.dispatchEvent(
           new MessageEvent('message', {
-            data: { source: 'dashdash-ext', type: 'HOST_RESULT', origin: 'https://other.example', granted: true },
+            data: { source: 'tuliplot-ext', type: 'HOST_RESULT', origin: 'https://other.example', granted: true },
             source: window,
           }),
         );
         // Then the correct one.
         window.dispatchEvent(
           new MessageEvent('message', {
-            data: { source: 'dashdash-ext', type: 'HOST_RESULT', origin: m.origin, granted: false },
+            data: { source: 'tuliplot-ext', type: 'HOST_RESULT', origin: m.origin, granted: false },
             source: window,
           }),
         );

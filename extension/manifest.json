@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "DashDash Companion",
+  "name": "TulipLot Companion",
   "version": "1.0.0",
-  "description": "Strips frame-blocking headers for dashboard frames on dashdash.app so your chosen sites load inside your DashDash grid.",
+  "description": "Strips frame-blocking headers for dashboard frames on tuliplot.com so your chosen sites load inside your TulipLot grid.",
   "permissions": ["declarativeNetRequestWithHostAccess"],
   "optional_host_permissions": ["*://*/*"],
-  "host_permissions": ["*://dashdash.app/*", "http://localhost/*"],
+  "host_permissions": ["*://tuliplot.com/*", "http://localhost/*"],
   "declarative_net_request": {
     "rule_resources": [
       {
-        "id": "dashdash_frame",
+        "id": "tuliplot_frame",
         "enabled": true,
         "path": "rules.json"
       }
@@ -20,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://dashdash.app/*", "http://localhost/*"],
+      "matches": ["*://tuliplot.com/*", "http://localhost/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     }

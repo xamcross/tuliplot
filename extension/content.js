@@ -1,11 +1,11 @@
 'use strict';
 
-// True only for genuine same-window messages from the DashDash page.
+// True only for genuine same-window messages from the TulipLot page.
 function isPageMessage(event) {
   return (
     event.source === window &&
     !!event.data &&
-    event.data.source === 'dashdash' &&
+    event.data.source === 'tuliplot' &&
     (event.data.type === 'PING' || event.data.type === 'REQUEST_HOST')
   );
 }

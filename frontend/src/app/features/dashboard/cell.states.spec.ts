@@ -95,7 +95,7 @@ describe('CellComponent fallback states', () => {
     const fixture = create(makeCell(), 'NEEDS_EXTENSION');
     fixture.componentInstance.onInstallExtension();
     expect(openSpy).toHaveBeenCalledWith(
-      'https://chromewebstore.google.com/search/DashDash%20Companion',
+      'https://chromewebstore.google.com/search/TulipLot%20Companion',
       '_blank',
       'noopener,noreferrer',
     );

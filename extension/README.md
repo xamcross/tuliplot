@@ -1,20 +1,20 @@
-# DashDash Companion
+# TulipLot Companion
 
 ## Single purpose
 
-DashDash Companion has one single purpose: it removes the response headers that
+TulipLot Companion has one single purpose: it removes the response headers that
 prevent websites from being displayed inside a frame (`X-Frame-Options` and
-`Content-Security-Policy`) **only** for frames that are embedded by the DashDash
-dashboard at `https://dashdash.app`. This lets the sites you add to your DashDash
+`Content-Security-Policy`) **only** for frames that are embedded by the TulipLot
+dashboard at `https://tuliplot.com`. This lets the sites you add to your TulipLot
 grid render inside the grid.
 
 ## Why each permission is requested
 
 - `declarativeNetRequestWithHostAccess` — apply the static header-stripping rule
   set (`rules.json`) using the host permissions you have granted. The rule only
-  matches sub-frame requests whose initiator is `dashdash.app`.
-- `host_permissions: ["*://dashdash.app/*"]` — inject the tiny handshake content
-  script (`content.js`) so the DashDash web app can detect that the extension is
+  matches sub-frame requests whose initiator is `tuliplot.com`.
+- `host_permissions: ["*://tuliplot.com/*"]` — inject the tiny handshake content
+  script (`content.js`) so the TulipLot web app can detect that the extension is
   installed.
 - `optional_host_permissions: ["*://*/*"]` — requested **per-site, on demand**
   when you add an app to your grid that needs header stripping. Nothing is
@@ -24,7 +24,7 @@ grid render inside the grid.
 
 - It never reads or modifies page content, cookies, or form data.
 - It never touches the advertisement cell (the ad is native DOM, never a frame).
-- It only strips headers for frames initiated by `dashdash.app`; ordinary
+- It only strips headers for frames initiated by `tuliplot.com`; ordinary
   browsing on other sites is unaffected.
 
 ## Known limitation
