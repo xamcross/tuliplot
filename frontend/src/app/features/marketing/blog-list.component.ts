@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POSTS } from './content.generated';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-blog-list',
@@ -29,4 +30,12 @@ import { POSTS } from './content.generated';
 })
 export class BlogListComponent {
   protected readonly posts = POSTS;
+
+  constructor() {
+    inject(SeoService).set({
+      title: 'Blog',
+      description: 'Product news and thinking on focused, single-window work.',
+      path: '/blog',
+    });
+  }
 }

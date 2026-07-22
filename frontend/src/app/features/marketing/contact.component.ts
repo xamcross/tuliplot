@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -48,4 +49,12 @@ import { RouterLink } from '@angular/router';
     </main>
   `,
 })
-export class ContactComponent {}
+export class ContactComponent {
+  constructor() {
+    inject(SeoService).set({
+      title: 'Contact',
+      description: 'How to reach the DashDash team for support, billing, feedback, and privacy requests.',
+      path: '/contact',
+    });
+  }
+}

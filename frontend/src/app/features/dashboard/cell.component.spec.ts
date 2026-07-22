@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { CellComponent } from './cell.component';
 import { Cell } from '../../core/models/dashboard.model';
 
@@ -18,11 +19,13 @@ describe('CellComponent', () => {
     expect(f.nativeElement.querySelector('[data-testid="add-btn"]')).not.toBeNull();
   });
 
-  it('renders the Advertisements placeholder for AD', () => {
-    const f = render({ slot: 5, type: 'AD', openMode: 'FRAME' });
-    const ad = f.nativeElement.querySelector('[data-testid="ad-slot"]');
-    expect(ad).not.toBeNull();
-    expect(ad!.textContent).toContain('Advertisements');
+  it('renders <dd-ad-cell> for AD when the config shows an ad', () => {
+    TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection(), provideRouter([])] });
+    const f = TestBed.createComponent(CellComponent);
+    f.componentRef.setInput('cell', { slot: 5, type: 'AD', openMode: 'FRAME' } as Cell);
+    f.componentRef.setInput('adConfig', { showAd: true, adClient: '', adSlot: '' });
+    f.detectChanges();
+    expect(f.nativeElement.querySelector('dd-ad-cell')).not.toBeNull();
   });
 
   it('renders the toolbar and a safe-frame for APP', () => {

@@ -73,3 +73,20 @@ writeFileSync(outFile, out, 'utf8');
 console.log(
   `content: ${guides.length} guides, ${posts.length} posts -> ${outFile}`,
 );
+
+const staticRoutes = ['/', '/about', '/privacy', '/terms', '/contact', '/guides', '/blog'];
+const guideRoutes = guides.map((g) => `/guides/${g.slug}`);
+const postRoutes = posts.map((p) => `/blog/${p.slug}`);
+const allRoutes = [...staticRoutes, ...guideRoutes, ...postRoutes];
+const sitemap =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  allRoutes
+    .map(
+      (r) =>
+        `  <url><loc>https://dashdash.app${r === '/' ? '' : r}</loc></url>`,
+    )
+    .join('\n') +
+  `\n</urlset>\n`;
+writeFileSync(resolve(frontendRoot, 'public/sitemap.xml'), sitemap, 'utf8');
+console.log(`sitemap: ${allRoutes.length} urls -> public/sitemap.xml`);

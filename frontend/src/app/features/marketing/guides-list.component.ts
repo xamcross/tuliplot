@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GUIDES } from './content.generated';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-guides-list',
@@ -29,4 +30,12 @@ import { GUIDES } from './content.generated';
 })
 export class GuidesListComponent {
   protected readonly guides = GUIDES;
+
+  constructor() {
+    inject(SeoService).set({
+      title: 'Guides',
+      description: 'Step-by-step help getting the most out of DashDash.',
+      path: '/guides',
+    });
+  }
 }

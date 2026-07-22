@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-about',
@@ -43,4 +44,12 @@ import { RouterLink } from '@angular/router';
     </main>
   `,
 })
-export class AboutComponent {}
+export class AboutComponent {
+  constructor() {
+    inject(SeoService).set({
+      title: 'About',
+      description: 'Why DashDash exists and how the single-window dashboard works.',
+      path: '/about',
+    });
+  }
+}

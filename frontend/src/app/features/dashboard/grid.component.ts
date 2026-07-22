@@ -3,6 +3,8 @@ import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cd
 import { DashboardStore } from '../../stores/dashboard.store';
 import { AuthStore } from '../../stores/auth.store';
 import { CellComponent } from './cell.component';
+import { AdsApi } from '../../core/api/ads.api';
+import { AdConfig } from '../../core/models/ads.model';
 
 @Component({
   selector: 'dd-grid',
@@ -32,6 +34,7 @@ import { CellComponent } from './cell.component';
             <dd-cell
               [cell]="cell"
               [dragging]="dragging()"
+              [adConfig]="adConfig()"
               [asleep]="asleepSlots().has(cell.slot)"
               (edit)="edit.emit($event)"
               (remove)="onRemove($event)"
@@ -66,10 +69,16 @@ import { CellComponent } from './cell.component';
 export class GridComponent {
   protected store = inject(DashboardStore);
   private readonly authStore = inject(AuthStore);
+  private readonly adsApi = inject(AdsApi);
   readonly dragging = signal(false);
   readonly focusedSlot = signal<number | null>(null);
   protected readonly asleepSlots = signal<Set<number>>(new Set());
+  protected readonly adConfig = signal<AdConfig | null>(null);
   readonly edit = output<number>();
+
+  constructor() {
+    this.adsApi.getConfig().subscribe((c) => this.adConfig.set(c));
+  }
 
   /** Slot 5 is the fixed ad slot; it is locked (non-editable, non-draggable) unless the user is ad-free. */
   protected isSlotLocked(index: number): boolean {

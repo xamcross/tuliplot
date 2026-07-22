@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { GUIDES } from './content.generated';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-guide-detail',
@@ -33,4 +34,18 @@ export class GuideDetailComponent {
   protected readonly doc = computed(
     () => GUIDES.find((g) => g.slug === this.slug()) ?? null,
   );
+
+  constructor() {
+    const seo = inject(SeoService);
+    effect(() => {
+      const d = this.doc();
+      if (d) {
+        seo.set({
+          title: d.title,
+          description: d.description,
+          path: `/guides/${d.slug}`,
+        });
+      }
+    });
+  }
 }

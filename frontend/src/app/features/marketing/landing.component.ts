@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'dd-landing',
@@ -69,4 +70,13 @@ import { RouterLink } from '@angular/router';
     </footer>
   `,
 })
-export class LandingComponent {}
+export class LandingComponent {
+  constructor() {
+    inject(SeoService).set({
+      title: 'DashDash — your apps on one screen',
+      description:
+        'Turn one browser window into a personal dashboard: a fixed 3×2 grid of the web apps you use all day.',
+      path: '/',
+    });
+  }
+}

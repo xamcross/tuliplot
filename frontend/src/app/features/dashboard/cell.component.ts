@@ -3,15 +3,17 @@ import {
 } from '@angular/core';
 import { Cell } from '../../core/models/dashboard.model';
 import type { Compatibility } from '../../core/models/enums';
+import { AdConfig } from '../../core/models/ads.model';
 import { CellToolbarComponent } from './cell-toolbar.component';
 import { SafeFrameComponent } from './safe-frame.component';
+import { AdCellComponent } from '../ads/ad-cell.component';
 import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/services/extension-bridge.service';
 
 @Component({
   selector: 'dd-cell',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CellToolbarComponent, SafeFrameComponent],
+  imports: [CellToolbarComponent, SafeFrameComponent, AdCellComponent],
   template: `
     @switch (cell().type) {
       @case ('EMPTY') {
@@ -20,7 +22,9 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
         </button>
       }
       @case ('AD') {
-        <div class="ad-slot" data-testid="ad-slot" aria-label="Advertisements">Advertisements</div>
+        @if (!!adConfig()?.showAd) {
+          <dd-ad-cell [config]="adConfig()!" />
+        }
       }
       @case ('APP') {
         @switch (frameState()) {
@@ -81,6 +85,7 @@ export class CellComponent {
   dragging = input<boolean>(false);
   asleep = input<boolean>(false);
   readonly compatibility = input<Compatibility | null>(null);
+  readonly adConfig = input<AdConfig | null>(null);
 
   edit = output<number>();
   remove = output<number>();
