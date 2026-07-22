@@ -7,6 +7,7 @@ import { DashboardPageComponent } from './dashboard-page.component';
 import { AuthStore } from '../../stores/auth.store';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { AdsApi } from '../../core/api/ads.api';
+import { CatalogApi } from '../../core/api/catalog.api';
 
 function authStoreStub(tier: 'FREE' | 'PREMIUM') {
   return {
@@ -50,6 +51,7 @@ function createPage(tier: 'FREE' | 'PREMIUM') {
       { provide: AuthStore, useValue: authStoreStub(tier) },
       { provide: DashboardStore, useValue: dashboardStoreStub() },
       { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
+      { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
     ],
   });
   return TestBed.createComponent(DashboardPageComponent).componentInstance as unknown as {

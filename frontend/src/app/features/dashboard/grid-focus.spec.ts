@@ -5,6 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { GridComponent } from './grid.component';
 import { DashboardApi } from '../../core/api/dashboard.api';
 import { AdsApi } from '../../core/api/ads.api';
+import { CatalogApi } from '../../core/api/catalog.api';
 
 describe('GridComponent focus mode', () => {
   beforeEach(() => {
@@ -13,6 +14,7 @@ describe('GridComponent focus mode', () => {
         provideZonelessChangeDetection(),
         { provide: DashboardApi, useValue: { get: vi.fn().mockReturnValue(of({ cells: [] })), updateCells: vi.fn() } },
         { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
+        { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
       ],
     });
   });

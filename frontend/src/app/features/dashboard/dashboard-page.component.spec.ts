@@ -8,6 +8,7 @@ import { DashboardPageComponent } from './dashboard-page.component';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { DashboardApi } from '../../core/api/dashboard.api';
 import { AdsApi } from '../../core/api/ads.api';
+import { CatalogApi } from '../../core/api/catalog.api';
 import { CatalogApp } from '../../core/models/catalog.model';
 import { Cell } from '../../core/models/dashboard.model';
 
@@ -33,6 +34,7 @@ describe('DashboardPageComponent', () => {
         provideZonelessChangeDetection(),
         { provide: DashboardApi, useValue: apiMock },
         { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
+        { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
         { provide: Dialog, useValue: dialogMock },
         {
           provide: ActivatedRoute,

@@ -6,6 +6,7 @@ import { GridComponent } from './grid.component';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { AuthStore } from '../../stores/auth.store';
 import { AdsApi } from '../../core/api/ads.api';
+import { CatalogApi } from '../../core/api/catalog.api';
 import type { Cell } from '../../core/models/dashboard.model';
 
 function sixCells(): Cell[] {
@@ -39,6 +40,7 @@ function createGrid(adFree: boolean) {
       { provide: DashboardStore, useValue: dashboardStoreStub() },
       { provide: AuthStore, useValue: { adFree: signal(adFree), tier: signal(adFree ? 'PREMIUM' : 'FREE') } },
       { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
+      { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
     ],
   });
   return TestBed.createComponent(GridComponent).componentInstance as unknown as {
