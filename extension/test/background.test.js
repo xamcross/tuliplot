@@ -58,6 +58,41 @@ test('REQUEST_HOST reports granted=false when the user denies', () => {
   assert.equal(response.granted, false);
 });
 
+test('REQUEST_HOST with a valid https origin requests+grants the host permission', () => {
+  installChrome({ granted: true });
+  const { handleMessage } = require('../background.js');
+  let response;
+  const ret = handleMessage(
+    { type: 'REQUEST_HOST', origin: 'https://good.example.com' }, {}, (r) => { response = r; },
+  );
+  assert.equal(ret, true);
+  assert.deepEqual(global.chrome.__lastRequest, { origins: ['https://good.example.com/*'] });
+  assert.equal(response.granted, true);
+});
+
+test('REQUEST_HOST rejects wildcard/malformed origins without calling permissions.request', () => {
+  const bad = [
+    '*://*',
+    'https://*.evil.com',
+    'notaurl',
+    'https://x.com/path',
+    'https://x.com/?q=1',
+    'ftp://x.com',
+    '',
+  ];
+  for (const origin of bad) {
+    installChrome({ granted: true });
+    const { handleMessage } = require('../background.js');
+    let response;
+    const ret = handleMessage({ type: 'REQUEST_HOST', origin: origin }, {}, (r) => { response = r; });
+    assert.equal(ret, false, `expected sync rejection for ${JSON.stringify(origin)}`);
+    assert.equal(global.chrome.__lastRequest, undefined,
+      `permissions.request must not be called for ${JSON.stringify(origin)}`);
+    assert.equal(response.granted, false, `expected granted=false for ${JSON.stringify(origin)}`);
+    assert.equal(response.type, 'HOST_RESULT');
+  }
+});
+
 test('unknown message types are ignored (no response, returns false)', () => {
   installChrome();
   const { handleMessage } = require('../background.js');
