@@ -40,9 +40,11 @@ HOW IT WORKS
 WHAT IT NEVER DOES
 • It never reads or changes page content, cookies, form data, or browsing
   history.
-• It never runs on pages other than tuliplot.com (where a tiny script lets
-  the dashboard detect that the extension is installed).
-• It never strips headers for frames outside the TulipLot dashboard.
+• It never runs on pages other than tuliplot.com and localhost (where a tiny
+  script lets the dashboard — or a local development copy of it — detect
+  that the extension is installed).
+• It never strips headers for frames that are not embedded by the TulipLot
+  dashboard or a local development copy of it.
 • It collects no data at all — nothing is stored, transmitted, or shared.
 
 The extension is open source: https://github.com/xamcross/tuliplot

@@ -12,10 +12,11 @@ grid render inside the grid.
 
 - `declarativeNetRequestWithHostAccess` — apply the static header-stripping rule
   set (`rules.json`) using the host permissions you have granted. The rule only
-  matches sub-frame requests whose initiator is `tuliplot.com`.
-- `host_permissions: ["*://tuliplot.com/*"]` — inject the tiny handshake content
-  script (`content.js`) so the TulipLot web app can detect that the extension is
-  installed.
+  matches sub-frame requests whose initiator is `tuliplot.com` (or `localhost`,
+  for local development of the open-source dashboard).
+- `host_permissions: ["*://tuliplot.com/*", "http://localhost/*"]` — inject the
+  tiny handshake content script (`content.js`) so the TulipLot web app — or a
+  local development copy of it — can detect that the extension is installed.
 - `optional_host_permissions: ["*://*/*"]` — requested **per-site, on demand**
   when you add an app to your grid that needs header stripping. Nothing is
   granted up front; you approve each site.
