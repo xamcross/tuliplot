@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, inject, output, signal } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DashboardStore } from '../../stores/dashboard.store';
+import { AuthStore } from '../../stores/auth.store';
 import { CellComponent } from './cell.component';
 
 @Component({
@@ -10,7 +11,7 @@ import { CellComponent } from './cell.component';
   imports: [CdkDropListGroup, CdkDropList, CdkDrag, CellComponent],
   template: `
     <div class="grid" cdkDropListGroup [class.dragging]="dragging()" [class.has-focus]="focusedSlot() !== null">
-      @for (cell of store.cells(); track cell.slot) {
+      @for (cell of store.cells(); track cell.slot; let i = $index) {
         <div
           class="cell"
           [class.focused]="focusedSlot() === cell.slot"
@@ -24,7 +25,7 @@ import { CellComponent } from './cell.component';
             class="drag"
             cdkDrag
             [cdkDragData]="cell.slot"
-            [cdkDragDisabled]="cell.type !== 'APP'"
+            [cdkDragDisabled]="cell.type !== 'APP' || isSlotLocked(i)"
             (cdkDragStarted)="dragging.set(true)"
             (cdkDragEnded)="dragging.set(false)"
           >
@@ -64,10 +65,16 @@ import { CellComponent } from './cell.component';
 })
 export class GridComponent {
   protected store = inject(DashboardStore);
+  private readonly authStore = inject(AuthStore);
   readonly dragging = signal(false);
   readonly focusedSlot = signal<number | null>(null);
   protected readonly asleepSlots = signal<Set<number>>(new Set());
   readonly edit = output<number>();
+
+  /** Slot 5 is the fixed ad slot; it is locked (non-editable, non-draggable) unless the user is ad-free. */
+  protected isSlotLocked(index: number): boolean {
+    return index === 5 && !this.authStore.adFree();
+  }
 
   onDropped(event: CdkDragDrop<number>): void {
     const from = event.item.data as number;

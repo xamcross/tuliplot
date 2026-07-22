@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { DashboardPageComponent } from './dashboard-page.component';
 import { DashboardStore } from '../../stores/dashboard.store';
@@ -31,6 +32,10 @@ describe('DashboardPageComponent', () => {
         provideZonelessChangeDetection(),
         { provide: DashboardApi, useValue: apiMock },
         { provide: Dialog, useValue: dialogMock },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { queryParamMap: convertToParamMap({}) } },
+        },
       ],
     });
   });

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, afterNextRender, computed, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DashboardStore } from '../../stores/dashboard.store';
+import { AuthStore } from '../../stores/auth.store';
 import { GridComponent } from './grid.component';
 import { CatalogDialogComponent } from './catalog-dialog.component';
 import { AddUrlDialogComponent, AddUrlResult } from './add-url-dialog.component';
@@ -55,6 +57,8 @@ export class DashboardPageComponent implements OnInit {
   protected store = inject(DashboardStore);
   private dialog = inject(Dialog);
   private readonly extensionBridge = inject(ExtensionBridgeService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authStore = inject(AuthStore);
 
   // The parked app can be placed into any non-AD slot (slot 5 is the FREE ad slot).
   protected readonly placeableSlots = computed(() =>
@@ -68,10 +72,43 @@ export class DashboardPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.handleCheckoutReturn();
     this.store.load();
   }
 
+  /** After returning from Stripe Checkout (/app?checkout=success) refresh auth + dashboard so premium reflects. */
+  private handleCheckoutReturn(): void {
+    if (this.route.snapshot.queryParamMap.get('checkout') === 'success') {
+      this.authStore.loadMe();
+      this.store.load();
+    }
+  }
+
+  /**
+   * Slot 5 is the fixed ad slot for FREE users; adding or editing an app there is not allowed
+   * until the user is Premium. (adFree === (tier === 'PREMIUM'), so this is the same predicate.)
+   */
+  isSlotLocked(slot: number): boolean {
+    return slot === 5 && this.authStore.tier() === 'FREE';
+  }
+
+  /**
+   * Test/grid-facing guarded add/edit entry; delegates to {@link onEdit} so the FREE ad slot
+   * cannot be added to or edited.
+   */
+  onCellEdit(slot: number): void {
+    void this.onEdit(slot);
+  }
+
   async onEdit(slot: number): Promise<void> {
+    if (this.isSlotLocked(slot)) {
+      return;
+    }
+    await this.openCellEditor(slot);
+  }
+
+  /** Opens the add-URL / catalog dialog for a slot; a seam so tests can assert the slot-5 guard. */
+  protected async openCellEditor(slot: number): Promise<void> {
     const ref = this.dialog.open<CatalogChoice>(CatalogDialogComponent, { width: '480px' });
     const result = await firstValueFrom(ref.closed);
     if (!result) {
