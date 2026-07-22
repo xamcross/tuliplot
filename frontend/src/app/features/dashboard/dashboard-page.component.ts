@@ -10,6 +10,7 @@ import { AddUrlDialogComponent, AddUrlResult } from './add-url-dialog.component'
 import { CatalogApp } from '../../core/models/catalog.model';
 import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
 import { openModeFor } from '../../core/services/compatibility.util';
+import { AppTopbarComponent } from '../../shared/app-topbar.component';
 
 type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 
@@ -17,39 +18,43 @@ type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
   selector: 'tl-dashboard-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GridComponent],
+  imports: [GridComponent, AppTopbarComponent],
   template: `
-    <main class="page">
-      <tl-grid (edit)="onEdit($event)" />
-      @if (store.parkedApp(); as parked) {
-        <div class="parked-prompt" data-testid="parked-prompt" role="dialog" aria-label="Placed app removed">
-          <p>
-            Your plan changed and “{{ parked.title || parked.url }}” no longer fits your dashboard.
-            Place it in a slot or discard it.
-          </p>
-          <div class="parked-actions">
-            @for (slot of placeableSlots(); track slot) {
-              <button type="button" [attr.data-testid]="'park-slot-' + slot" (click)="resolveParkedApp(slot)">
-                Slot {{ slot + 1 }}
+    <div class="page">
+      <tl-app-topbar mode="dashboard" />
+      <main class="grid-area">
+        <tl-grid (edit)="onEdit($event)" />
+        @if (store.parkedApp(); as parked) {
+          <div class="parked-prompt" data-testid="parked-prompt" role="dialog" aria-label="Placed app removed">
+            <p>
+              Your plan changed and “{{ parked.title || parked.url }}” no longer fits your dashboard.
+              Place it in a slot or discard it.
+            </p>
+            <div class="parked-actions">
+              @for (slot of placeableSlots(); track slot) {
+                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm"
+                  [attr.data-testid]="'park-slot-' + slot" (click)="resolveParkedApp(slot)">
+                  Slot {{ slot + 1 }}
+                </button>
+              }
+              <button type="button" class="discard tl-btn tl-btn--primary tl-btn--sm"
+                data-testid="park-discard" (click)="resolveParkedApp(null)">
+                Discard
               </button>
-            }
-            <button type="button" class="discard" data-testid="park-discard" (click)="resolveParkedApp(null)">
-              Discard
-            </button>
+            </div>
           </div>
-        </div>
-      }
-    </main>
+        }
+      </main>
+    </div>
   `,
   styles: [`
-    .page { width: 100vw; height: 100vh; padding: 12px; box-sizing: border-box; }
-    .parked-prompt {
-      position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 1100;
-      max-width: 90vw; background: #fff; border: 1px solid #ddd; border-radius: 8px;
-      padding: 12px 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-    .parked-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .parked-actions button { padding: 4px 10px; cursor: pointer; }
+    .page { width: 100vw; height: 100vh; display: flex; flex-direction: column; background: var(--tl-app-bg); }
+    .grid-area { flex: 1; min-height: 0; padding: 12px; position: relative; }
+    .parked-prompt { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 1100;
+      max-width: 90vw; background: #fff; border: 1px solid var(--tl-border); border-radius: 16px;
+      padding: 16px 20px; box-shadow: var(--tl-shadow-card); font-size: 15px; color: var(--tl-ink); }
+    .parked-prompt p { margin: 0 0 4px; }
+    .parked-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
     .parked-actions .discard { margin-left: auto; }
   `],
 })
