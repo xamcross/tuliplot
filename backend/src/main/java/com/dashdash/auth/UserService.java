@@ -46,4 +46,10 @@ public class UserService {
         }
         return sub.getStatus() == SubStatus.ACTIVE || sub.getStatus() == SubStatus.TRIALING;
     }
+
+    /** Re-hash a new password with the delegating bcrypt encoder and persist. */
+    public void updatePassword(User user, String rawPassword) {
+        user.setPasswordHash(passwordEncoder.encode(rawPassword));
+        users.save(user);
+    }
 }

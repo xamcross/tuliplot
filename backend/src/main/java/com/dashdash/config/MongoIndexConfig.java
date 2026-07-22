@@ -1,6 +1,7 @@
 package com.dashdash.config;
 
 import java.util.concurrent.TimeUnit;
+import com.dashdash.auth.PasswordResetToken;
 import com.dashdash.auth.User;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
@@ -29,6 +30,7 @@ public class MongoIndexConfig {
     public void ensureIndexes() {
         ensureSessionIndexes();
         ensureUserIndexes();
+        ensurePasswordResetTokenIndexes();
         // Plan 05 adds the stripe_events TTL index here.
     }
 
@@ -48,5 +50,14 @@ public class MongoIndexConfig {
                 .on("subscription.stripeCustomerId", Sort.Direction.ASC).unique().sparse());
         ops.ensureIndex(new Index()
                 .on("subscription.stripeSubscriptionId", Sort.Direction.ASC).unique().sparse());
+    }
+
+    // --- password reset tokens (Plan 02 Task 9) ---
+    private void ensurePasswordResetTokenIndexes() {
+        // TTL index: expireAfterSeconds=0 on a date field makes each token expire
+        // exactly at its `expiresAt` instant (Mongo's TTL monitor sweeps ~every 60s).
+        mongoTemplate.indexOps(PasswordResetToken.class)
+                .ensureIndex(new Index().on("expiresAt", Sort.Direction.ASC)
+                        .expire(java.time.Duration.ZERO));
     }
 }

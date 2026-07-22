@@ -58,6 +58,7 @@ public class SecurityConfig {
                     "/api/v1/health",
                     "/api/v1/auth/register",
                     "/api/v1/auth/login",
+                    "/api/v1/auth/password-reset/**",
                     "/api/v1/catalog",
                     "/api/v1/billing/webhook",
                     "/oauth2/**",

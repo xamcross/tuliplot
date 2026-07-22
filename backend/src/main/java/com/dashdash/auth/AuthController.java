@@ -1,6 +1,8 @@
 package com.dashdash.auth;
 
 import com.dashdash.auth.dto.LoginRequest;
+import com.dashdash.auth.dto.PasswordResetConfirm;
+import com.dashdash.auth.dto.PasswordResetRequest;
 import com.dashdash.auth.dto.RegisterRequest;
 import com.dashdash.auth.dto.UserDto;
 import com.dashdash.common.ApiError;
@@ -34,6 +36,7 @@ public class AuthController {
     private final UserService userService;
     private final UserRepository users;
     private final AuthenticationManager authenticationManager;
+    private final PasswordResetService passwordResetService;
 
     private final SecurityContextHolderStrategy securityContextHolderStrategy =
             SecurityContextHolder.getContextHolderStrategy();
@@ -43,10 +46,12 @@ public class AuthController {
 
     public AuthController(UserService userService,
                           UserRepository users,
-                          AuthenticationManager authenticationManager) {
+                          AuthenticationManager authenticationManager,
+                          PasswordResetService passwordResetService) {
         this.userService = userService;
         this.users = users;
         this.authenticationManager = authenticationManager;
+        this.passwordResetService = passwordResetService;
     }
 
     @PostMapping("/register")
@@ -91,6 +96,18 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/password-reset/request")
+    public ResponseEntity<Void> requestPasswordReset(@Valid @RequestBody PasswordResetRequest req) {
+        passwordResetService.requestReset(req.email());
+        return ResponseEntity.noContent().build();   // 204 always — no account enumeration
+    }
+
+    @PostMapping("/password-reset/confirm")
+    public ResponseEntity<Void> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirm req) {
+        passwordResetService.confirmReset(req.token(), req.newPassword());
+        return ResponseEntity.noContent().build();   // 204
+    }
+
     /** Persist an authenticated SecurityContext into the session (emits the SESSION cookie in a real container). */
     void establishSession(DashUserDetails principal, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = UsernamePasswordAuthenticationToken.authenticated(
@@ -111,5 +128,11 @@ public class AuthController {
     public ResponseEntity<ApiError> handleBadCredentials(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiError("INVALID_CREDENTIALS", "Invalid email or password"));
+    }
+
+    @ExceptionHandler(InvalidResetTokenException.class)
+    public ResponseEntity<ApiError> handleInvalidResetToken(InvalidResetTokenException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("INVALID_RESET_TOKEN", ex.getMessage()));
     }
 }
