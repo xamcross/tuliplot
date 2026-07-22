@@ -5,10 +5,12 @@
   "description": "TulipLot Companion — strips frame-blocking headers for dashboard frames on tuliplot.com.",
   "scripts": {
     "test": "node --test",
-    "build": "bestzip tuliplot-companion.zip manifest.json rules.json background.js content.js README.md"
+    "icons": "node scripts/render-icons.mjs",
+    "build": "bestzip tuliplot-companion.zip manifest.json rules.json background.js content.js README.md icons/*.png"
   },
   "devDependencies": {
     "bestzip": "^2.2.1",
-    "jsdom": "^24.1.3"
+    "jsdom": "^24.1.3",
+    "sharp": "^0.35.3"
   }
 }
