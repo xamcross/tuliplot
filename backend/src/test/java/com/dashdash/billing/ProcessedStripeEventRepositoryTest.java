@@ -1,5 +1,7 @@
 package com.dashdash.billing;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ class ProcessedStripeEventRepositoryTest {
 
   @DynamicPropertySource
   static void props(DynamicPropertyRegistry r) {
-    r.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+    r.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
   }
 
   @Autowired

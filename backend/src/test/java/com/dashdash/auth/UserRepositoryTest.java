@@ -1,5 +1,7 @@
 package com.dashdash.auth;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,7 +30,7 @@ class UserRepositoryTest {
 
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        registry.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired UserRepository users;

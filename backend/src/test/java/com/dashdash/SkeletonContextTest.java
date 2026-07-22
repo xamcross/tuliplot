@@ -4,13 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dashdash.auth.session.MongoSession;
 import com.dashdash.auth.session.MongoSessionRepository;
+import com.dashdash.testsupport.MongoTestUri;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,8 +23,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class SkeletonContextTest {
 
     @Container
-    @ServiceConnection
     static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
+
+    @DynamicPropertySource
+    static void mongoProps(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+    }
 
     // Boot 4.x removed TestRestTemplate; hit the running server with Spring's RestClient instead.
     @LocalServerPort

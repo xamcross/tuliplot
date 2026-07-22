@@ -1,5 +1,7 @@
 package com.dashdash.auth;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -41,7 +43,7 @@ class AuthControllerPasswordResetTest {
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        r.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired MockMvc mvc;

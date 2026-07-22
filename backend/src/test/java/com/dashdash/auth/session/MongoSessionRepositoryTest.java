@@ -1,5 +1,7 @@
 package com.dashdash.auth.session;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mongodb.client.model.Filters;
@@ -22,7 +24,7 @@ class MongoSessionRepositoryTest {
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        r.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired MongoSessionRepository repository;

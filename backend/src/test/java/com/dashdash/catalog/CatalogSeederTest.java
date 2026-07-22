@@ -1,5 +1,7 @@
 package com.dashdash.catalog;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
@@ -22,7 +24,7 @@ class CatalogSeederTest {
 
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        registry.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired

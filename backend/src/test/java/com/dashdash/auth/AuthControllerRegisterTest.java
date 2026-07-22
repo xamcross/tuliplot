@@ -1,5 +1,7 @@
 package com.dashdash.auth;
 
+import com.dashdash.testsupport.MongoTestUri;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,7 +35,7 @@ class AuthControllerRegisterTest {
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        r.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired MockMvc mvc;
