@@ -13,7 +13,7 @@ import { AdConfig } from '../../core/models/ads.model';
 import { ConsentService } from '../../core/services/consent.service';
 
 @Component({
-  selector: 'dd-ad-cell',
+  selector: 'tl-ad-cell',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],

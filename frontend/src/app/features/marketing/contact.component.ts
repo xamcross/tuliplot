@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/services/seo.service';
 
 @Component({
-  selector: 'app-contact',
+  selector: 'tl-contact',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],

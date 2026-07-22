@@ -8,7 +8,7 @@ import { compatibilityBadge } from '../../core/services/compatibility.util';
 type CatalogChoice = CatalogApp | 'ADD_URL';
 
 @Component({
-  selector: 'dd-catalog-dialog',
+  selector: 'tl-catalog-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

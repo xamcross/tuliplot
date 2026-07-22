@@ -4,7 +4,7 @@ import { FormField, email, form, minLength, required } from '@angular/forms/sign
 import { AuthStore } from '../../stores/auth.store';
 
 @Component({
-  selector: 'app-register',
+  selector: 'tl-register',
   imports: [FormField],
   template: `
     <main class="auth" style="max-width: 24rem; margin: 3rem auto; font-family: system-ui, sans-serif;">

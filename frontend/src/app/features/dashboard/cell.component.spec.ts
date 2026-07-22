@@ -19,18 +19,18 @@ describe('CellComponent', () => {
     expect(f.nativeElement.querySelector('[data-testid="add-btn"]')).not.toBeNull();
   });
 
-  it('renders <dd-ad-cell> for AD when the config shows an ad', () => {
+  it('renders <tl-ad-cell> for AD when the config shows an ad', () => {
     TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection(), provideRouter([])] });
     const f = TestBed.createComponent(CellComponent);
     f.componentRef.setInput('cell', { slot: 5, type: 'AD', openMode: 'FRAME' } as Cell);
     f.componentRef.setInput('adConfig', { showAd: true, adClient: '', adSlot: '' });
     f.detectChanges();
-    expect(f.nativeElement.querySelector('dd-ad-cell')).not.toBeNull();
+    expect(f.nativeElement.querySelector('tl-ad-cell')).not.toBeNull();
   });
 
   it('renders the toolbar and a safe-frame for APP', () => {
     const f = render({ slot: 1, type: 'APP', url: 'https://example.com', title: 'Ex', openMode: 'FRAME' });
     expect(f.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
-    expect(f.nativeElement.querySelector('dd-safe-frame')).not.toBeNull();
+    expect(f.nativeElement.querySelector('tl-safe-frame')).not.toBeNull();
   });
 });

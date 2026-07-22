@@ -4,7 +4,7 @@ import { GUIDES } from './content.generated';
 import { SeoService } from '../../core/services/seo.service';
 
 @Component({
-  selector: 'app-guides-list',
+  selector: 'tl-guides-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],

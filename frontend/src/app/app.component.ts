@@ -5,7 +5,7 @@ import { BrowserDetectService } from './core/services/browser-detect.service';
 import { ConsentService } from './core/services/consent.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'tl-root',
   imports: [RouterOutlet],
   template: `
     @if (showBanner()) {

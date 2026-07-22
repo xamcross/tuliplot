@@ -6,8 +6,8 @@ describe('googleAuthUrl', () => {
     expect(googleAuthUrl('http://localhost:8080/api/v1')).toBe(
       'http://localhost:8080/oauth2/authorization/google',
     );
-    expect(googleAuthUrl('https://api.dashdash.app/api/v1')).toBe(
-      'https://api.dashdash.app/oauth2/authorization/google',
+    expect(googleAuthUrl('https://api.tuliplot.com/api/v1')).toBe(
+      'https://api.tuliplot.com/oauth2/authorization/google',
     );
   });
 

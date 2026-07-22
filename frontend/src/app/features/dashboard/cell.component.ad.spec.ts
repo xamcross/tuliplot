@@ -23,7 +23,7 @@ function setup() {
 }
 
 describe('CellComponent AD slot integration', () => {
-  it('renders <dd-ad-cell> for the AD cell when the FREE ad config shows an ad', async () => {
+  it('renders <tl-ad-cell> for the AD cell when the FREE ad config shows an ad', async () => {
     await setup();
     const fixture = TestBed.createComponent(CellComponent);
     fixture.componentRef.setInput('cell', AD_CELL);
@@ -32,10 +32,10 @@ describe('CellComponent AD slot integration', () => {
     });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('dd-ad-cell')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('tl-ad-cell')).toBeTruthy();
   });
 
-  it('does not render <dd-ad-cell> when the config hides the ad (Premium)', async () => {
+  it('does not render <tl-ad-cell> when the config hides the ad (Premium)', async () => {
     await setup();
     const fixture = TestBed.createComponent(CellComponent);
     fixture.componentRef.setInput('cell', AD_CELL);
@@ -44,6 +44,6 @@ describe('CellComponent AD slot integration', () => {
     });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('dd-ad-cell')).toBeNull();
+    expect(fixture.nativeElement.querySelector('tl-ad-cell')).toBeNull();
   });
 });

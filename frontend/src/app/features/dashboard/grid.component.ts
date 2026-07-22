@@ -11,7 +11,7 @@ import { CatalogApp } from '../../core/models/catalog.model';
 import { Compatibility } from '../../core/models/enums';
 
 @Component({
-  selector: 'dd-grid',
+  selector: 'tl-grid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CdkDropListGroup, CdkDropList, CdkDrag, CellComponent],
@@ -35,7 +35,7 @@ import { Compatibility } from '../../core/models/enums';
             (cdkDragStarted)="dragging.set(true)"
             (cdkDragEnded)="dragging.set(false)"
           >
-            <dd-cell
+            <tl-cell
               [cell]="cell"
               [dragging]="dragging()"
               [adConfig]="adConfig()"

@@ -18,7 +18,7 @@ function readCookie(name: string): string | null {
  *
  * We attach the token manually because Angular's built-in withXsrfConfiguration deliberately
  * SKIPS absolute URLs, so it never sets the header on our cross-origin API (dev http://localhost:8080,
- * prod https://api.dashdash.app). Without the header every POST/PUT/DELETE fails Spring's CSRF check,
+ * prod https://api.tuliplot.com). Without the header every POST/PUT/DELETE fails Spring's CSRF check,
  * which for an anonymous user surfaces as 401. We scope the header to environment.apiBaseUrl so the
  * token is never leaked to third-party hosts.
  */

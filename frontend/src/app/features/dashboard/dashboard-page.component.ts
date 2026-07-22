@@ -14,13 +14,13 @@ import { openModeFor } from '../../core/services/compatibility.util';
 type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 
 @Component({
-  selector: 'dd-dashboard-page',
+  selector: 'tl-dashboard-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [GridComponent],
   template: `
     <main class="page">
-      <dd-grid (edit)="onEdit($event)" />
+      <tl-grid (edit)="onEdit($event)" />
       @if (store.parkedApp(); as parked) {
         <div class="parked-prompt" data-testid="parked-prompt" role="dialog" aria-label="Placed app removed">
           <p>

@@ -3,7 +3,7 @@ import { BillingApi } from '../../core/api/billing.api';
 import { AuthStore } from '../../stores/auth.store';
 
 @Component({
-  selector: 'dd-settings',
+  selector: 'tl-settings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="settings">

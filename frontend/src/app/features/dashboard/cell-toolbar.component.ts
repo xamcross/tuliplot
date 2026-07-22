@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 @Component({
-  selector: 'dd-cell-toolbar',
+  selector: 'tl-cell-toolbar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

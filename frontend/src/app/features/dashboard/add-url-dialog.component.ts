@@ -8,7 +8,7 @@ export interface AddUrlResult {
 }
 
 @Component({
-  selector: 'dd-add-url-dialog',
+  selector: 'tl-add-url-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

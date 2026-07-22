@@ -6,7 +6,7 @@ import { POSTS } from './content.generated';
 import { SeoService } from '../../core/services/seo.service';
 
 @Component({
-  selector: 'app-blog-detail',
+  selector: 'tl-blog-detail',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],

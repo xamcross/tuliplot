@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { BillingApi } from '../../core/api/billing.api';
 
 @Component({
-  selector: 'dd-upgrade',
+  selector: 'tl-upgrade',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="upgrade">

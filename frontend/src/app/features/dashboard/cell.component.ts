@@ -10,7 +10,7 @@ import { AdCellComponent } from '../ads/ad-cell.component';
 import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/services/extension-bridge.service';
 
 @Component({
-  selector: 'dd-cell',
+  selector: 'tl-cell',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CellToolbarComponent, SafeFrameComponent, AdCellComponent],
@@ -23,13 +23,13 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
       }
       @case ('AD') {
         @if (!!adConfig()?.showAd) {
-          <dd-ad-cell [config]="adConfig()!" />
+          <tl-ad-cell [config]="adConfig()!" />
         }
       }
       @case ('APP') {
         @switch (frameState()) {
           @case ('frame') {
-            <dd-cell-toolbar
+            <tl-cell-toolbar
               [title]="cell().title ?? ''"
               [asleep]="asleep()"
               (reload)="onReload()"
@@ -40,7 +40,7 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
               (sleep)="sleepToggle.emit(cell().slot)"
               (remove)="remove.emit(cell().slot)"
             />
-            <dd-safe-frame
+            <tl-safe-frame
               [url]="cell().url!"
               [title]="cell().title ?? ''"
               [asleep]="asleep()"

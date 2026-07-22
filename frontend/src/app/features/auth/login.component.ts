@@ -11,7 +11,7 @@ export function googleAuthUrl(apiBaseUrl: string): string {
 }
 
 @Component({
-  selector: 'app-login',
+  selector: 'tl-login',
   imports: [FormField],
   template: `
     <main class="auth" style="max-width: 24rem; margin: 3rem auto; font-family: system-ui, sans-serif;">

@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { isSafeHttpsUrl } from '../../core/util/url.util';
 
 @Component({
-  selector: 'dd-safe-frame',
+  selector: 'tl-safe-frame',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
