@@ -4,27 +4,45 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { GUIDES } from './content.generated';
 import { SeoService } from '../../core/services/seo.service';
+import { SiteHeaderComponent } from './site-header.component';
+import { SiteFooterComponent } from './site-footer.component';
+import { pillClass } from './pill.util';
 
 @Component({
   selector: 'tl-guide-detail',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, SiteHeaderComponent, SiteFooterComponent],
   template: `
-    <main class="doc-page">
-      <a routerLink="/guides" class="doc-page__back">← All guides</a>
-      @if (doc(); as d) {
-        <article class="content-article">
-          <span class="content-card__cat">{{ d.category }}</span>
+    <tl-site-header />
+    @if (doc(); as d) {
+      <div class="tl-hero-band tl-hero-band--tight">
+        <div class="inner">
+          <a routerLink="/guides" class="tl-back">← All guides</a>
+          <div><span [class]="'tl-pill ' + pillClass(d.category)">{{ d.category }} · {{ d.readingMinutes }} min read</span></div>
           <h1>{{ d.title }}</h1>
-          <p class="doc-page__meta">{{ d.readingMinutes }} min read</p>
-          <div class="content-article__body" [innerHTML]="d.html"></div>
-        </article>
-      } @else {
-        <p>Guide not found. <a routerLink="/guides">Back to all guides</a>.</p>
-      }
-    </main>
+        </div>
+      </div>
+      <article class="tl-article" [innerHTML]="d.html"></article>
+      <div class="cta-row">
+        <a routerLink="/register" class="tl-btn tl-btn--primary tl-btn--sm">Get started free →</a>
+        <a routerLink="/guides" class="tl-btn tl-btn--soft tl-btn--sm">More guides</a>
+      </div>
+    } @else {
+      <main class="tl-prose"><p>Guide not found. <a routerLink="/guides">Back to all guides</a>.</p></main>
+    }
+    <tl-site-footer />
   `,
+  styles: [`
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    .inner { max-width: 720px; margin: 0 auto; }
+    .inner .tl-pill { margin-top: 14px; }
+    .tl-hero-band h1 { font-size: 42px; }
+    article { flex: 1; }
+    .cta-row { max-width: 720px; margin: 0 auto; padding: 0 var(--tl-page-pad) 44px; width: 100%;
+      display: flex; gap: 14px; border-top: 1px solid var(--tl-border); padding-top: 28px; }
+    @media (max-width: 720px) { .tl-hero-band h1 { font-size: 30px; } }
+  `],
 })
 export class GuideDetailComponent {
   private readonly slug = toSignal(
@@ -34,6 +52,7 @@ export class GuideDetailComponent {
   protected readonly doc = computed(
     () => GUIDES.find((g) => g.slug === this.slug()) ?? null,
   );
+  protected readonly pillClass = pillClass;
 
   constructor() {
     const seo = inject(SeoService);

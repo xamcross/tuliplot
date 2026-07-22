@@ -16,7 +16,7 @@ describe('GuidesListComponent', () => {
 
     expect(GUIDES.length).toBeGreaterThanOrEqual(3);
     const cards = (fixture.nativeElement as HTMLElement)
-      .querySelectorAll('a.content-card');
+      .querySelectorAll('a.card');
     expect(cards.length).toBe(GUIDES.length);
     expect((fixture.nativeElement as HTMLElement).textContent)
       .toContain(GUIDES[0].title);
