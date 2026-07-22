@@ -42,6 +42,27 @@ class CatalogSeederTest {
     }
 
     @Test
+    void seeder_updatesStaleCompatibilityToSeedValue() {
+        // Pre-existing row with a stale compatibility label.
+        CatalogApp stale = new CatalogApp();
+        stale.setId("hackernews");
+        stale.setName("Hacker News");
+        stale.setUrl("https://news.ycombinator.com");
+        stale.setIconUrl("https://news.ycombinator.com/favicon.ico");
+        stale.setCategory("News");
+        stale.setOrder(0);
+        stale.setCompatibility(Compatibility.FRAMES_CLEAN);
+        repository.save(stale);
+
+        new CatalogSeeder(repository).run(null);
+
+        CatalogApp updated = repository.findById("hackernews").orElseThrow();
+        assertThat(updated.getCompatibility()).isEqualTo(Compatibility.NEEDS_EXTENSION);
+        // Upsert must not duplicate — still one row per seed id.
+        assertThat(repository.count()).isEqualTo(CatalogSeeder.seedData().size());
+    }
+
+    @Test
     void repository_returnsOrderedByCategoryThenOrder() {
         new CatalogSeeder(repository).run(null);
 

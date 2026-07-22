@@ -22,7 +22,7 @@ public class CatalogSeeder implements ApplicationRunner {
                 app("outlook", "Outlook", "https://outlook.office.com/mail",
                         "https://outlook.office.com/favicon.ico", "Email", 1, Compatibility.LOGIN_IN_TAB),
                 app("trello", "Trello", "https://trello.com",
-                        "https://trello.com/favicon.ico", "Productivity", 0, Compatibility.NEEDS_EXTENSION),
+                        "https://trello.com/favicon.ico", "Productivity", 0, Compatibility.FRAMES_CLEAN),
                 app("notion", "Notion", "https://www.notion.so",
                         "https://www.notion.so/favicon.ico", "Productivity", 1, Compatibility.NEEDS_EXTENSION),
                 app("todoist", "Todoist", "https://app.todoist.com",
@@ -30,7 +30,7 @@ public class CatalogSeeder implements ApplicationRunner {
                 app("gcal", "Google Calendar", "https://calendar.google.com",
                         "https://calendar.google.com/favicon.ico", "Productivity", 3, Compatibility.REFUSES_FRAME),
                 app("hackernews", "Hacker News", "https://news.ycombinator.com",
-                        "https://news.ycombinator.com/favicon.ico", "News", 0, Compatibility.FRAMES_CLEAN),
+                        "https://news.ycombinator.com/favicon.ico", "News", 0, Compatibility.NEEDS_EXTENSION),
                 app("youtube", "YouTube", "https://www.youtube.com",
                         "https://www.youtube.com/favicon.ico", "Media", 0, Compatibility.NEEDS_EXTENSION)
         );
@@ -51,10 +51,11 @@ public class CatalogSeeder implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        // Seed data is the source of truth: upsert every app so corrected
+        // fields (e.g. compatibility labels) propagate to already-seeded rows.
+        // Idempotent by _id — repeated runs overwrite in place and never duplicate.
         for (CatalogApp a : seedData()) {
-            if (!repository.existsById(a.getId())) {
-                repository.save(a);
-            }
+            repository.save(a);
         }
     }
 }
