@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, output, signal } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DashboardStore } from '../../stores/dashboard.store';
+import { CellComponent } from './cell.component';
 
 @Component({
   selector: 'dd-grid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, CellComponent],
   template: `
-    <div class="grid" cdkDropListGroup [class.dragging]="dragging()">
+    <div class="grid" cdkDropListGroup [class.dragging]="dragging()" [class.has-focus]="focusedSlot() !== null">
       @for (cell of store.cells(); track cell.slot) {
         <div
           class="cell"
+          [class.focused]="focusedSlot() === cell.slot"
           cdkDropList
           [cdkDropListData]="cell.slot"
           [cdkDropListSortingDisabled]="true"
@@ -26,19 +28,15 @@ import { DashboardStore } from '../../stores/dashboard.store';
             (cdkDragStarted)="dragging.set(true)"
             (cdkDragEnded)="dragging.set(false)"
           >
-            @switch (cell.type) {
-              @case ('EMPTY') {
-                <button type="button" class="add-btn" data-testid="add-btn" (click)="edit.emit(cell.slot)">
-                  + Add app
-                </button>
-              }
-              @case ('AD') {
-                <div class="ad-slot" data-testid="ad-slot">Advertisements</div>
-              }
-              @case ('APP') {
-                <div class="app-body" data-testid="app-body">{{ cell.title || cell.url }}</div>
-              }
-            }
+            <dd-cell
+              [cell]="cell"
+              [dragging]="dragging()"
+              [asleep]="asleepSlots().has(cell.slot)"
+              (edit)="edit.emit($event)"
+              (remove)="onRemove($event)"
+              (sleepToggle)="onSleepToggle($event)"
+              (focusToggle)="onFocusToggle($event)"
+            />
           </div>
         </div>
       }
@@ -57,11 +55,9 @@ import { DashboardStore } from '../../stores/dashboard.store';
       height: 100%;
       position: relative;
     }
-    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid #e2e2e2; border-radius: 6px; }
-    .drag { width: 100%; height: 100%; }
-    .add-btn { width: 100%; height: 100%; border: none; background: #fafafa; cursor: pointer; }
-    .ad-slot { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #999; }
-    .app-body { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid #e2e2e2; border-radius: 6px; display: flex; flex-direction: column; }
+    .drag { width: 100%; height: 100%; display: flex; flex-direction: column; }
+    .cell.focused { position: fixed; inset: 0; z-index: 1000; border-radius: 0; background: #fff; }
     .iframe-shield { position: absolute; inset: 0; z-index: 50; pointer-events: auto; background: transparent; }
     .grid.dragging iframe { pointer-events: none; }
   `],
@@ -69,6 +65,8 @@ import { DashboardStore } from '../../stores/dashboard.store';
 export class GridComponent {
   protected store = inject(DashboardStore);
   readonly dragging = signal(false);
+  readonly focusedSlot = signal<number | null>(null);
+  protected readonly asleepSlots = signal<Set<number>>(new Set());
   readonly edit = output<number>();
 
   onDropped(event: CdkDragDrop<number>): void {
@@ -78,5 +76,28 @@ export class GridComponent {
       return;
     }
     this.store.swap(from, to);
+  }
+
+  onRemove(slot: number): void {
+    this.store.clearCell(slot);
+  }
+
+  onSleepToggle(slot: number): void {
+    const next = new Set(this.asleepSlots());
+    if (next.has(slot)) {
+      next.delete(slot);
+    } else {
+      next.add(slot);
+    }
+    this.asleepSlots.set(next);
+  }
+
+  onFocusToggle(slot: number): void {
+    this.focusedSlot.set(this.focusedSlot() === slot ? null : slot);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.focusedSlot.set(null);
   }
 }
