@@ -1,1 +1,149 @@
-/* You can add global styles to this file, and also import other style files */
+/* TulipLot global design system — Soft Pastel.
+   Source of truth: design_mocks/*.dc.html + the Design System Contract in
+   docs/superpowers/plans/2026-07-22-tuliplot-rename-and-redesign.md */
+
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+
+:root {
+  --tl-ink: #33304a;
+  --tl-ink-soft: #605c78;
+  --tl-ink-faint: #9c98ad;
+  --tl-ink-label: #7a7690;
+  --tl-prose: #4a4663;
+  --tl-prose-lead: #3f3b56;
+  --tl-primary: #4D96FF;
+  --tl-primary-hover: #2f7ae5;
+  --tl-primary-tint: #EAF2FF;
+  --tl-pink: #FFB1B1;  --tl-pink-ink: #7a3838;
+  --tl-peach: #FFD8A8; --tl-peach-ink: #8a5a1f; --tl-peach-tint: #FFF1E0;
+  --tl-sky: #A5D8FF;   --tl-sky-ink: #1f5a8a;   --tl-sky-tint: #DCEEFF;
+  --tl-mint: #B2F2BB;  --tl-mint-ink: #2b6b39;  --tl-mint-tint: #DBF5E1;
+  --tl-lilac: #D0BFFF; --tl-lilac-ink: #54398a; --tl-lilac-tint: #EEE6FF;
+  --tl-surface: #FBFAFE;
+  --tl-surface-2: #F7F6FB;
+  --tl-surface-3: #F2F0F7;
+  --tl-app-bg: #F0EEF7;
+  --tl-border: #ECE9F4;
+  --tl-border-strong: #E2DFF0;
+  --tl-border-cell: #E7E3F2;
+  --tl-border-dashed: #cfc9e0;
+  --tl-grad: linear-gradient(135deg, #EAF2FF, #F3EEFF);
+  --tl-shadow-card: 0 20px 50px rgba(120, 110, 160, 0.14);
+  --tl-shadow-btn: 0 8px 20px rgba(77, 150, 255, 0.3);
+  --tl-font-display: 'Space Grotesk', sans-serif;
+  --tl-font-body: 'DM Sans', sans-serif;
+  --tl-font-mono: 'Space Mono', monospace;
+  --tl-page-pad: 56px;
+}
+@media (max-width: 720px) {
+  :root { --tl-page-pad: 24px; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--tl-font-body); color: var(--tl-ink); background: #fff; }
+a { color: var(--tl-primary); }
+a:hover { color: var(--tl-primary-hover); }
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+
+/* --- buttons (pill) --- */
+.tl-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--tl-font-body); font-weight: 600; font-size: 16px;
+  text-decoration: none; border: none; border-radius: 999px;
+  padding: 14px 28px; cursor: pointer; line-height: 1.2;
+}
+.tl-btn--primary { color: #fff; background: var(--tl-primary); box-shadow: var(--tl-shadow-btn); }
+.tl-btn--primary:hover { background: var(--tl-primary-hover); color: #fff; }
+.tl-btn--soft { color: var(--tl-ink); background: var(--tl-surface-3); }
+.tl-btn--soft:hover { color: var(--tl-ink); }
+.tl-btn--sm { font-size: 14px; padding: 9px 18px; box-shadow: none; }
+.tl-btn:disabled { opacity: 0.6; cursor: default; box-shadow: none; }
+
+/* --- mono labels --- */
+.tl-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--tl-font-mono); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--tl-primary); background: var(--tl-primary-tint);
+  border-radius: 999px; padding: 7px 16px;
+}
+.tl-field-label {
+  display: block; font-family: var(--tl-font-mono); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--tl-ink-label); margin-bottom: 7px;
+}
+.tl-mono-note { font-family: var(--tl-font-mono); font-size: 13px; color: var(--tl-ink-faint); }
+
+/* --- category pills --- */
+.tl-pill {
+  display: inline-flex; align-self: flex-start;
+  font-family: var(--tl-font-mono); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; border-radius: 999px; padding: 4px 11px;
+}
+.tl-pill--amber   { color: var(--tl-peach-ink); background: var(--tl-peach-tint); }
+.tl-pill--lilac   { color: var(--tl-lilac-ink); background: var(--tl-lilac-tint); }
+.tl-pill--sky     { color: var(--tl-sky-ink);   background: var(--tl-sky-tint); }
+.tl-pill--mint    { color: var(--tl-mint-ink);  background: var(--tl-mint-tint); }
+.tl-pill--neutral { color: var(--tl-ink-soft);  background: var(--tl-surface-3); }
+
+/* --- cards + inputs --- */
+.tl-card { background: #fff; border: 1px solid var(--tl-border); border-radius: 20px; }
+.tl-card--float { border-radius: 24px; box-shadow: var(--tl-shadow-card); }
+.tl-input {
+  width: 100%; font-family: var(--tl-font-body); font-size: 15px; color: var(--tl-ink);
+  padding: 13px 15px; border: 1.5px solid var(--tl-border-strong); border-radius: 12px;
+  background: var(--tl-surface); outline: none;
+}
+.tl-input:focus { border-color: var(--tl-primary); }
+.tl-form-error { color: #c0392b; font-size: 14px; margin: 0 0 12px; }
+
+/* --- marketing hero band + back link --- */
+.tl-hero-band { background: var(--tl-grad); padding: 64px var(--tl-page-pad) 52px; }
+.tl-hero-band--tight { padding: 56px var(--tl-page-pad) 44px; }
+.tl-hero-band__inner { max-width: 760px; margin: 0 auto; }
+.tl-back { text-decoration: none; font-family: var(--tl-font-mono); font-size: 13px; color: var(--tl-primary); }
+.tl-hero-band h1 {
+  margin: 16px 0 0; font-family: var(--tl-font-display); font-weight: 700;
+  font-size: 48px; line-height: 1.08; letter-spacing: -0.02em; color: var(--tl-ink);
+}
+.tl-hero-band p { margin: 8px 0 0; font-size: 18px; color: var(--tl-ink-soft); }
+.tl-updated { display: block; margin-top: 6px; font-family: var(--tl-font-mono); font-size: 13px; color: var(--tl-ink-label); }
+@media (max-width: 720px) { .tl-hero-band h1 { font-size: 34px; } }
+
+/* --- prose (about/contact/legal) --- */
+.tl-prose { max-width: 760px; margin: 0 auto; padding: 52px var(--tl-page-pad); width: 100%;
+  font-size: 17px; line-height: 1.65; color: var(--tl-ink-soft); }
+.tl-prose h2 { margin: 36px 0 12px; font-family: var(--tl-font-display); font-weight: 700; font-size: 24px; color: var(--tl-ink); }
+.tl-prose p { margin: 0 0 16px; }
+.tl-lead { font-size: 18px; color: var(--tl-prose-lead); margin: 0 0 28px; }
+.tl-prose--legal { font-size: 16px; padding: 48px var(--tl-page-pad); }
+.tl-prose--legal h2 { font-size: 22px; margin: 32px 0 10px; }
+
+/* --- article prose (guide/blog detail; targets [innerHTML] so it must be global) --- */
+.tl-article { max-width: 720px; margin: 0 auto; padding: 48px var(--tl-page-pad); width: 100%;
+  font-size: 17px; line-height: 1.7; color: var(--tl-prose); }
+.tl-article > h1:first-child, .tl-article h1 { display: none; } /* generated html repeats the title */
+.tl-article h2 { margin: 34px 0 12px; font-family: var(--tl-font-display); font-weight: 700; font-size: 23px; color: var(--tl-ink); }
+.tl-article p { margin: 0 0 22px; }
+.tl-article code {
+  font-family: var(--tl-font-mono); font-size: 0.88em; background: var(--tl-surface-3);
+  padding: 2px 6px; border-radius: 5px; color: var(--tl-lilac-ink);
+}
+.tl-article strong { color: var(--tl-ink); }
+.tl-prose ul, .tl-prose ol { margin: 0 0 16px; padding-left: 22px; }
+.tl-prose li { margin-bottom: 8px; }
+.tl-article ul, .tl-article ol { margin: 0 0 22px; padding-left: 24px; }
+.tl-article li { margin-bottom: 8px; }
+
+/* --- CDK dialog overlay --- */
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop { background: rgba(51, 48, 74, 0.4); }
