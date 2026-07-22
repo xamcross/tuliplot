@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { of } from 'rxjs';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, it, expect, vi } from 'vitest';
 import { DashboardPageComponent } from './dashboard-page.component';
 import { AuthStore } from '../../stores/auth.store';
 import { DashboardStore } from '../../stores/dashboard.store';
+import { AdsApi } from '../../core/api/ads.api';
 
 function authStoreStub(tier: 'FREE' | 'PREMIUM') {
   return {
@@ -47,6 +49,7 @@ function createPage(tier: 'FREE' | 'PREMIUM') {
       },
       { provide: AuthStore, useValue: authStoreStub(tier) },
       { provide: DashboardStore, useValue: dashboardStoreStub() },
+      { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
     ],
   });
   return TestBed.createComponent(DashboardPageComponent).componentInstance as unknown as {

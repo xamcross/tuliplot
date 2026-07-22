@@ -5,6 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { GridComponent } from './grid.component';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { DashboardApi } from '../../core/api/dashboard.api';
+import { AdsApi } from '../../core/api/ads.api';
 import { Cell } from '../../core/models/dashboard.model';
 
 function freeCells(): Cell[] {
@@ -25,6 +26,10 @@ describe('GridComponent', () => {
             get: vi.fn().mockReturnValue(of({ cells: freeCells() })),
             updateCells: vi.fn().mockImplementation((c: Cell[]) => of({ cells: c })),
           },
+        },
+        {
+          provide: AdsApi,
+          useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) },
         },
       ],
     });

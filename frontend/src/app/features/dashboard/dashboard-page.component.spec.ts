@@ -7,6 +7,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { DashboardPageComponent } from './dashboard-page.component';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { DashboardApi } from '../../core/api/dashboard.api';
+import { AdsApi } from '../../core/api/ads.api';
 import { CatalogApp } from '../../core/models/catalog.model';
 import { Cell } from '../../core/models/dashboard.model';
 
@@ -31,6 +32,7 @@ describe('DashboardPageComponent', () => {
       providers: [
         provideZonelessChangeDetection(),
         { provide: DashboardApi, useValue: apiMock },
+        { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
         { provide: Dialog, useValue: dialogMock },
         {
           provide: ActivatedRoute,
