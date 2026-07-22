@@ -20,11 +20,11 @@ import { ConsentService } from '../../core/services/consent.service';
   template: `
     @if (config().showAd) {
       <section class="ad-cell" aria-label="Advertisements">
-        <span class="ad-cell__label">Advertisements</span>
+        <span class="ad-cell__label">Ad · Free plan</span>
         @if (showHousePromo()) {
           <a class="ad-cell__promo" routerLink="/app/upgrade">
-            <strong>Remove ad — go Premium</strong>
-            <span>Unlock all 6 cells and browse ad-free.</span>
+            <span class="promo-text">Your 6th cell shows one ad.</span>
+            <span class="tl-btn tl-btn--primary tl-btn--sm">Remove ad — go Premium</span>
           </a>
         } @else {
           <div #adHost class="ad-cell__slot"></div>
@@ -33,13 +33,17 @@ import { ConsentService } from '../../core/services/consent.service';
     }
   `,
   styles: `
-    .ad-cell { display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 4px; height: 100%; }
-    .ad-cell__label { font-size: 10px; letter-spacing: 0.08em;
-      text-transform: uppercase; opacity: 0.6; }
-    .ad-cell__promo { display: flex; flex-direction: column; gap: 4px;
-      text-align: center; text-decoration: none; padding: 12px; }
-    .ad-cell__slot { width: 300px; height: 250px; }
+    .ad-cell { height: 100%; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 12px; text-align: center; padding: 16px;
+      border: 1.5px dashed var(--tl-border-dashed); border-radius: 12px;
+      background: repeating-linear-gradient(45deg, #F4F2FA, #F4F2FA 9px, #ECE8F6 9px, #ECE8F6 18px); }
+    .ad-cell__label { font-family: var(--tl-font-mono); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--tl-ink-faint); }
+    .ad-cell__promo { display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-decoration: none; }
+    .promo-text { font-family: var(--tl-font-display); font-weight: 600; font-size: 15px;
+      color: var(--tl-ink-soft); max-width: 180px; line-height: 1.4; }
+    .ad-cell__slot { width: 300px; height: 250px; max-width: 100%; }
   `,
 })
 export class AdCellComponent {

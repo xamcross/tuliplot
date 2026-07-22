@@ -32,6 +32,7 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
             <tl-cell-toolbar
               [title]="cell().title ?? ''"
               [asleep]="asleep()"
+              [accent]="accent()"
               (reload)="onReload()"
               (popOut)="popOut.emit(cell().slot)"
               (openInTab)="openInTab.emit(cell().slot)"
@@ -50,22 +51,22 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
           @case ('needs-extension') {
             <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
               <p>This app needs the TulipLot Companion extension to load in the grid.</p>
-              <button type="button" (click)="onInstallExtension()">Install TulipLot Companion</button>
-              <button type="button" (click)="onEnableForThisApp()">Enable for this site</button>
-              <button type="button" (click)="openInWindow()">Open in a tab instead</button>
+              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="onInstallExtension()">Install TulipLot Companion</button>
+              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="onEnableForThisApp()">Enable for this site</button>
+              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab instead</button>
             </div>
           }
           @case ('login-in-tab') {
             <div class="cell-fallback state" data-testid="login-in-tab" data-state="login-in-tab">
               <p>{{ cell().title }} opens in its own browser tab.</p>
-              <button type="button" (click)="openInWindow()">Open in a tab</button>
+              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
             </div>
           }
           @case ('load-failed') {
             <div class="cell-fallback state" data-testid="load-failed" data-state="load-failed">
               <p>{{ cell().title }} didn't load in the grid.</p>
-              <button type="button" (click)="retry()">Retry</button>
-              <button type="button" (click)="openInWindow()">Open in a tab</button>
+              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="retry()">Retry</button>
+              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
             </div>
           }
         }
@@ -74,18 +75,29 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
   `,
   styles: [`
     :host { display: block; width: 100%; height: 100%; }
-    .add-btn { width: 100%; height: 100%; border: none; background: #fafafa; cursor: pointer; font-size: 14px; }
-    .ad-slot { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #999; }
-    .state, .cell-fallback { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 8px; text-align: center; color: #666; }
-    .cell-fallback button { cursor: pointer; }
+    .add-btn { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 8px; border: 1.5px dashed var(--tl-border-dashed); border-radius: 12px;
+      background: transparent; cursor: pointer; font-family: var(--tl-font-body); font-size: 14px;
+      font-weight: 600; color: var(--tl-ink-soft); }
+    .add-btn:hover { background: var(--tl-surface); }
+    .add-btn .plus { width: 34px; height: 34px; border-radius: 999px; background: var(--tl-surface-3);
+      display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--tl-ink); }
+    .state, .cell-fallback { width: 100%; height: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px; padding: 16px; text-align: center; }
+    .cell-fallback p { margin: 0; font-family: var(--tl-font-display); font-weight: 600; font-size: 15px;
+      color: var(--tl-ink-soft); max-width: 230px; line-height: 1.4; }
   `],
 })
 export class CellComponent {
+  private static readonly ACCENTS = ['var(--tl-pink)', 'var(--tl-sky)', 'var(--tl-mint)', 'var(--tl-peach)', 'var(--tl-lilac)'];
+
   cell = input.required<Cell>();
   dragging = input<boolean>(false);
   asleep = input<boolean>(false);
   readonly compatibility = input<Compatibility | null>(null);
   readonly adConfig = input<AdConfig | null>(null);
+
+  protected readonly accent = computed(() => CellComponent.ACCENTS[this.cell().slot % CellComponent.ACCENTS.length]);
 
   edit = output<number>();
   remove = output<number>();

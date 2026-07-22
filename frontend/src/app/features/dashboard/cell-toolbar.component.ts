@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="toolbar" data-testid="cell-toolbar">
+      <span class="dot" [style.background]="accent()" aria-hidden="true"></span>
       <span class="title">{{ title() }}</span>
       <span class="spacer"></span>
       <button type="button" title="Reload" data-testid="tb-reload" (click)="reload.emit()">&#8635;</button>
@@ -20,15 +21,21 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
     </div>
   `,
   styles: [`
-    .toolbar { display: flex; align-items: center; gap: 2px; padding: 2px 6px; background: rgba(0,0,0,0.05); font-size: 12px; }
+    .toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      background: var(--tl-surface); border-bottom: 1px solid var(--tl-app-bg); font-size: 13px; }
+    .dot { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+    .title { font-weight: 600; color: var(--tl-ink); overflow: hidden; text-overflow: ellipsis;
+      white-space: nowrap; max-width: 40%; }
     .spacer { flex: 1; }
-    .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40%; }
-    button { border: none; background: transparent; cursor: pointer; padding: 2px 4px; line-height: 1; }
+    button { border: none; background: transparent; cursor: pointer; padding: 2px 4px;
+      line-height: 1; font-size: 13px; color: #b8b3c9; }
+    button:hover { color: var(--tl-ink); }
   `],
 })
 export class CellToolbarComponent {
   title = input<string>('');
   asleep = input<boolean>(false);
+  accent = input<string>('var(--tl-lilac)');
 
   reload = output<void>();
   focusToggle = output<void>();

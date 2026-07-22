@@ -21,6 +21,7 @@ import { Compatibility } from '../../core/models/enums';
         <div
           class="cell"
           [class.focused]="focusedSlot() === cell.slot"
+          [class.cell--ad]="cell.type === 'AD'"
           cdkDropList
           [cdkDropListData]="cell.slot"
           [cdkDropListSortingDisabled]="true"
@@ -59,12 +60,13 @@ import { Compatibility } from '../../core/models/enums';
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(2, 1fr);
-      gap: 8px;
+      gap: 10px;
       width: 100%;
       height: 100%;
       position: relative;
     }
-    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid #e2e2e2; border-radius: 6px; display: flex; flex-direction: column; }
+    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid var(--tl-border-cell); border-radius: 12px; background: #fff; display: flex; flex-direction: column; }
+    .cell--ad { background: transparent; border: none; }
     .drag { width: 100%; height: 100%; display: flex; flex-direction: column; }
     .cell.focused { position: fixed; inset: 0; z-index: 1000; border-radius: 0; background: #fff; }
     .iframe-shield { position: absolute; inset: 0; z-index: 50; pointer-events: auto; background: transparent; }
