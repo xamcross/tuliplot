@@ -19,4 +19,10 @@ public interface StripeGateway {
   /** Verify the raw webhook body against the signature and parse it into an Event. */
   com.stripe.model.Event constructEvent(byte[] payload, String signatureHeader, String webhookSecret)
       throws com.stripe.exception.SignatureVerificationException;
+
+  /** Re-fetch the subscription and project the fields we persist. */
+  StripeSubscriptionSnapshot retrieveSubscription(String subscriptionId);
+
+  /** Resolve the Stripe customer id that owns a charge (for dispute handling); null if none. */
+  String retrieveChargeCustomerId(String chargeId);
 }

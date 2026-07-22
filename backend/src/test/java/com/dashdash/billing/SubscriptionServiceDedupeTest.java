@@ -17,7 +17,11 @@ class SubscriptionServiceDedupeTest {
   @BeforeEach
   void setup() {
     repo = mock(ProcessedStripeEventRepository.class);
-    service = new SubscriptionService(repo);
+    service = new SubscriptionService(
+        repo,
+        mock(StripeGateway.class),
+        mock(com.dashdash.auth.UserRepository.class),
+        mock(com.dashdash.dashboard.DashboardService.class));
   }
 
   @Test

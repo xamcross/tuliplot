@@ -37,6 +37,7 @@ public class StripeWebhookController {
     if (subscriptionService.alreadyProcessed(event.getId())) {
       return ResponseEntity.ok("duplicate");
     }
+    subscriptionService.handleEvent(event);
     subscriptionService.markProcessed(event.getId(), event.getType());
     return ResponseEntity.ok("ok");
   }

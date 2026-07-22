@@ -81,4 +81,29 @@ public class StripeGatewayImpl implements StripeGateway {
     String json = new String(payload, java.nio.charset.StandardCharsets.UTF_8);
     return com.stripe.net.Webhook.constructEvent(json, signatureHeader, webhookSecret);
   }
+
+  @Override
+  public StripeSubscriptionSnapshot retrieveSubscription(String subscriptionId) {
+    try {
+      com.stripe.model.Subscription sub = com.stripe.model.Subscription.retrieve(subscriptionId, options());
+      com.stripe.model.SubscriptionItem item = sub.getItems().getData().get(0);
+      Long periodEnd = item.getCurrentPeriodEnd();
+      String priceId = item.getPrice() != null ? item.getPrice().getId() : null;
+      boolean cancelAtPeriodEnd = Boolean.TRUE.equals(sub.getCancelAtPeriodEnd());
+      return new StripeSubscriptionSnapshot(
+          sub.getId(), sub.getCustomer(), sub.getStatus(), priceId, periodEnd, cancelAtPeriodEnd);
+    } catch (com.stripe.exception.StripeException e) {
+      throw new StripeGatewayException("retrieveSubscription failed", e);
+    }
+  }
+
+  @Override
+  public String retrieveChargeCustomerId(String chargeId) {
+    try {
+      com.stripe.model.Charge charge = com.stripe.model.Charge.retrieve(chargeId, options());
+      return charge.getCustomer();
+    } catch (com.stripe.exception.StripeException e) {
+      throw new StripeGatewayException("retrieveCharge failed", e);
+    }
+  }
 }
