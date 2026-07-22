@@ -80,7 +80,7 @@ describe('CellComponent fallback states', () => {
     const openSpy = vi.spyOn(window, 'open').mockReturnValue(null);
     const fixture = create(makeCell(), 'LOGIN_IN_TAB');
     fixture.componentInstance.openInWindow();
-    expect(openSpy).toHaveBeenCalledWith('https://mail.google.com', '_blank');
+    expect(openSpy).toHaveBeenCalledWith('https://mail.google.com', '_blank', 'noopener,noreferrer');
   });
 
   it('onEnableForThisApp() requests host permission for the cell origin', async () => {
@@ -97,6 +97,7 @@ describe('CellComponent fallback states', () => {
     expect(openSpy).toHaveBeenCalledWith(
       'https://chromewebstore.google.com/search/DashDash%20Companion',
       '_blank',
+      'noopener,noreferrer',
     );
   });
 });

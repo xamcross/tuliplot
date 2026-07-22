@@ -12,6 +12,8 @@ interface ExtMessage {
 }
 
 const PING_TIMEOUT_MS = 500;
+// Host-permission prompts require a user gesture and can be slow to answer.
+const REQUEST_HOST_TIMEOUT_MS = 60000;
 
 @Injectable({ providedIn: 'root' })
 export class ExtensionBridgeService {
@@ -53,6 +55,8 @@ export class ExtensionBridgeService {
   /** Posts REQUEST_HOST for `origin`; resolves with the granted flag from HOST_RESULT. */
   requestHost(origin: string): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
+      let settled = false;
+
       const listener = (event: MessageEvent): void => {
         const data = event.data as ExtMessage;
         if (
@@ -64,9 +68,19 @@ export class ExtensionBridgeService {
         ) {
           return;
         }
+        settled = true;
         window.removeEventListener('message', listener);
+        clearTimeout(timer);
         resolve(!!data.granted);
       };
+
+      const timer = setTimeout(() => {
+        if (settled) {
+          return;
+        }
+        window.removeEventListener('message', listener);
+        resolve(false);
+      }, REQUEST_HOST_TIMEOUT_MS);
 
       window.addEventListener('message', listener);
       window.postMessage({ source: 'dashdash', type: 'REQUEST_HOST', origin }, window.location.origin);

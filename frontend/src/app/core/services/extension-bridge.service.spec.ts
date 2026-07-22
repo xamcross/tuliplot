@@ -74,6 +74,20 @@ describe('ExtensionBridgeService', () => {
     expect(result).toBe(true);
   });
 
+  it('requestHost() resolves false and removes its listener after the timeout', async () => {
+    vi.spyOn(window, 'postMessage').mockImplementation((() => {
+      /* no HOST_RESULT ever arrives */
+    }) as typeof window.postMessage);
+    const removeSpy = vi.spyOn(window, 'removeEventListener');
+
+    const pending = service.requestHost('https://mail.google.com');
+    await vi.advanceTimersByTimeAsync(60000);
+    const result = await pending;
+
+    expect(result).toBe(false);
+    expect(removeSpy).toHaveBeenCalledWith('message', expect.any(Function));
+  });
+
   it('requestHost() only resolves for its own origin', async () => {
     vi.spyOn(window, 'postMessage').mockImplementation(((msg: unknown) => {
       const m = msg as { type: string; origin: string };

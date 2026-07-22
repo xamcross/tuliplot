@@ -106,5 +106,11 @@ export class SafeFrameComponent {
 
   reload(): void {
     this.cacheBuster.update((n) => n + 1);
+    // Bumping the cache-buster does not touch the effect's dependencies, so the
+    // watchdog is not re-armed automatically. Re-arm it here so a reload that
+    // hangs still surfaces load-failed.
+    if (!this.asleep() && this.showFrame()) {
+      this.startLoadWatchdog();
+    }
   }
 }

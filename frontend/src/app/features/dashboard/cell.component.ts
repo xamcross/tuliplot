@@ -134,13 +134,13 @@ export class CellComponent {
   openInWindow(): void {
     const url = this.cell().url;
     if (url) {
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
   }
 
   /** needs-extension CTA: open the Chrome Web Store listing. */
   onInstallExtension(): void {
-    window.open(EXTENSION_WEBSTORE_URL, '_blank');
+    window.open(EXTENSION_WEBSTORE_URL, '_blank', 'noopener,noreferrer');
   }
 
   /** needs-extension CTA: grant this app's origin to the extension, then retry. */
