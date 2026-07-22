@@ -12,4 +12,7 @@ public interface StripeGateway {
   /** Create a subscription-mode Checkout Session and return its hosted URL. */
   String createCheckoutSessionUrl(String customerId, String userId, String priceId,
                                   String successUrl, String cancelUrl);
+
+  /** Create a Billing Portal session and return its hosted URL. */
+  String createPortalSessionUrl(String customerId, String returnUrl);
 }

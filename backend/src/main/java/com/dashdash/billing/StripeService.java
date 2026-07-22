@@ -32,4 +32,13 @@ public class StripeService {
         config.getCheckoutSuccessUrl(),
         config.getCheckoutCancelUrl());
   }
+
+  /** Return a Billing Portal URL for the user's Stripe customer; 400-mapped if none. */
+  public String createPortalSession(User user) {
+    String customerId = user.getSubscription().getStripeCustomerId();
+    if (customerId == null || customerId.isBlank()) {
+      throw new NoStripeCustomerException(user.getId());
+    }
+    return gateway.createPortalSessionUrl(customerId, config.getPortalReturnUrl());
+  }
 }
