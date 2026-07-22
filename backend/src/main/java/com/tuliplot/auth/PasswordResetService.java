@@ -33,7 +33,7 @@ public class PasswordResetService {
                                 PasswordResetTokenRepository tokens,
                                 UserService userService,
                                 EmailSender emailSender,
-                                @Value("${dashdash.ui.base-url:https://dashdash.app}") String uiBaseUrl) {
+                                @Value("${tuliplot.ui.base-url:https://tuliplot.com}") String uiBaseUrl) {
         this.users = users;
         this.tokens = tokens;
         this.userService = userService;
@@ -62,7 +62,7 @@ public class PasswordResetService {
 
         String link = uiBaseUrl + "/reset-password?token=" + token;
         emailSender.send(user.getEmail(),
-                "Reset your DashDash password",
+                "Reset your TulipLot password",
                 "Use this link to reset your password (valid 30 minutes): " + link);
     }
 

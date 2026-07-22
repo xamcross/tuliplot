@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-/** Wraps the Google-issued OidcUser and adds DashDash identity (userId/email). */
+/** Wraps the Google-issued OidcUser and adds TulipLot identity (userId/email). */
 public class TulipOidcUser implements OidcUser, DashPrincipal {
 
     private final OidcUser delegate;

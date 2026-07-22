@@ -4,7 +4,7 @@ import com.stripe.Stripe;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "dashdash.stripe")
+@ConfigurationProperties(prefix = "tuliplot.stripe")
 public class StripeConfig {
 
   private String secretKey = "";

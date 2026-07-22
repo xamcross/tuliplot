@@ -64,7 +64,7 @@ class AuthControllerSessionTest {
     }
 
     // Plan 01's Mongo-backed Spring Session is active under @SpringBootTest, so the session is
-    // carried by the DASHSESSION cookie (not a servlet MockHttpSession); mirror the Task 4 login
+    // carried by the TULIPSESSION cookie (not a servlet MockHttpSession); mirror the Task 4 login
     // test and drive subsequent requests with that cookie.
     private Cookie loginCookie() throws Exception {
         MvcResult result = mvc.perform(post("/api/v1/auth/login")
@@ -73,8 +73,8 @@ class AuthControllerSessionTest {
                         .content(json.writeValueAsString(new LoginRequest("dave@example.com", "passphrase9"))))
                 .andExpect(status().isOk())
                 .andReturn();
-        Cookie cookie = result.getResponse().getCookie("DASHSESSION");
-        assertThat(cookie).as("login establishes the DASHSESSION cookie").isNotNull();
+        Cookie cookie = result.getResponse().getCookie("TULIPSESSION");
+        assertThat(cookie).as("login establishes the TULIPSESSION cookie").isNotNull();
         return cookie;
     }
 

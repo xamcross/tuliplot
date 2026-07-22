@@ -80,11 +80,11 @@ class AuthControllerLoginTest {
 
         // Plan 01's Spring Session SessionRepositoryFilter (Mongo-backed) is active under
         // @SpringBootTest, so the session lives in the Mongo-backed Spring Session store and is
-        // carried by the DASHSESSION cookie, not a servlet MockHttpSession. Establishment is
+        // carried by the TULIPSESSION cookie, not a servlet MockHttpSession. Establishment is
         // proven by the emitted cookie; that the session authenticates subsequent requests is
         // proven against a protected route (401 while anonymous, no longer 401 with the cookie).
-        Cookie sessionCookie = login.getResponse().getCookie("DASHSESSION");
-        assertThat(sessionCookie).as("DASHSESSION cookie establishes the session").isNotNull();
+        Cookie sessionCookie = login.getResponse().getCookie("TULIPSESSION");
+        assertThat(sessionCookie).as("TULIPSESSION cookie establishes the session").isNotNull();
         assertThat(sessionCookie.getValue()).isNotBlank();
 
         // A protected route rejects the anonymous caller...
@@ -104,15 +104,15 @@ class AuthControllerLoginTest {
     void loginRotatesSessionIdToPreventFixation() throws Exception {
         LoginRequest body = new LoginRequest("carol@example.com", "correct-horse");
 
-        // First login establishes a session and its DASHSESSION cookie...
+        // First login establishes a session and its TULIPSESSION cookie...
         MvcResult first = mvc.perform(post("/api/v1/auth/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.writeValueAsString(body)))
                 .andExpect(status().isOk())
                 .andReturn();
-        Cookie preExisting = first.getResponse().getCookie("DASHSESSION");
-        assertThat(preExisting).as("first login establishes the DASHSESSION cookie").isNotNull();
+        Cookie preExisting = first.getResponse().getCookie("TULIPSESSION");
+        assertThat(preExisting).as("first login establishes the TULIPSESSION cookie").isNotNull();
 
         // ...a second login while CARRYING that pre-existing cookie must rotate the id: the
         // authenticated session id must differ from the one presented before authentication.
@@ -123,8 +123,8 @@ class AuthControllerLoginTest {
                         .content(json.writeValueAsString(body)))
                 .andExpect(status().isOk())
                 .andReturn();
-        Cookie rotated = second.getResponse().getCookie("DASHSESSION");
-        assertThat(rotated).as("login must emit a rotated DASHSESSION cookie").isNotNull();
+        Cookie rotated = second.getResponse().getCookie("TULIPSESSION");
+        assertThat(rotated).as("login must emit a rotated TULIPSESSION cookie").isNotNull();
         assertThat(rotated.getValue())
                 .as("session id must change on authentication (no session fixation)")
                 .isNotBlank()

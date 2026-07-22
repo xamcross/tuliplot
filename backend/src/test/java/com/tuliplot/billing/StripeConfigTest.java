@@ -19,22 +19,22 @@ class StripeConfigTest {
   @Test
   void bindsStripePropertiesFromEnvironment() {
     runner.withPropertyValues(
-        "dashdash.stripe.secret-key=sk_test_123",
-        "dashdash.stripe.price-id=price_abc",
-        "dashdash.stripe.webhook-secret=whsec_xyz",
-        "dashdash.stripe.checkout-success-url=https://dashdash.app/app?checkout=success",
-        "dashdash.stripe.checkout-cancel-url=https://dashdash.app/app/upgrade?checkout=cancel",
-        "dashdash.stripe.portal-return-url=https://dashdash.app/app/settings",
-        "dashdash.stripe.api-version=2025-08-27.basil"
+        "tuliplot.stripe.secret-key=sk_test_123",
+        "tuliplot.stripe.price-id=price_abc",
+        "tuliplot.stripe.webhook-secret=whsec_xyz",
+        "tuliplot.stripe.checkout-success-url=https://tuliplot.com/app?checkout=success",
+        "tuliplot.stripe.checkout-cancel-url=https://tuliplot.com/app/upgrade?checkout=cancel",
+        "tuliplot.stripe.portal-return-url=https://tuliplot.com/app/settings",
+        "tuliplot.stripe.api-version=2025-08-27.basil"
     ).run(ctx -> {
       assertThat(ctx).hasSingleBean(StripeConfig.class);
       StripeConfig cfg = ctx.getBean(StripeConfig.class);
       assertThat(cfg.getSecretKey()).isEqualTo("sk_test_123");
       assertThat(cfg.getPriceId()).isEqualTo("price_abc");
       assertThat(cfg.getWebhookSecret()).isEqualTo("whsec_xyz");
-      assertThat(cfg.getCheckoutSuccessUrl()).isEqualTo("https://dashdash.app/app?checkout=success");
-      assertThat(cfg.getCheckoutCancelUrl()).isEqualTo("https://dashdash.app/app/upgrade?checkout=cancel");
-      assertThat(cfg.getPortalReturnUrl()).isEqualTo("https://dashdash.app/app/settings");
+      assertThat(cfg.getCheckoutSuccessUrl()).isEqualTo("https://tuliplot.com/app?checkout=success");
+      assertThat(cfg.getCheckoutCancelUrl()).isEqualTo("https://tuliplot.com/app/upgrade?checkout=cancel");
+      assertThat(cfg.getPortalReturnUrl()).isEqualTo("https://tuliplot.com/app/settings");
       assertThat(cfg.getApiVersion()).isEqualTo("2025-08-27.basil");
     });
   }

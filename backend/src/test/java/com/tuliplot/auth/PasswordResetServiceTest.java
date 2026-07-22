@@ -29,7 +29,7 @@ class PasswordResetServiceTest {
     @Mock EmailSender emailSender;
 
     private PasswordResetService service() {
-        return new PasswordResetService(users, tokens, userService, emailSender, "https://dashdash.app");
+        return new PasswordResetService(users, tokens, userService, emailSender, "https://tuliplot.com");
     }
 
     private static String sha256Hex(String value) {
@@ -59,7 +59,7 @@ class PasswordResetServiceTest {
 
         ArgumentCaptor<String> body = ArgumentCaptor.forClass(String.class);
         verify(emailSender).send(eq("real@example.com"), anyString(), body.capture());
-        assertThat(body.getValue()).contains("https://dashdash.app/reset-password?token=");
+        assertThat(body.getValue()).contains("https://tuliplot.com/reset-password?token=");
     }
 
     @Test

@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 /**
- * Final DashDash security filter chain (Plan 02 owns this). Stateful session auth
+ * Final TulipLot security filter chain (Plan 02 owns this). Stateful session auth
  * (HttpSessionSecurityContextRepository) for JSON /auth/login + /auth/register,
  * plus Google OIDC via oauth2Login. On OIDC success the browser is redirected to
  * the UI /app route (env-driven, since UI and API are different origins).
@@ -28,13 +28,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${dashdash.session.cookie-domain:}")
+    @Value("${tuliplot.session.cookie-domain:}")
     private String cookieDomain;
 
-    @Value("${dashdash.session.cookie-secure:false}")
+    @Value("${tuliplot.session.cookie-secure:false}")
     private boolean cookieSecure;
 
-    @Value("${dashdash.oauth2.success-url:https://dashdash.app/app}")
+    @Value("${tuliplot.oauth2.success-url:https://tuliplot.com/app}")
     private String oauth2SuccessUrl;
 
     @Bean

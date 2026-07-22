@@ -1,4 +1,4 @@
-app = "api-dashdash"
+app = "api-tuliplot"
 primary_region = "iad"
 
 [build]

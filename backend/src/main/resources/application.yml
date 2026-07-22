@@ -1,10 +1,10 @@
 spring:
   application:
-    name: dashdash-backend
+    name: tuliplot-backend
   data:
     mongodb:
       # Prod MONGODB_URI MUST include ?maxPoolSize=50 (shared contract: cap the Mongo pool 20–50).
-      uri: ${MONGODB_URI:mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/tuliplot?maxPoolSize=50&minPoolSize=5}
   security:
     oauth2:
       client:
@@ -31,28 +31,28 @@ spring:
 server:
   port: 8080
 
-# DashDash session settings (env-driven). SessionConfig reads these for the session cookie + store;
+# TulipLot session settings (env-driven). SessionConfig reads these for the session cookie + store;
 # SecurityConfig (Task 4 / Plan 02) reads `cookie-domain` + `cookie-secure` for the CSRF cookie.
-# Prod sets COOKIE_SECURE=true and COOKIE_DOMAIN=.dashdash.app.
-dashdash:
+# Prod sets COOKIE_SECURE=true and COOKIE_DOMAIN=.tuliplot.com.
+tuliplot:
   session:
-    cookie-name: DASHSESSION
+    cookie-name: TULIPSESSION
     cookie-domain: ${COOKIE_DOMAIN:}
     secure: ${COOKIE_SECURE:false}          # session-cookie Secure flag (SessionConfig)
     cookie-secure: ${COOKIE_SECURE:false}   # CSRF-cookie Secure flag (SecurityConfig) — same source
     max-inactive-interval: ${SESSION_TIMEOUT:PT30M}   # ISO-8601 Duration; default 30 minutes
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dashdash.app,http://localhost:4200}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://tuliplot.com,http://localhost:4200}
   oauth2:
-    success-url: ${OAUTH2_SUCCESS_URL:https://dashdash.app/app}
+    success-url: ${OAUTH2_SUCCESS_URL:https://tuliplot.com/app}
   stripe:
     # Stripe (env-driven; empty defaults keep the app bootable in dev without billing)
     secret-key: ${STRIPE_SECRET_KEY:}
     price-id: ${STRIPE_PRICE_ID:}
     webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
-    checkout-success-url: ${STRIPE_CHECKOUT_SUCCESS_URL:https://dashdash.app/app?checkout=success}
-    checkout-cancel-url: ${STRIPE_CHECKOUT_CANCEL_URL:https://dashdash.app/app/upgrade?checkout=cancel}
-    portal-return-url: ${STRIPE_PORTAL_RETURN_URL:https://dashdash.app/app/settings}
+    checkout-success-url: ${STRIPE_CHECKOUT_SUCCESS_URL:https://tuliplot.com/app?checkout=success}
+    checkout-cancel-url: ${STRIPE_CHECKOUT_CANCEL_URL:https://tuliplot.com/app/upgrade?checkout=cancel}
+    portal-return-url: ${STRIPE_PORTAL_RETURN_URL:https://tuliplot.com/app/settings}
     api-version: ${STRIPE_API_VERSION:2025-08-27.basil}
 
 # AdSense keys (env-driven; empty until AdSense is approved). Relaxed binding maps
@@ -69,8 +69,8 @@ spring:
       on-profile: dev
   data:
     mongodb:
-      uri: mongodb://localhost:27017/dashdash?maxPoolSize=50&minPoolSize=5
-dashdash:
+      uri: mongodb://localhost:27017/tuliplot?maxPoolSize=50&minPoolSize=5
+tuliplot:
   session:
     cookie-domain: ""
     secure: false

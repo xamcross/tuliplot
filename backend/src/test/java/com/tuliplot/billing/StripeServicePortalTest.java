@@ -21,7 +21,7 @@ class StripeServicePortalTest {
     gateway = mock(StripeGateway.class);
     UserRepository userRepository = mock(UserRepository.class);
     StripeConfig config = new StripeConfig();
-    config.setPortalReturnUrl("https://dashdash.app/app/settings");
+    config.setPortalReturnUrl("https://tuliplot.com/app/settings");
     service = new StripeService(gateway, userRepository, config);
   }
 
@@ -36,7 +36,7 @@ class StripeServicePortalTest {
 
   @Test
   void returnsPortalUrlForCustomer() {
-    when(gateway.createPortalSessionUrl("cus_1", "https://dashdash.app/app/settings"))
+    when(gateway.createPortalSessionUrl("cus_1", "https://tuliplot.com/app/settings"))
         .thenReturn("https://billing.stripe.com/p/session/test_1");
 
     String url = service.createPortalSession(userWithCustomer("cus_1"));

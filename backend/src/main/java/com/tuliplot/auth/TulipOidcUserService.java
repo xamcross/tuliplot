@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 /**
- * Loads the Google OIDC user, then upserts a DashDash {@link User}:
+ * Loads the Google OIDC user, then upserts a TulipLot {@link User}:
  * match by googleSub → link an existing account by verified email → create new.
  * The returned principal is a {@link TulipOidcUser} implementing {@link DashPrincipal}.
  */

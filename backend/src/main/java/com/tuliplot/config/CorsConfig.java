@@ -14,7 +14,7 @@ public class CorsConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(
-            @Value("${dashdash.cors.allowed-origins}") List<String> allowedOrigins) {
+            @Value("${tuliplot.cors.allowed-origins}") List<String> allowedOrigins) {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(allowedOrigins);

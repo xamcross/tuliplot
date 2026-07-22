@@ -92,7 +92,7 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = securityContextHolderStrategy.getContext().getAuthentication();
         // invalidateHttpSession=true + clearAuthentication=true by default; spring-session
-        // expires the DASHSESSION cookie when the session is invalidated.
+        // expires the TULIPSESSION cookie when the session is invalidated.
         logoutHandler.logout(request, response, auth);
         return ResponseEntity.noContent().build();
     }
@@ -122,7 +122,7 @@ public class AuthController {
 
     /**
      * Rotate the session id on successful authentication to defeat session fixation: an attacker who
-     * planted a known pre-auth DASHSESSION id must not have that id survive into the authenticated
+     * planted a known pre-auth TULIPSESSION id must not have that id survive into the authenticated
      * session. Ensures a session exists (reusing the one carried by the cookie, if any) and then
      * assigns it a fresh id — the old id's store document is removed by MongoSessionRepository.save.
      */

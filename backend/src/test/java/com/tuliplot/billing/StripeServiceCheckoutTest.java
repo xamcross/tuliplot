@@ -28,9 +28,9 @@ class StripeServiceCheckoutTest {
     userRepository = mock(UserRepository.class);
     config = new StripeConfig();
     config.setPriceId("price_abc");
-    config.setCheckoutSuccessUrl("https://dashdash.app/app?checkout=success");
-    config.setCheckoutCancelUrl("https://dashdash.app/app/upgrade?checkout=cancel");
-    config.setPortalReturnUrl("https://dashdash.app/app/settings");
+    config.setCheckoutSuccessUrl("https://tuliplot.com/app?checkout=success");
+    config.setCheckoutCancelUrl("https://tuliplot.com/app/upgrade?checkout=cancel");
+    config.setPortalReturnUrl("https://tuliplot.com/app/settings");
     // SubscriptionService dependency is not needed for checkout; pass a mock.
     service = new StripeService(gateway, userRepository, config);
   }
@@ -50,8 +50,8 @@ class StripeServiceCheckoutTest {
     when(gateway.createCustomer("a@b.com", "u1")).thenReturn("cus_new");
     when(gateway.createCheckoutSessionUrl(
         eq("cus_new"), eq("u1"), eq("price_abc"),
-        eq("https://dashdash.app/app?checkout=success"),
-        eq("https://dashdash.app/app/upgrade?checkout=cancel")))
+        eq("https://tuliplot.com/app?checkout=success"),
+        eq("https://tuliplot.com/app/upgrade?checkout=cancel")))
         .thenReturn("https://checkout.stripe.com/c/pay/cs_test_1");
 
     String url = service.createCheckoutSession(user);
