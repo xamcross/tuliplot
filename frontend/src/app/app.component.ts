@@ -9,16 +9,20 @@ import { ConsentService } from './core/services/consent.service';
   imports: [RouterOutlet],
   template: `
     @if (showBanner()) {
-      <div
-        class="browser-notice"
-        role="status"
-        style="display:flex; gap:1rem; align-items:center; justify-content:space-between; padding:.75rem 1rem; background:#fff3cd; color:#664d03; font-family: system-ui, sans-serif;">
+      <div class="browser-notice" role="status">
         <span>TulipLot works best in Chrome or a Chromium-based browser. Some features may be limited here.</span>
         <button type="button" aria-label="Dismiss notice" (click)="dismiss()">Dismiss</button>
       </div>
     }
     <router-outlet />
   `,
+  styles: [`
+    .browser-notice { display: flex; gap: 16px; align-items: center; justify-content: space-between;
+      padding: 10px 20px; background: var(--tl-peach-tint); color: var(--tl-peach-ink);
+      font-family: var(--tl-font-body); font-size: 14px; }
+    .browser-notice button { border: none; background: #fff; color: var(--tl-peach-ink); font-weight: 600;
+      border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+  `],
 })
 export class AppComponent {
   private readonly authStore = inject(AuthStore);
