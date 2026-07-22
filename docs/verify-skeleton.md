@@ -7,7 +7,7 @@ Proves the UI can call the API with credentials and receive the XSRF cookie.
 ```bash
 # Terminal 1 — API on http://localhost:8080 (needs a local Mongo or Atlas URI)
 cd backend
-MONGODB_URI="mongodb://localhost:27017/dashdash?maxPoolSize=50" ./gradlew bootRun
+MONGODB_URI="mongodb://localhost:27017/tuliplot?maxPoolSize=50" ./gradlew bootRun
 
 # Terminal 2 — UI on http://localhost:4200
 cd frontend
@@ -60,27 +60,27 @@ This confirms the credentialed cross-origin round-trip works before auth exists.
 
 ```bash
 cd backend
-docker build -t dashdash-api:local .
+docker build -t tuliplot-api:local .
 docker run --rm -p 8080:8080 \
-  -e MONGODB_URI="mongodb://host.docker.internal:27017/dashdash?maxPoolSize=50" \
-  dashdash-api:local
+  -e MONGODB_URI="mongodb://host.docker.internal:27017/tuliplot?maxPoolSize=50" \
+  tuliplot-api:local
 curl -s http://localhost:8080/api/v1/health   # -> {"status":"UP"}
 ```
 
 ## H. Staging DNS / domain setup (one registrable domain)
 
-1. Register `dashdash.app` on Cloudflare Registrar (same account as Pages).
-2. **UI:** Cloudflare Pages custom domain `dashdash.app` (see
+1. Register `tuliplot.com` on Cloudflare Registrar (same account as Pages).
+2. **UI:** Cloudflare Pages custom domain `tuliplot.com` (see
    `deploy-frontend-cloudflare.md`).
-3. **API:** `fly launch --no-deploy` (uses `backend/fly.toml`, app `api-dashdash`),
+3. **API:** `fly launch --no-deploy` (uses `backend/fly.toml`, app `api-tuliplot`),
    then `fly deploy`. Map the subdomain:
-   - `fly certs add api.dashdash.app`
-   - In Cloudflare DNS add a `CNAME api → api-dashdash.fly.dev`
+   - `fly certs add api.tuliplot.com`
+   - In Cloudflare DNS add a `CNAME api → api-tuliplot.fly.dev`
      (DNS-only / grey-cloud until the Fly cert is issued).
 4. **Cookies across the registrable domain:** set backend secrets
-   `fly secrets set COOKIE_DOMAIN=.dashdash.app COOKIE_SECURE=true CORS_ALLOWED_ORIGINS=https://dashdash.app`.
-   The session cookie (`DASHSESSION`) and `XSRF-TOKEN` are then scoped to
-   `.dashdash.app`, so `dashdash.app` (UI) and `api.dashdash.app` (API) are
+   `fly secrets set COOKIE_DOMAIN=.tuliplot.com COOKIE_SECURE=true CORS_ALLOWED_ORIGINS=https://tuliplot.com`.
+   The session cookie (`TULIPSESSION`) and `XSRF-TOKEN` are then scoped to
+   `.tuliplot.com`, so `tuliplot.com` (UI) and `api.tuliplot.com` (API) are
    same-site → the session cookie flows on credentialed requests.
-5. Re-run checks B–F against `https://dashdash.app` /
-   `https://api.dashdash.app/api/v1/health`.
+5. Re-run checks B–F against `https://tuliplot.com` /
+   `https://api.tuliplot.com/api/v1/health`.

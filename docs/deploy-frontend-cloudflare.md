@@ -19,14 +19,14 @@ and every client-side route resolves to the SPA shell. Prerendered public pages
 
 ## Custom domain
 
-1. Cloudflare Pages → project → **Custom domains** → add `dashdash.app`.
-2. Add `www.dashdash.app` and redirect it to the apex.
+1. Cloudflare Pages → project → **Custom domains** → add `tuliplot.com`.
+2. Add `www.tuliplot.com` and redirect it to the apex.
 3. DNS records are created automatically when the domain is on the same
-   Cloudflare account (register `dashdash.app` via Cloudflare Registrar).
+   Cloudflare account (register `tuliplot.com` via Cloudflare Registrar).
 
 ## Environment / API base URL
 
 The production bundle uses `src/environments/environment.ts`
-(`apiBaseUrl = https://api.dashdash.app/api/v1`). No build-time env vars are
+(`apiBaseUrl = https://api.tuliplot.com/api/v1`). No build-time env vars are
 needed for the API URL. `ng serve` (local dev) uses
 `environment.development.ts` (`http://localhost:8080/api/v1`).

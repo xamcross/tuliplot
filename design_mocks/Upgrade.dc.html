@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: #F0EEF7; }
+  a { color: #4D96FF; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',sans-serif; color:#33304a; min-height:100vh; display:flex; flex-direction:column; background:#F0EEF7;">
+
+  <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#fff; border-bottom:1px solid #ECE9F4;">
+    <a href="Dashboard.dc.html" style="text-decoration:none; display:flex; align-items:center; gap:9px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:#33304a;">
+      <span style="display:inline-grid; grid-template-columns:1fr 1fr; gap:2px;">
+        <span style="width:8px;height:8px;background:#FFB1B1;border-radius:2px;"></span><span style="width:8px;height:8px;background:#FFD8A8;border-radius:2px;"></span>
+        <span style="width:8px;height:8px;background:#A5D8FF;border-radius:2px;"></span><span style="width:8px;height:8px;background:#B2F2BB;border-radius:2px;"></span>
+      </span>
+      TulipLot
+    </a>
+    <a href="Dashboard.dc.html" style="text-decoration:none; font-family:'Space Mono',monospace; font-size:13px; color:#605c78;">← Back to dashboard</a>
+  </div>
+
+  <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:48px;">
+    <div style="width:100%; max-width:460px; background:#fff; border:1px solid #ECE9F4; border-radius:24px; padding:40px; box-shadow:0 20px 50px rgba(120,110,160,0.14); text-align:center;">
+      <div style="display:inline-grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-bottom:22px;">
+        <span style="width:16px;height:16px;background:#FFB1B1;border-radius:4px;"></span><span style="width:16px;height:16px;background:#FFD8A8;border-radius:4px;"></span><span style="width:16px;height:16px;background:#A5D8FF;border-radius:4px;"></span>
+        <span style="width:16px;height:16px;background:#B2F2BB;border-radius:4px;"></span><span style="width:16px;height:16px;background:#D0BFFF;border-radius:4px;"></span><span style="width:16px;height:16px;background:#4D96FF;border-radius:4px;"></span>
+      </div>
+      <h1 style="margin:0 0 8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; color:#33304a;">Go Premium</h1>
+      <p style="margin:0 0 26px; font-size:16px; line-height:1.55; color:#605c78;">Unlock all six cells and remove ads from your dashboard.</p>
+
+      <div style="text-align:left; background:#FBFAFE; border:1px solid #ECE9F4; border-radius:16px; padding:22px; margin-bottom:26px; display:flex; flex-direction:column; gap:11px; font-size:15px; color:#3f4a5c;">
+        <div>✓ All 6 cells unlocked</div>
+        <div>✓ Zero ads, ever</div>
+        <div>✓ No advertising cookies</div>
+        <div>✓ Cancel anytime via Stripe</div>
+      </div>
+
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:40px; color:#33304a; margin-bottom:20px;">$4<span style="font-size:17px; color:#9c98ad;">/month</span></div>
+
+      <a href="Dashboard.dc.html" style="display:block; text-decoration:none; font-weight:600; font-size:16px; color:#fff; background:#4D96FF; border-radius:999px; padding:15px; box-shadow:0 8px 20px rgba(77,150,255,0.3);">Remove ad — go Premium</a>
+      <p style="margin:16px 0 0; font-family:'Space Mono',monospace; font-size:12px; color:#9c98ad;">Secure checkout via Stripe</p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

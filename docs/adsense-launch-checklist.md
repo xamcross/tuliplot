@@ -1,4 +1,4 @@
-# DashDash — AdSense launch checklist
+# TulipLot — AdSense launch checklist
 
 Everything that must be true before switching the ad cell from the house promo
 to live AdSense.
@@ -19,7 +19,7 @@ to live AdSense.
 - [ ] Submit the site + sitemap in Google Search Console.
 
 ## 3. ads.txt
-- [ ] `https://dashdash.app/ads.txt` returns, as `text/plain`:
+- [ ] `https://tuliplot.com/ads.txt` returns, as `text/plain`:
       `google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0`
 - [ ] Replace `pub-XXXXXXXXXXXXXXXX` with the real AdSense publisher id.
 
@@ -31,7 +31,7 @@ to live AdSense.
       is granted (DevTools → Network), and DOES load after (ConsentService).
 
 ## 5. AdSense verification snippet + review
-- [ ] Add the AdSense verification/auto-ads snippet where required. DashDash loads
+- [ ] Add the AdSense verification/auto-ads snippet where required. TulipLot loads
       the account script via `ConsentService.loadAdsScript()` after consent — the
       publisher id in `environment.adsenseClient` drives it. For site verification
       during review, add the AdSense `<meta name="google-adsense-account">` tag to

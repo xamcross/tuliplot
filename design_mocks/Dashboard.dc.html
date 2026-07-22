@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #F0EEF7; }
+  a { color: #4D96FF; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',sans-serif; color:#33304a; height:100vh; display:flex; flex-direction:column; background:#F0EEF7;">
+
+  <!-- app top bar -->
+  <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#fff; border-bottom:1px solid #ECE9F4;">
+    <a href="Landing.dc.html" style="text-decoration:none; display:flex; align-items:center; gap:9px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:#33304a;">
+      <span style="display:inline-grid; grid-template-columns:1fr 1fr; gap:2px;">
+        <span style="width:8px;height:8px;background:#FFB1B1;border-radius:2px;"></span><span style="width:8px;height:8px;background:#FFD8A8;border-radius:2px;"></span>
+        <span style="width:8px;height:8px;background:#A5D8FF;border-radius:2px;"></span><span style="width:8px;height:8px;background:#B2F2BB;border-radius:2px;"></span>
+      </span>
+      TulipLot
+    </a>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span style="font-family:'Space Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#8a5a1f; background:#FFF1E0; border-radius:999px; padding:5px 12px;">Free plan</span>
+      <a href="Upgrade.dc.html" style="text-decoration:none; font-weight:600; font-size:14px; color:#fff; background:#4D96FF; border-radius:999px; padding:8px 16px;">Go Premium</a>
+      <a href="Settings.dc.html" style="text-decoration:none; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#F2F0F7; color:#605c78; font-size:16px;">⚙</a>
+    </div>
+  </div>
+
+  <!-- 3x2 grid -->
+  <div style="flex:1; min-height:0; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(2,1fr); gap:10px; padding:12px;">
+
+    <!-- cell: Mail -->
+    <div style="background:#fff; border:1px solid #E7E3F2; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #F0EEF7; background:#FBFAFE;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; color:#33304a;"><span style="width:14px; height:14px; border-radius:4px; background:#FFB1B1;"></span>Gmail</div>
+        <div style="display:flex; gap:9px; color:#b8b3c9; font-size:12px;"><span>⟳</span><span>⤢</span><span>✎</span><span>×</span></div>
+      </div>
+      <div style="flex:1; padding:14px; display:flex; flex-direction:column; gap:9px; background:#fff;">
+        <div style="height:11px; width:70%; border-radius:5px; background:#F0EEF7;"></div>
+        <div style="height:11px; width:88%; border-radius:5px; background:#F0EEF7;"></div>
+        <div style="height:11px; width:55%; border-radius:5px; background:#F0EEF7;"></div>
+        <div style="height:11px; width:80%; border-radius:5px; background:#F6F4FB;"></div>
+        <div style="height:11px; width:62%; border-radius:5px; background:#F6F4FB;"></div>
+      </div>
+    </div>
+
+    <!-- cell: Trello -->
+    <div style="background:#fff; border:1px solid #E7E3F2; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #F0EEF7; background:#FBFAFE;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; color:#33304a;"><span style="width:14px; height:14px; border-radius:4px; background:#A5D8FF;"></span>Trello</div>
+        <div style="display:flex; gap:9px; color:#b8b3c9; font-size:12px;"><span>⟳</span><span>⤢</span><span>✎</span><span>×</span></div>
+      </div>
+      <div style="flex:1; padding:12px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; background:#fff;">
+        <div style="background:#F2F0F7; border-radius:8px; padding:7px; display:flex; flex-direction:column; gap:6px;"><div style="height:26px; background:#fff; border-radius:6px;"></div><div style="height:26px; background:#fff; border-radius:6px;"></div></div>
+        <div style="background:#F2F0F7; border-radius:8px; padding:7px; display:flex; flex-direction:column; gap:6px;"><div style="height:26px; background:#fff; border-radius:6px;"></div></div>
+        <div style="background:#F2F0F7; border-radius:8px; padding:7px; display:flex; flex-direction:column; gap:6px;"><div style="height:26px; background:#fff; border-radius:6px;"></div><div style="height:18px; background:#fff; border-radius:6px;"></div></div>
+      </div>
+    </div>
+
+    <!-- cell: Calendar -->
+    <div style="background:#fff; border:1px solid #E7E3F2; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #F0EEF7; background:#FBFAFE;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; color:#33304a;"><span style="width:14px; height:14px; border-radius:4px; background:#B2F2BB;"></span>Calendar</div>
+        <div style="display:flex; gap:9px; color:#b8b3c9; font-size:12px;"><span>⟳</span><span>⤢</span><span>✎</span><span>×</span></div>
+      </div>
+      <div style="flex:1; padding:12px; display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:1fr; gap:5px; background:#fff;">
+        <div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#DBF5E1; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div>
+        <div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#DCEEFF; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div>
+        <div style="background:#FFEBD1; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div><div style="background:#F6F4FB; border-radius:5px;"></div>
+      </div>
+    </div>
+
+    <!-- cell: News -->
+    <div style="background:#fff; border:1px solid #E7E3F2; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #F0EEF7; background:#FBFAFE;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; color:#33304a;"><span style="width:14px; height:14px; border-radius:4px; background:#FFD8A8;"></span>News</div>
+        <div style="display:flex; gap:9px; color:#b8b3c9; font-size:12px;"><span>⟳</span><span>⤢</span><span>✎</span><span>×</span></div>
+      </div>
+      <div style="flex:1; padding:14px; display:flex; gap:12px; background:#fff;">
+        <div style="flex:none; width:74px; border-radius:8px; background:#FFEBD1;"></div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <div style="height:12px; width:90%; border-radius:5px; background:#F0EEF7;"></div>
+          <div style="height:12px; width:70%; border-radius:5px; background:#F0EEF7;"></div>
+          <div style="height:10px; width:100%; border-radius:5px; background:#F6F4FB;"></div>
+          <div style="height:10px; width:85%; border-radius:5px; background:#F6F4FB;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cell: Music -->
+    <div style="background:#fff; border:1px solid #E7E3F2; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #F0EEF7; background:#FBFAFE;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; color:#33304a;"><span style="width:14px; height:14px; border-radius:4px; background:#D0BFFF;"></span>Music</div>
+        <div style="display:flex; gap:9px; color:#b8b3c9; font-size:12px;"><span>⟳</span><span>⤢</span><span>✎</span><span>×</span></div>
+      </div>
+      <div style="flex:1; padding:14px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:12px; background:#fff;">
+        <div style="width:78px; height:78px; border-radius:14px; background:#EEE6FF;"></div>
+        <div style="height:11px; width:120px; border-radius:5px; background:#F0EEF7;"></div>
+        <div style="height:9px; width:90px; border-radius:5px; background:#F6F4FB;"></div>
+        <div style="display:flex; gap:16px; align-items:center; color:#c3bcd8; font-size:15px; margin-top:2px;"><span>⏮</span><span style="color:#9B7FE0; font-size:20px;">⏵</span><span>⏭</span></div>
+      </div>
+    </div>
+
+    <!-- cell 6: AD SLOT (free tier) -->
+    <div style="border:1.5px dashed #cfc9e0; border-radius:12px; background:repeating-linear-gradient(45deg,#F4F2FA,#F4F2FA 9px,#ECE8F6 9px,#ECE8F6 18px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; padding:16px;">
+      <span style="font-family:'Space Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#9c98ad;">Ad · Free plan</span>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#605c78; max-width:180px; line-height:1.4;">Your 6th cell shows one ad.</div>
+      <a href="Upgrade.dc.html" style="text-decoration:none; font-weight:600; font-size:13px; color:#fff; background:#4D96FF; border-radius:999px; padding:9px 18px;">Remove ad — go Premium</a>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: #F0EEF7; }
+  a { color: #4D96FF; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',sans-serif; color:#33304a; min-height:100vh; display:flex; flex-direction:column; background:#F0EEF7;">
+
+  <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#fff; border-bottom:1px solid #ECE9F4;">
+    <a href="Dashboard.dc.html" style="text-decoration:none; display:flex; align-items:center; gap:9px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:#33304a;">
+      <span style="display:inline-grid; grid-template-columns:1fr 1fr; gap:2px;">
+        <span style="width:8px;height:8px;background:#FFB1B1;border-radius:2px;"></span><span style="width:8px;height:8px;background:#FFD8A8;border-radius:2px;"></span>
+        <span style="width:8px;height:8px;background:#A5D8FF;border-radius:2px;"></span><span style="width:8px;height:8px;background:#B2F2BB;border-radius:2px;"></span>
+      </span>
+      TulipLot
+    </a>
+    <a href="Dashboard.dc.html" style="text-decoration:none; font-family:'Space Mono',monospace; font-size:13px; color:#605c78;">← Back to dashboard</a>
+  </div>
+
+  <div style="flex:1; padding:48px; display:flex; justify-content:center;">
+    <div style="width:100%; max-width:600px;">
+      <h1 style="margin:0 0 24px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:32px; color:#33304a;">Account &amp; billing</h1>
+
+      <div style="background:#fff; border:1px solid #ECE9F4; border-radius:20px; padding:28px; margin-bottom:18px;">
+        <div style="font-family:'Space Mono',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#9c98ad; margin-bottom:14px;">Account</div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:#EEE6FF; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; color:#54398a; font-size:18px;">A</div>
+          <div>
+            <div style="font-weight:600; font-size:16px; color:#33304a;">Alex Rivera</div>
+            <div style="font-size:14px; color:#605c78;">alex@example.com</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid #ECE9F4; border-radius:20px; padding:28px;">
+        <div style="font-family:'Space Mono',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#9c98ad; margin-bottom:14px;">Plan</div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#33304a;">Free</span>
+            <span style="font-family:'Space Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#8a5a1f; background:#FFF1E0; border-radius:999px; padding:5px 12px;">5 cells + 1 ad</span>
+          </div>
+          <a href="Upgrade.dc.html" style="text-decoration:none; font-weight:600; font-size:14px; color:#fff; background:#4D96FF; border-radius:999px; padding:10px 20px;">Go Premium</a>
+        </div>
+        <div style="height:1px; background:#F0EEF7; margin:22px 0;"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div style="font-size:15px; color:#605c78; max-width:340px; line-height:1.5;">Manage payment method, invoices, and cancellation through the Stripe billing portal.</div>
+          <a href="#" style="text-decoration:none; font-weight:600; font-size:14px; color:#33304a; background:#F2F0F7; border:1px solid #E2DFF0; border-radius:999px; padding:10px 20px;">Manage billing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

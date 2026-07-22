@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F3EEFF; }
+  a { color: #4D96FF; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',sans-serif; color:#33304a; min-height:100vh; background:linear-gradient(135deg,#EAF2FF,#F3EEFF); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px;">
+
+  <div style="width:100%; max-width:400px; display:flex; flex-direction:column; gap:22px;">
+    <a href="Landing.dc.html" style="text-decoration:none; display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#33304a; align-self:center;">
+      <span style="display:inline-grid; grid-template-columns:1fr 1fr; gap:3px;">
+        <span style="width:10px;height:10px;background:#FFB1B1;border-radius:3px;"></span><span style="width:10px;height:10px;background:#FFD8A8;border-radius:3px;"></span>
+        <span style="width:10px;height:10px;background:#A5D8FF;border-radius:3px;"></span><span style="width:10px;height:10px;background:#B2F2BB;border-radius:3px;"></span>
+      </span>
+      TulipLot
+    </a>
+
+    <div style="background:#fff; border:1px solid #ECE9F4; border-radius:24px; padding:36px; box-shadow:0 20px 50px rgba(120,110,160,0.14);">
+      <h1 style="margin:0 0 6px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; color:#33304a;">Create your account</h1>
+      <p style="margin:0 0 26px; font-size:15px; color:#605c78;">Free forever. No credit card.</p>
+
+      <label style="display:block; font-family:'Space Mono',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#7a7690; margin-bottom:7px;">Display name</label>
+      <input type="text" placeholder="Alex Rivera" style="width:100%; font-family:'DM Sans',sans-serif; font-size:15px; color:#33304a; padding:13px 15px; border:1.5px solid #E2DFF0; border-radius:12px; background:#FBFAFE; margin-bottom:18px; outline:none;">
+
+      <label style="display:block; font-family:'Space Mono',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#7a7690; margin-bottom:7px;">Email</label>
+      <input type="email" placeholder="you@example.com" style="width:100%; font-family:'DM Sans',sans-serif; font-size:15px; color:#33304a; padding:13px 15px; border:1.5px solid #E2DFF0; border-radius:12px; background:#FBFAFE; margin-bottom:18px; outline:none;">
+
+      <label style="display:block; font-family:'Space Mono',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#7a7690; margin-bottom:7px;">Password</label>
+      <input type="password" placeholder="At least 8 characters" style="width:100%; font-family:'DM Sans',sans-serif; font-size:15px; color:#33304a; padding:13px 15px; border:1.5px solid #E2DFF0; border-radius:12px; background:#FBFAFE; margin-bottom:24px; outline:none;">
+
+      <a href="Dashboard.dc.html" style="display:block; text-align:center; text-decoration:none; font-weight:600; font-size:16px; color:#fff; background:#4D96FF; border-radius:999px; padding:14px; box-shadow:0 8px 20px rgba(77,150,255,0.3);">Sign up free</a>
+    </div>
+
+    <p style="margin:0; text-align:center; font-size:15px; color:#605c78;">Already have an account? <a href="Login.dc.html" style="font-weight:600;">Log in</a></p>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

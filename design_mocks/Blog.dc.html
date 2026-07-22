@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; }
+  a { color: #4D96FF; }
+</style>
+</helmet>
+
+<div style="font-family:'DM Sans',sans-serif; color:#33304a; background:#fff; min-height:100vh; display:flex; flex-direction:column;">
+
+  <div style="position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; padding:18px 56px; background:rgba(255,255,255,0.9); backdrop-filter:blur(8px); border-bottom:1px solid #F0EEF7;">
+    <a href="Landing.dc.html" style="text-decoration:none; display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#33304a;">
+      <span style="display:inline-grid; grid-template-columns:1fr 1fr; gap:3px;">
+        <span style="width:9px;height:9px;background:#FFB1B1;border-radius:3px;"></span><span style="width:9px;height:9px;background:#FFD8A8;border-radius:3px;"></span>
+        <span style="width:9px;height:9px;background:#A5D8FF;border-radius:3px;"></span><span style="width:9px;height:9px;background:#B2F2BB;border-radius:3px;"></span>
+      </span>
+      TulipLot
+    </a>
+    <div style="display:flex; align-items:center; gap:26px; font-weight:500; font-size:15px; color:#605c78;">
+      <a href="Guides.dc.html" style="text-decoration:none; color:#605c78;">Guides</a>
+      <a href="Blog.dc.html" style="text-decoration:none; color:#4D96FF; font-weight:600;">Blog</a>
+      <a href="About.dc.html" style="text-decoration:none; color:#605c78;">About</a>
+      <a href="Login.dc.html" style="text-decoration:none; color:#605c78;">Log in</a>
+      <a href="Register.dc.html" style="text-decoration:none; font-weight:600; color:#fff; background:#4D96FF; border-radius:999px; padding:9px 18px;">Get started</a>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#EAF2FF,#F3EEFF); padding:64px 56px 52px;">
+    <div style="max-width:900px; margin:0 auto;">
+      <a href="Landing.dc.html" style="text-decoration:none; font-family:'Space Mono',monospace; font-size:13px; color:#4D96FF;">← TulipLot home</a>
+      <h1 style="margin:16px 0 8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:48px; line-height:1.08; letter-spacing:-0.02em; color:#33304a;">Blog</h1>
+      <p style="margin:0; font-size:18px; color:#605c78;">Product news and thinking on focused, single-window work.</p>
+    </div>
+  </div>
+
+  <div style="max-width:900px; margin:0 auto; padding:48px 56px; flex:1; width:100%;">
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <a href="Blog Detail.dc.html" style="text-decoration:none; background:#fff; border:1px solid #ECE9F4; border-radius:20px; padding:28px; display:flex; gap:24px; align-items:center;">
+        <div style="flex:none; width:120px; height:96px; border-radius:14px; background:#FFEBD1;"></div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <span style="align-self:flex-start; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#8a5a1f; background:#FFF1E0; border-radius:999px; padding:4px 11px;">Tips</span>
+          <h2 style="margin:0; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#33304a;">Five ways to lay out a productive dashboard</h2>
+          <p style="margin:0; font-size:15px; line-height:1.5; color:#605c78;">Practical patterns for arranging your six cells so the important stuff is always in view.</p>
+          <span style="font-family:'Space Mono',monospace; font-size:12px; color:#9c98ad;">2026-07-10 · 1 min read</span>
+        </div>
+      </a>
+      <a href="Blog Detail.dc.html" style="text-decoration:none; background:#fff; border:1px solid #ECE9F4; border-radius:20px; padding:28px; display:flex; gap:24px; align-items:center;">
+        <div style="flex:none; width:120px; height:96px; border-radius:14px; background:#DCEEFF;"></div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <span style="align-self:flex-start; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#54398a; background:#EEE6FF; border-radius:999px; padding:4px 11px;">Product</span>
+          <h2 style="margin:0; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#33304a;">Why we built TulipLot</h2>
+          <p style="margin:0; font-size:15px; line-height:1.5; color:#605c78;">The tab-overload problem, and why a fixed grid beats a wall of browser tabs.</p>
+          <span style="font-family:'Space Mono',monospace; font-size:12px; color:#9c98ad;">2026-07-01 · 1 min read</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div style="padding:36px 56px; border-top:1px solid #ECE9F4; display:flex; align-items:center; justify-content:space-between; font-size:14px; color:#605c78;">
+    <a href="Landing.dc.html" style="text-decoration:none; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; color:#33304a;">TulipLot</a>
+    <div style="display:flex; gap:22px;"><a href="About.dc.html" style="text-decoration:none; color:#605c78;">About</a><a href="Contact.dc.html" style="text-decoration:none; color:#605c78;">Contact</a><a href="Privacy.dc.html" style="text-decoration:none; color:#605c78;">Privacy</a><a href="Terms.dc.html" style="text-decoration:none; color:#605c78;">Terms</a></div>
+    <div style="font-family:'Space Mono',monospace; color:#9c98ad;">© 2026 TulipLot</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

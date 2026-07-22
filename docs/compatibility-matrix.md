@@ -1,10 +1,10 @@
-# DashDash compatibility matrix (living doc)
+# TulipLot compatibility matrix (living doc)
 
-How each catalog app behaves inside a DashDash grid cell. Update this table from
+How each catalog app behaves inside a TulipLot grid cell. Update this table from
 the `docs/extension-dnr-verification.md` procedure whenever a new app is tested.
 
 - **frames-clean** — loads in the grid with no extension.
-- **needs-ext** — loads only when DashDash Companion strips headers.
+- **needs-ext** — loads only when TulipLot Companion strips headers.
 - **samesite-loggedout** — frames, but shows logged-out because the site uses
   `SameSite=Lax/Strict` cookies (cross-site iframe sends no cookie).
 - **refuses-frame** — refuses to frame even with headers stripped (major-provider
