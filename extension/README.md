@@ -25,8 +25,9 @@ grid render inside the grid.
 
 - It never reads or modifies page content, cookies, or form data.
 - It never touches the advertisement cell (the ad is native DOM, never a frame).
-- It only strips headers for frames initiated by `tuliplot.com`; ordinary
-  browsing on other sites is unaffected.
+- It only strips headers for frames initiated by `tuliplot.com` (or `localhost`
+  during local development of the dashboard); ordinary browsing on other sites
+  is unaffected.
 
 ## Known limitation
 
