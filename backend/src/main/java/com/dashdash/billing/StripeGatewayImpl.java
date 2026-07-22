@@ -74,4 +74,11 @@ public class StripeGatewayImpl implements StripeGateway {
       throw new StripeGatewayException("createPortalSession failed", e);
     }
   }
+
+  @Override
+  public com.stripe.model.Event constructEvent(byte[] payload, String signatureHeader, String webhookSecret)
+      throws com.stripe.exception.SignatureVerificationException {
+    String json = new String(payload, java.nio.charset.StandardCharsets.UTF_8);
+    return com.stripe.net.Webhook.constructEvent(json, signatureHeader, webhookSecret);
+  }
 }

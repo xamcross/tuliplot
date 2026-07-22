@@ -41,4 +41,10 @@ public class StripeService {
     }
     return gateway.createPortalSessionUrl(customerId, config.getPortalReturnUrl());
   }
+
+  /** Verify the Stripe signature over the raw body and return the parsed Event. */
+  public com.stripe.model.Event verifyAndParse(byte[] rawBody, String signatureHeader)
+      throws com.stripe.exception.SignatureVerificationException {
+    return gateway.constructEvent(rawBody, signatureHeader, config.getWebhookSecret());
+  }
 }

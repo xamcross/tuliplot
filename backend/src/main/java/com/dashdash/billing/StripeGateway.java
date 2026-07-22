@@ -15,4 +15,8 @@ public interface StripeGateway {
 
   /** Create a Billing Portal session and return its hosted URL. */
   String createPortalSessionUrl(String customerId, String returnUrl);
+
+  /** Verify the raw webhook body against the signature and parse it into an Event. */
+  com.stripe.model.Event constructEvent(byte[] payload, String signatureHeader, String webhookSecret)
+      throws com.stripe.exception.SignatureVerificationException;
 }
