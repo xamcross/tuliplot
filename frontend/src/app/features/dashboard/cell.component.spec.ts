@@ -25,9 +25,9 @@ describe('CellComponent', () => {
     expect(ad!.textContent).toContain('Advertisements');
   });
 
-  it('renders the toolbar and app body for APP', () => {
+  it('renders the toolbar and a safe-frame for APP', () => {
     const f = render({ slot: 1, type: 'APP', url: 'https://example.com', title: 'Ex', openMode: 'FRAME' });
     expect(f.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
-    expect(f.nativeElement.querySelector('[data-testid="app-body"]')).not.toBeNull();
+    expect(f.nativeElement.querySelector('dd-safe-frame')).not.toBeNull();
   });
 });

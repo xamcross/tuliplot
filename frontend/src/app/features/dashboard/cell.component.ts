@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, viewChild } from '@angular/core';
 import { Cell } from '../../core/models/dashboard.model';
 import { CellToolbarComponent } from './cell-toolbar.component';
+import { SafeFrameComponent } from './safe-frame.component';
 
 type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
 
@@ -8,7 +9,7 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
   selector: 'dd-cell',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CellToolbarComponent],
+  imports: [CellToolbarComponent, SafeFrameComponent],
   template: `
     @switch (cell().type) {
       @case ('EMPTY') {
@@ -33,7 +34,12 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
               (sleep)="sleepToggle.emit(cell().slot)"
               (remove)="remove.emit(cell().slot)"
             />
-            <div class="app-body" data-testid="app-body">{{ cell().title || cell().url }}</div>
+            <dd-safe-frame
+              [url]="cell().url!"
+              [title]="cell().title ?? ''"
+              [asleep]="asleep()"
+              (loadFailed)="onLoadFailed()"
+            />
           }
           @case ('needs-extension') {
             <div class="state" data-testid="needs-extension">This app needs the DashDash extension to load here.</div>
@@ -52,7 +58,6 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
     :host { display: block; width: 100%; height: 100%; }
     .add-btn { width: 100%; height: 100%; border: none; background: #fafafa; cursor: pointer; font-size: 14px; }
     .ad-slot { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #999; }
-    .app-body { flex: 1; display: flex; align-items: center; justify-content: center; }
     .state { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 8px; text-align: center; color: #666; }
   `],
 })
@@ -70,7 +75,13 @@ export class CellComponent {
   openInTab = output<number>();
   focusToggle = output<number>();
 
+  private safeFrame = viewChild(SafeFrameComponent);
+
   onReload(): void {
-    // SafeFrame reload is wired in Task 9 (viewChild on the SafeFrameComponent).
+    this.safeFrame()?.reload();
+  }
+
+  onLoadFailed(): void {
+    // Plan 04 sets the 'load-failed' state here via framing-failure detection.
   }
 }
