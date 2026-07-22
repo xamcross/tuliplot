@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, computed, inject, output, signal } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { AuthStore } from '../../stores/auth.store';
 import { CellComponent } from './cell.component';
 import { AdsApi } from '../../core/api/ads.api';
 import { AdConfig } from '../../core/models/ads.model';
+import { CatalogApi } from '../../core/api/catalog.api';
+import { Cell } from '../../core/models/dashboard.model';
+import { CatalogApp } from '../../core/models/catalog.model';
+import { Compatibility } from '../../core/models/enums';
 
 @Component({
   selector: 'dd-grid',
@@ -35,6 +39,7 @@ import { AdConfig } from '../../core/models/ads.model';
               [cell]="cell"
               [dragging]="dragging()"
               [adConfig]="adConfig()"
+              [compatibility]="compatOf(cell)"
               [asleep]="asleepSlots().has(cell.slot)"
               (edit)="edit.emit($event)"
               (remove)="onRemove($event)"
@@ -70,14 +75,32 @@ export class GridComponent {
   protected store = inject(DashboardStore);
   private readonly authStore = inject(AuthStore);
   private readonly adsApi = inject(AdsApi);
+  private readonly catalogApi = inject(CatalogApi);
   readonly dragging = signal(false);
   readonly focusedSlot = signal<number | null>(null);
   protected readonly asleepSlots = signal<Set<number>>(new Set());
   protected readonly adConfig = signal<AdConfig | null>(null);
+  private readonly catalog = signal<CatalogApp[]>([]);
+  private readonly compatByAppId = computed(() => {
+    const map = new Map<string, Compatibility>();
+    for (const app of this.catalog()) {
+      map.set(app.id, app.compatibility);
+    }
+    return map;
+  });
   readonly edit = output<number>();
 
   constructor() {
     this.adsApi.getConfig().subscribe((c) => this.adConfig.set(c));
+    this.catalogApi.list().subscribe((apps) => this.catalog.set(apps));
+  }
+
+  /** Resolve a cell's compatibility from the catalog; null when the cell has no app or the catalog isn't loaded yet. */
+  protected compatOf(cell: Cell): Compatibility | null {
+    if (!cell.catalogAppId) {
+      return null;
+    }
+    return this.compatByAppId().get(cell.catalogAppId) ?? null;
   }
 
   /** Slot 5 is the fixed ad slot; it is locked (non-editable, non-draggable) unless the user is ad-free. */

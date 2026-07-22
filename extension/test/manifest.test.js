@@ -28,7 +28,7 @@ test('manifest requests only the DNR-with-host-access permission', () => {
   const m = loadManifest();
   assert.deepEqual(m.permissions, ['declarativeNetRequestWithHostAccess']);
   assert.deepEqual(m.optional_host_permissions, ['*://*/*']);
-  assert.deepEqual(m.host_permissions, ['*://dashdash.app/*']);
+  assert.deepEqual(m.host_permissions, ['*://dashdash.app/*', 'http://localhost/*']);
 });
 
 test('manifest wires the static DNR ruleset', () => {
@@ -44,7 +44,7 @@ test('manifest wires background worker and document_start content script', () =>
   const m = loadManifest();
   assert.equal(m.background.service_worker, 'background.js');
   const cs = m.content_scripts[0];
-  assert.deepEqual(cs.matches, ['*://dashdash.app/*']);
+  assert.deepEqual(cs.matches, ['*://dashdash.app/*', 'http://localhost/*']);
   assert.deepEqual(cs.js, ['content.js']);
   assert.equal(cs.run_at, 'document_start');
 });

@@ -5,7 +5,7 @@
   "description": "Strips frame-blocking headers for dashboard frames on dashdash.app so your chosen sites load inside your DashDash grid.",
   "permissions": ["declarativeNetRequestWithHostAccess"],
   "optional_host_permissions": ["*://*/*"],
-  "host_permissions": ["*://dashdash.app/*"],
+  "host_permissions": ["*://dashdash.app/*", "http://localhost/*"],
   "declarative_net_request": {
     "rule_resources": [
       {
@@ -20,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://dashdash.app/*"],
+      "matches": ["*://dashdash.app/*", "http://localhost/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     }
