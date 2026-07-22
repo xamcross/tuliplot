@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors, withXsrfConfiguration } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { credentialsInterceptor } from './core/interceptors/credentials.interceptor';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -9,8 +9,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    // XSRF is handled by credentialsInterceptor, not withXsrfConfiguration: Angular's built-in
+    // XSRF interceptor skips absolute URLs, so it never sets the header on our cross-origin API.
     provideHttpClient(
-      withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }),
       withInterceptors([credentialsInterceptor]),
     ),
     provideClientHydration(),
