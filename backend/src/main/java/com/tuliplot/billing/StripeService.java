@@ -1,0 +1,50 @@
+package com.tuliplot.billing;
+
+import com.tuliplot.auth.User;
+import com.tuliplot.auth.UserRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class StripeService {
+
+  private final StripeGateway gateway;
+  private final UserRepository userRepository;
+  private final StripeConfig config;
+
+  public StripeService(StripeGateway gateway, UserRepository userRepository, StripeConfig config) {
+    this.gateway = gateway;
+    this.userRepository = userRepository;
+    this.config = config;
+  }
+
+  /** Create (or reuse) the Stripe customer, then return a subscription-mode Checkout URL. */
+  public String createCheckoutSession(User user) {
+    String customerId = user.getSubscription().getStripeCustomerId();
+    if (customerId == null || customerId.isBlank()) {
+      customerId = gateway.createCustomer(user.getEmail(), user.getId());
+      user.getSubscription().setStripeCustomerId(customerId);
+      userRepository.save(user);
+    }
+    return gateway.createCheckoutSessionUrl(
+        customerId,
+        user.getId(),
+        config.getPriceId(),
+        config.getCheckoutSuccessUrl(),
+        config.getCheckoutCancelUrl());
+  }
+
+  /** Return a Billing Portal URL for the user's Stripe customer; 400-mapped if none. */
+  public String createPortalSession(User user) {
+    String customerId = user.getSubscription().getStripeCustomerId();
+    if (customerId == null || customerId.isBlank()) {
+      throw new NoStripeCustomerException(user.getId());
+    }
+    return gateway.createPortalSessionUrl(customerId, config.getPortalReturnUrl());
+  }
+
+  /** Verify the Stripe signature over the raw body and return the parsed Event. */
+  public com.stripe.model.Event verifyAndParse(byte[] rawBody, String signatureHeader)
+      throws com.stripe.exception.SignatureVerificationException {
+    return gateway.constructEvent(rawBody, signatureHeader, config.getWebhookSecret());
+  }
+}
