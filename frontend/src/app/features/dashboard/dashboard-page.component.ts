@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, afterNextRender, computed, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DashboardStore } from '../../stores/dashboard.store';
@@ -6,6 +6,7 @@ import { GridComponent } from './grid.component';
 import { CatalogDialogComponent } from './catalog-dialog.component';
 import { AddUrlDialogComponent, AddUrlResult } from './add-url-dialog.component';
 import { CatalogApp } from '../../core/models/catalog.model';
+import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
 
 type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 
@@ -52,11 +53,18 @@ type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 export class DashboardPageComponent implements OnInit {
   protected store = inject(DashboardStore);
   private dialog = inject(Dialog);
+  private readonly extensionBridge = inject(ExtensionBridgeService);
 
   // The parked app can be placed into any non-AD slot (slot 5 is the FREE ad slot).
   protected readonly placeableSlots = computed(() =>
     this.store.cells().filter((c) => c.type !== 'AD').map((c) => c.slot),
   );
+
+  constructor() {
+    afterNextRender(() => {
+      void this.extensionBridge.ping();
+    });
+  }
 
   ngOnInit(): void {
     this.store.load();
