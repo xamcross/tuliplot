@@ -31,7 +31,16 @@ public class MongoIndexConfig {
         ensureSessionIndexes();
         ensureUserIndexes();
         ensurePasswordResetTokenIndexes();
-        // Plan 05 adds the stripe_events TTL index here.
+        ensureStripeEventIndexes();
+    }
+
+    // --- stripe_events (Plan 05) ---
+    private void ensureStripeEventIndexes() {
+        // stripe_events: idempotency store — expire records 30 days after processing
+        mongoTemplate.indexOps("stripe_events")
+                .ensureIndex(new Index()
+                        .on("processedAt", Sort.Direction.ASC)
+                        .expire(java.time.Duration.ofDays(30)));
     }
 
     /** TTL index so MongoDB deletes each session document at its own {@code expireAt} instant. */

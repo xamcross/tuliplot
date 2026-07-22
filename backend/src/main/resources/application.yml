@@ -45,6 +45,15 @@ dashdash:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dashdash.app,http://localhost:4200}
   oauth2:
     success-url: ${OAUTH2_SUCCESS_URL:https://dashdash.app/app}
+  stripe:
+    # Stripe (env-driven; empty defaults keep the app bootable in dev without billing)
+    secret-key: ${STRIPE_SECRET_KEY:}
+    price-id: ${STRIPE_PRICE_ID:}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+    checkout-success-url: ${STRIPE_CHECKOUT_SUCCESS_URL:https://dashdash.app/app?checkout=success}
+    checkout-cancel-url: ${STRIPE_CHECKOUT_CANCEL_URL:https://dashdash.app/app/upgrade?checkout=cancel}
+    portal-return-url: ${STRIPE_PORTAL_RETURN_URL:https://dashdash.app/app/settings}
+    api-version: ${STRIPE_API_VERSION:2025-08-27.basil}
 
 ---
 # Local dev profile: `SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun` → local Mongo, insecure cookie.
