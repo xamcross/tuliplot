@@ -7,6 +7,7 @@ import { CatalogDialogComponent } from './catalog-dialog.component';
 import { AddUrlDialogComponent, AddUrlResult } from './add-url-dialog.component';
 import { CatalogApp } from '../../core/models/catalog.model';
 import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
+import { openModeFor } from '../../core/services/compatibility.util';
 
 type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 
@@ -92,7 +93,7 @@ export class DashboardPageComponent implements OnInit {
       title: result.name,
       catalogAppId: result.id,
       iconUrl: result.iconUrl,
-      openMode: 'FRAME',
+      openMode: openModeFor(result.compatibility),
     });
   }
 
