@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "DashDash Companion",
+  "version": "1.0.0",
+  "description": "Strips frame-blocking headers for dashboard frames on dashdash.app so your chosen sites load inside your DashDash grid.",
+  "permissions": ["declarativeNetRequestWithHostAccess"],
+  "optional_host_permissions": ["*://*/*"],
+  "host_permissions": ["*://dashdash.app/*"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "dashdash_frame",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://dashdash.app/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

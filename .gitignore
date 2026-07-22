@@ -11,6 +11,7 @@ frontend/dist/
 frontend/.angular/
 frontend/coverage/
 extension/node_modules/
+extension/dashdash-companion.zip
 
 # ---- Env / secrets ----
 *.env
