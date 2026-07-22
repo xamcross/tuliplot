@@ -13,7 +13,7 @@ import { ConsentService } from './core/services/consent.service';
         class="browser-notice"
         role="status"
         style="display:flex; gap:1rem; align-items:center; justify-content:space-between; padding:.75rem 1rem; background:#fff3cd; color:#664d03; font-family: system-ui, sans-serif;">
-        <span>DashDash works best in Chrome or a Chromium-based browser. Some features may be limited here.</span>
+        <span>TulipLot works best in Chrome or a Chromium-based browser. Some features may be limited here.</span>
         <button type="button" aria-label="Dismiss notice" (click)="dismiss()">Dismiss</button>
       </div>
     }

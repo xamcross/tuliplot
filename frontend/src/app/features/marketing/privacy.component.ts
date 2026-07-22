@@ -9,13 +9,13 @@ import { SeoService } from '../../core/services/seo.service';
   imports: [RouterLink],
   template: `
     <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← DashDash home</a>
+      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
       <h1>Privacy Policy</h1>
       <p class="doc-page__meta">Last updated: 21 July 2026</p>
 
       <p>
-        This policy explains what DashDash collects, why, and the choices you
-        have. It covers the DashDash web app, the public content site, and the
+        This policy explains what TulipLot collects, why, and the choices you
+        have. It covers the TulipLot web app, the public content site, and the
         optional Chrome companion extension.
       </p>
 
@@ -32,12 +32,12 @@ import { SeoService } from '../../core/services/seo.service';
         </li>
         <li>
           <strong>Billing data:</strong> a Stripe customer and subscription
-          identifier. Card numbers are handled entirely by Stripe; DashDash never
+          identifier. Card numbers are handled entirely by Stripe; TulipLot never
           receives them.
         </li>
         <li>
           <strong>Session data:</strong> a first-party, httpOnly session cookie
-          scoped to <code>.dashdash.app</code> that keeps you signed in.
+          scoped to <code>.tuliplot.com</code> that keeps you signed in.
         </li>
       </ul>
 
@@ -52,7 +52,7 @@ import { SeoService } from '../../core/services/seo.service';
       <ul>
         <li>
           Third-party vendors, including Google, use cookies to serve ads based on
-          your prior visits to DashDash and other websites.
+          your prior visits to TulipLot and other websites.
         </li>
         <li>
           In the EEA, the UK, and Switzerland we present a Google-certified consent
@@ -90,7 +90,7 @@ import { SeoService } from '../../core/services/seo.service';
         Account and dashboard data persist until you delete your account. Stripe
         webhook events are retained briefly for idempotency and then expire
         automatically. To request deletion, email
-        <a href="mailto:privacy&#64;dashdash.app">privacy&#64;dashdash.app</a>.
+        <a href="mailto:privacy&#64;tuliplot.com">privacy&#64;tuliplot.com</a>.
       </p>
 
       <h2>Your rights</h2>
@@ -112,7 +112,7 @@ export class PrivacyComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Privacy Policy',
-      description: 'What DashDash collects, how ads and cookies work, and your choices.',
+      description: 'What TulipLot collects, how ads and cookies work, and your choices.',
       path: '/privacy',
     });
   }

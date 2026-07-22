@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /app
 
-Sitemap: https://dashdash.app/sitemap.xml
+Sitemap: https://tuliplot.com/sitemap.xml

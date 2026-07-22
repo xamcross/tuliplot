@@ -1,4 +1,4 @@
-# DashDash content
+# TulipLot content
 
 Markdown here is compiled at build time into
 `frontend/src/app/features/marketing/content.generated.ts` by

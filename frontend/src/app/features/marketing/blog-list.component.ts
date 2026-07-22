@@ -10,7 +10,7 @@ import { SeoService } from '../../core/services/seo.service';
   imports: [RouterLink],
   template: `
     <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← DashDash home</a>
+      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
       <h1>Blog</h1>
       <p>Product news and thinking on focused, single-window work.</p>
       <ul class="content-list">

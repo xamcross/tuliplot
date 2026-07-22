@@ -9,7 +9,7 @@ import { SeoService } from '../../core/services/seo.service';
   imports: [RouterLink],
   template: `
     <header class="site-nav">
-      <a routerLink="/" class="site-nav__brand">DashDash</a>
+      <a routerLink="/" class="site-nav__brand">TulipLot</a>
       <nav>
         <a routerLink="/guides">Guides</a>
         <a routerLink="/blog">Blog</a>
@@ -22,7 +22,7 @@ import { SeoService } from '../../core/services/seo.service';
       <section class="hero">
         <h1>Turn one browser window into your dashboard</h1>
         <p>
-          DashDash gives you a fixed 3×2 grid where every cell hosts a live web
+          TulipLot gives you a fixed 3×2 grid where every cell hosts a live web
           app — Gmail, Trello, your favorite news site, any URL you choose.
           Everything you check all day, on one screen.
         </p>
@@ -47,7 +47,7 @@ import { SeoService } from '../../core/services/seo.service';
         <article>
           <h2>Any site, framed safely</h2>
           <p>
-            DashDash validates every URL as HTTPS and sandboxes each frame. Our
+            TulipLot validates every URL as HTTPS and sandboxes each frame. Our
             optional Chrome companion unlocks sites that normally refuse to be
             embedded.
           </p>
@@ -66,14 +66,14 @@ import { SeoService } from '../../core/services/seo.service';
       <a routerLink="/about">About</a>
       <a routerLink="/privacy">Privacy</a>
       <a routerLink="/terms">Terms</a>
-      <span>© 2026 DashDash</span>
+      <span>© 2026 TulipLot</span>
     </footer>
   `,
 })
 export class LandingComponent {
   constructor() {
     inject(SeoService).set({
-      title: 'DashDash — your apps on one screen',
+      title: 'TulipLot — your apps on one screen',
       description:
         'Turn one browser window into a personal dashboard: a fixed 3×2 grid of the web apps you use all day.',
       path: '/',

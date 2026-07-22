@@ -9,8 +9,8 @@ export class SeoService {
   private readonly doc = inject(DOCUMENT);
 
   set(opts: { title: string; description: string; path: string }): void {
-    const fullTitle = `${opts.title} · DashDash`;
-    const url = `https://dashdash.app${opts.path}`;
+    const fullTitle = `${opts.title} · TulipLot`;
+    const url = `https://tuliplot.com${opts.path}`;
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: opts.description });
     this.meta.updateTag({ property: 'og:title', content: fullTitle });

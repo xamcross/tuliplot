@@ -49,8 +49,8 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
           }
           @case ('needs-extension') {
             <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
-              <p>This app needs the DashDash Companion extension to load in the grid.</p>
-              <button type="button" (click)="onInstallExtension()">Install DashDash Companion</button>
+              <p>This app needs the TulipLot Companion extension to load in the grid.</p>
+              <button type="button" (click)="onInstallExtension()">Install TulipLot Companion</button>
               <button type="button" (click)="onEnableForThisApp()">Enable for this site</button>
               <button type="button" (click)="openInWindow()">Open in a tab instead</button>
             </div>

@@ -32,7 +32,7 @@ snappier grid.
 
 ## 5. Let quiet cells sleep
 
-DashDash unmounts cells you are not looking at to save memory. Put rarely-used
+TulipLot unmounts cells you are not looking at to save memory. Put rarely-used
 apps where they can rest.
 
 Small layout choices compound. Spend five minutes arranging, save an hour of

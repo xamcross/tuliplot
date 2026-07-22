@@ -84,7 +84,7 @@ const sitemap =
   allRoutes
     .map(
       (r) =>
-        `  <url><loc>https://dashdash.app${r === '/' ? '' : r}</loc></url>`,
+        `  <url><loc>https://tuliplot.com${r === '/' ? '' : r}</loc></url>`,
     )
     .join('\n') +
   `\n</urlset>\n`;

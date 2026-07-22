@@ -9,10 +9,10 @@ import { SeoService } from '../../core/services/seo.service';
   imports: [RouterLink],
   template: `
     <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← DashDash home</a>
-      <h1>About DashDash</h1>
+      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
+      <h1>About TulipLot</h1>
       <p>
-        DashDash is an independent productivity tool built for people who live
+        TulipLot is an independent productivity tool built for people who live
         in a handful of web apps all day. Instead of a wall of browser tabs, you
         get a single fixed grid — a personal cockpit for the sites you actually
         use.
@@ -20,7 +20,7 @@ import { SeoService } from '../../core/services/seo.service';
       <h2>Why we built it</h2>
       <p>
         Modern work is fragmented across Gmail, calendars, project boards, chat,
-        dashboards, and news. Switching between them costs focus. DashDash keeps
+        dashboards, and news. Switching between them costs focus. TulipLot keeps
         them all live on one screen, arranged the way you think.
       </p>
       <h2>How it works</h2>
@@ -39,7 +39,7 @@ import { SeoService } from '../../core/services/seo.service';
       <h2>Contact</h2>
       <p>
         Questions, feedback, or press: email
-        <a href="mailto:hello&#64;dashdash.app">hello&#64;dashdash.app</a>.
+        <a href="mailto:hello&#64;tuliplot.com">hello&#64;tuliplot.com</a>.
       </p>
     </main>
   `,
@@ -48,7 +48,7 @@ export class AboutComponent {
   constructor() {
     inject(SeoService).set({
       title: 'About',
-      description: 'Why DashDash exists and how the single-window dashboard works.',
+      description: 'Why TulipLot exists and how the single-window dashboard works.',
       path: '/about',
     });
   }

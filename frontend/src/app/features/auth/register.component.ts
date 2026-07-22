@@ -8,7 +8,7 @@ import { AuthStore } from '../../stores/auth.store';
   imports: [FormField],
   template: `
     <main class="auth" style="max-width: 24rem; margin: 3rem auto; font-family: system-ui, sans-serif;">
-      <h1>Create your DashDash account</h1>
+      <h1>Create your TulipLot account</h1>
       <form (submit)="$event.preventDefault(); submit()">
         <label>Display name
           <input type="text" autocomplete="name" [formField]="registerForm.displayName" />

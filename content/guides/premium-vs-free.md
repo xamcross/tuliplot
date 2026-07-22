@@ -8,7 +8,7 @@ order: 3
 ---
 # Premium vs Free
 
-DashDash is free to use. Premium is an optional subscription that removes ads
+TulipLot is free to use. Premium is an optional subscription that removes ads
 and unlocks the sixth cell.
 
 ## Free plan

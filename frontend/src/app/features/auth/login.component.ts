@@ -15,7 +15,7 @@ export function googleAuthUrl(apiBaseUrl: string): string {
   imports: [FormField],
   template: `
     <main class="auth" style="max-width: 24rem; margin: 3rem auto; font-family: system-ui, sans-serif;">
-      <h1>Log in to DashDash</h1>
+      <h1>Log in to TulipLot</h1>
       <form (submit)="$event.preventDefault(); submit()">
         <label>Email
           <input type="email" autocomplete="email" [formField]="loginForm.email" />

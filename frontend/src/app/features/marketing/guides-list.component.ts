@@ -10,9 +10,9 @@ import { SeoService } from '../../core/services/seo.service';
   imports: [RouterLink],
   template: `
     <main class="doc-page">
-      <a routerLink="/" class="doc-page__back">← DashDash home</a>
+      <a routerLink="/" class="doc-page__back">← TulipLot home</a>
       <h1>Guides</h1>
-      <p>Step-by-step help getting the most out of DashDash.</p>
+      <p>Step-by-step help getting the most out of TulipLot.</p>
       <ul class="content-list">
         @for (guide of guides; track guide.slug) {
           <li>
@@ -34,7 +34,7 @@ export class GuidesListComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Guides',
-      description: 'Step-by-step help getting the most out of DashDash.',
+      description: 'Step-by-step help getting the most out of TulipLot.',
       path: '/guides',
     });
   }
