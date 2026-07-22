@@ -56,6 +56,6 @@ describe('SafeFrameComponent', () => {
     const after = f.nativeElement.querySelector('[data-testid="app-iframe"]').getAttribute('src');
 
     expect(after).not.toBe(before);
-    expect(after).toContain('_dd=1');
+    expect(after).toContain('_tl=1');
   });
 });

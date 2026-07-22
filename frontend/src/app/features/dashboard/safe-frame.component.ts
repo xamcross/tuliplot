@@ -30,7 +30,7 @@ import { isSafeHttpsUrl } from '../../core/util/url.util';
   styles: [`
     :host { display: block; width: 100%; height: 100%; }
     .frame { width: 100%; height: 100%; border: 0; display: block; }
-    .asleep { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #888; background: #fafafa; }
+    .asleep { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--tl-ink-faint); background: var(--tl-surface); }
   `],
 })
 export class SafeFrameComponent {
@@ -99,7 +99,7 @@ export class SafeFrameComponent {
     const bust = this.cacheBuster();
     const u = new URL(this.url().trim());
     if (bust > 0) {
-      u.searchParams.set('_dd', String(bust));
+      u.searchParams.set('_tl', String(bust));
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(u.toString());
   });
