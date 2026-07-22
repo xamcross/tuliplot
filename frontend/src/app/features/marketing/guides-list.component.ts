@@ -1,0 +1,32 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { GUIDES } from './content.generated';
+
+@Component({
+  selector: 'app-guides-list',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
+  template: `
+    <main class="doc-page">
+      <a routerLink="/" class="doc-page__back">← DashDash home</a>
+      <h1>Guides</h1>
+      <p>Step-by-step help getting the most out of DashDash.</p>
+      <ul class="content-list">
+        @for (guide of guides; track guide.slug) {
+          <li>
+            <a class="content-card" [routerLink]="['/guides', guide.slug]">
+              <span class="content-card__cat">{{ guide.category }}</span>
+              <h2>{{ guide.title }}</h2>
+              <p>{{ guide.description }}</p>
+              <span class="content-card__meta">{{ guide.readingMinutes }} min read</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </main>
+  `,
+})
+export class GuidesListComponent {
+  protected readonly guides = GUIDES;
+}

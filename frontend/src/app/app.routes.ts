@@ -17,6 +17,14 @@ export const routes: Routes = [
       import('./features/marketing/terms.component').then((m) => m.TermsComponent) },
   { path: 'contact', loadComponent: () =>
       import('./features/marketing/contact.component').then((m) => m.ContactComponent) },
+  { path: 'guides', loadComponent: () =>
+      import('./features/marketing/guides-list.component').then((m) => m.GuidesListComponent) },
+  { path: 'guides/:slug', loadComponent: () =>
+      import('./features/marketing/guide-detail.component').then((m) => m.GuideDetailComponent) },
+  { path: 'blog', loadComponent: () =>
+      import('./features/marketing/blog-list.component').then((m) => m.BlogListComponent) },
+  { path: 'blog/:slug', loadComponent: () =>
+      import('./features/marketing/blog-detail.component').then((m) => m.BlogDetailComponent) },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {

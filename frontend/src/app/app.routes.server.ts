@@ -1,4 +1,5 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
+import { GUIDES, POSTS } from './features/marketing/content.generated';
 
 export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
@@ -6,6 +7,18 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'privacy', renderMode: RenderMode.Prerender },
   { path: 'terms', renderMode: RenderMode.Prerender },
   { path: 'contact', renderMode: RenderMode.Prerender },
+  { path: 'guides', renderMode: RenderMode.Prerender },
+  {
+    path: 'guides/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => GUIDES.map((g) => ({ slug: g.slug })),
+  },
+  { path: 'blog', renderMode: RenderMode.Prerender },
+  {
+    path: 'blog/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => POSTS.map((p) => ({ slug: p.slug })),
+  },
   // Dashboard + auth are client-side only (CSR).
   { path: '**', renderMode: RenderMode.Client },
 ];
