@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, DestroyRef, computed, inject, input, output, signal,
+  ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, input, output, signal,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { isSafeHttpsUrl } from '../../core/util/url.util';
@@ -18,6 +18,7 @@ import { isSafeHttpsUrl } from '../../core/util/url.util';
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"
         allow="fullscreen; clipboard-write; autoplay"
         referrerpolicy="strict-origin-when-cross-origin"
+        (load)="onFrameLoad()"
         (error)="loadFailed.emit()"
       ></iframe>
     } @else {
@@ -42,10 +43,49 @@ export class SafeFrameComponent {
   private cacheBuster = signal(0);
   private mounted = signal(false);
 
+  private loadWatchdogId: ReturnType<typeof setTimeout> | null = null;
+  private didLoad = false;
+
+  private readonly loadWatchdog = effect(() => {
+    const active = !this.asleep() && !!this.url();
+    if (active) {
+      this.startLoadWatchdog();
+    } else {
+      this.cancelLoadWatchdog();
+    }
+  });
+
+  private readonly frameDestroyRef = inject(DestroyRef);
+
   constructor() {
     // Staggered mount: defer the first render so 5-6 iframes do not boot simultaneously.
     const timer = setTimeout(() => this.mounted.set(true), 300);
-    inject(DestroyRef).onDestroy(() => clearTimeout(timer));
+    this.frameDestroyRef.onDestroy(() => clearTimeout(timer));
+    this.frameDestroyRef.onDestroy(() => this.cancelLoadWatchdog());
+  }
+
+  /** Bound to the iframe (load) event; cancels the watchdog. */
+  onFrameLoad(): void {
+    this.didLoad = true;
+    this.cancelLoadWatchdog();
+  }
+
+  /** (Re)arms the 4s watchdog; emits loadFailed if no load event arrives. */
+  startLoadWatchdog(timeoutMs = 4000): void {
+    this.cancelLoadWatchdog();
+    this.didLoad = false;
+    this.loadWatchdogId = setTimeout(() => {
+      if (!this.didLoad) {
+        this.loadFailed.emit();
+      }
+    }, timeoutMs);
+  }
+
+  private cancelLoadWatchdog(): void {
+    if (this.loadWatchdogId !== null) {
+      clearTimeout(this.loadWatchdogId);
+      this.loadWatchdogId = null;
+    }
   }
 
   private urlSafe = computed(() => isSafeHttpsUrl(this.url()));

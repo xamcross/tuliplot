@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, output, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, computed, inject, input, output, signal, viewChild,
+} from '@angular/core';
 import { Cell } from '../../core/models/dashboard.model';
+import type { Compatibility } from '../../core/models/enums';
 import { CellToolbarComponent } from './cell-toolbar.component';
 import { SafeFrameComponent } from './safe-frame.component';
-
-type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
+import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/services/extension-bridge.service';
 
 @Component({
   selector: 'dd-cell',
@@ -21,8 +23,8 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
         <div class="ad-slot" data-testid="ad-slot" aria-label="Advertisements">Advertisements</div>
       }
       @case ('APP') {
-        @switch (state()) {
-          @case ('ok') {
+        @switch (frameState()) {
+          @case ('frame') {
             <dd-cell-toolbar
               [title]="cell().title ?? ''"
               [asleep]="asleep()"
@@ -38,17 +40,29 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
               [url]="cell().url!"
               [title]="cell().title ?? ''"
               [asleep]="asleep()"
-              (loadFailed)="onLoadFailed()"
+              (loadFailed)="onFrameLoadFailed()"
             />
           }
           @case ('needs-extension') {
-            <div class="state" data-testid="needs-extension">This app needs the DashDash extension to load here.</div>
+            <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
+              <p>This app needs the DashDash Companion extension to load in the grid.</p>
+              <button type="button" (click)="onInstallExtension()">Install DashDash Companion</button>
+              <button type="button" (click)="onEnableForThisApp()">Enable for this site</button>
+              <button type="button" (click)="openInWindow()">Open in a tab instead</button>
+            </div>
           }
           @case ('login-in-tab') {
-            <div class="state" data-testid="login-in-tab">Sign in to this app in a new tab, then reload.</div>
+            <div class="cell-fallback state" data-testid="login-in-tab" data-state="login-in-tab">
+              <p>{{ cell().title }} opens in its own browser tab.</p>
+              <button type="button" (click)="openInWindow()">Open in a tab</button>
+            </div>
           }
           @case ('load-failed') {
-            <div class="state" data-testid="load-failed">This app refused to load. Open it in a new window.</div>
+            <div class="cell-fallback state" data-testid="load-failed" data-state="load-failed">
+              <p>{{ cell().title }} didn't load in the grid.</p>
+              <button type="button" (click)="retry()">Retry</button>
+              <button type="button" (click)="openInWindow()">Open in a tab</button>
+            </div>
           }
         }
       }
@@ -58,15 +72,15 @@ type CellState = 'ok' | 'needs-extension' | 'login-in-tab' | 'load-failed';
     :host { display: block; width: 100%; height: 100%; }
     .add-btn { width: 100%; height: 100%; border: none; background: #fafafa; cursor: pointer; font-size: 14px; }
     .ad-slot { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #999; }
-    .state { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 8px; text-align: center; color: #666; }
+    .state, .cell-fallback { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 8px; text-align: center; color: #666; }
+    .cell-fallback button { cursor: pointer; }
   `],
 })
 export class CellComponent {
   cell = input.required<Cell>();
   dragging = input<boolean>(false);
   asleep = input<boolean>(false);
-  // Stub state; Plan 04 drives 'needs-extension' | 'login-in-tab' | 'load-failed'.
-  state = input<CellState>('ok');
+  readonly compatibility = input<Compatibility | null>(null);
 
   edit = output<number>();
   remove = output<number>();
@@ -76,12 +90,64 @@ export class CellComponent {
   focusToggle = output<number>();
 
   private safeFrame = viewChild(SafeFrameComponent);
+  private readonly bridge = inject(ExtensionBridgeService);
+  private readonly loadFailedFlag = signal(false);
+
+  readonly frameState = computed<'frame' | 'needs-extension' | 'login-in-tab' | 'load-failed'>(() => {
+    const cell = this.cell();
+    if (cell.type !== 'APP') {
+      return 'frame';
+    }
+    if (this.loadFailedFlag()) {
+      return 'load-failed';
+    }
+    const compat = this.compatibility();
+    if (compat === 'NEEDS_EXTENSION' && !this.bridge.installed()) {
+      return 'needs-extension';
+    }
+    if (compat === 'LOGIN_IN_TAB' || cell.openMode === 'WINDOW') {
+      return 'login-in-tab';
+    }
+    return 'frame';
+  });
 
   onReload(): void {
     this.safeFrame()?.reload();
   }
 
-  onLoadFailed(): void {
-    // Plan 04 sets the 'load-failed' state here via framing-failure detection.
+  /** Called from SafeFrameComponent (loadFailed) output. */
+  onFrameLoadFailed(): void {
+    this.loadFailedFlag.set(true);
+  }
+
+  /** Re-attempt framing after a load failure. */
+  retry(): void {
+    this.loadFailedFlag.set(false);
+  }
+
+  /** Fallback: open the app in a real browser tab. */
+  openInWindow(): void {
+    const url = this.cell().url;
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
+  /** needs-extension CTA: open the Chrome Web Store listing. */
+  onInstallExtension(): void {
+    window.open(EXTENSION_WEBSTORE_URL, '_blank');
+  }
+
+  /** needs-extension CTA: grant this app's origin to the extension, then retry. */
+  async onEnableForThisApp(): Promise<void> {
+    const url = this.cell().url;
+    if (!url) {
+      return;
+    }
+    const origin = new URL(url).origin;
+    const granted = await this.bridge.requestHost(origin);
+    if (granted) {
+      this.loadFailedFlag.set(false);
+    }
   }
 }
