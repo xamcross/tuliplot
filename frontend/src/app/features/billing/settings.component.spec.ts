@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { SettingsComponent } from './settings.component';
 import { AuthStore } from '../../stores/auth.store';
@@ -15,7 +16,11 @@ describe('SettingsComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: AuthStore, useValue: { tier: signal('FREE') } },
+        provideRouter([]),
+        {
+          provide: AuthStore,
+          useValue: { tier: signal('FREE'), user: signal({ displayName: 'Jane Doe', email: 'jane@example.com' }) },
+        },
       ],
     });
     httpMock = TestBed.inject(HttpTestingController);

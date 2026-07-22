@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { UpgradeComponent } from './upgrade.component';
+import { AuthStore } from '../../stores/auth.store';
 import { environment } from '../../../environments/environment';
 
 describe('UpgradeComponent', () => {
@@ -10,7 +13,12 @@ describe('UpgradeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        { provide: AuthStore, useValue: { tier: signal('FREE') } },
+      ],
     });
     httpMock = TestBed.inject(HttpTestingController);
   });
