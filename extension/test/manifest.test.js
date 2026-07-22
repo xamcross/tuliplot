@@ -48,3 +48,23 @@ test('manifest wires background worker and document_start content script', () =>
   assert.deepEqual(cs.js, ['content.js']);
   assert.equal(cs.run_at, 'document_start');
 });
+
+test('manifest declares icons at 16, 32, 48 and 128', () => {
+  const m = loadManifest();
+  assert.deepEqual(Object.keys(m.icons).sort((a, b) => a - b), ['16', '32', '48', '128']);
+  for (const size of [16, 32, 48, 128]) {
+    assert.equal(m.icons[String(size)], `icons/icon${size}.png`);
+  }
+});
+
+test('every manifest icon file exists and matches its nominal pixel size', () => {
+  const m = loadManifest();
+  for (const [size, rel] of Object.entries(m.icons)) {
+    const file = path.join(__dirname, '..', rel);
+    assert.ok(fs.existsSync(file), `${rel} missing`);
+    const buf = fs.readFileSync(file);
+    // PNG: 8-byte signature, IHDR at 8; width big-endian at byte 16, height at 20.
+    assert.equal(buf.readUInt32BE(16), Number(size), `${rel} width`);
+    assert.equal(buf.readUInt32BE(20), Number(size), `${rel} height`);
+  }
+});
