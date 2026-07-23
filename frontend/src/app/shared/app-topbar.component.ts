@@ -2,28 +2,31 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { AuthStore } from '../stores/auth.store';
 import { LogoComponent } from './logo.component';
+import { TlThemeToggleComponent } from './theme-toggle.component';
 
 @Component({
   selector: 'tl-app-topbar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LogoComponent],
+  imports: [RouterLink, LogoComponent, TlThemeToggleComponent],
   template: `
     <div class="bar">
       <tl-logo [compact]="true" [link]="mode() === 'dashboard' ? '/' : '/app'" />
-      @if (mode() === 'dashboard') {
-        <div class="right">
+      <div class="right">
+        @if (mode() === 'dashboard') {
           <span class="plan" [class.plan--premium]="premium()" data-testid="topbar-plan">
             {{ premium() ? 'Premium' : 'Free plan' }}
           </span>
           @if (!premium()) {
             <a routerLink="/app/upgrade" class="tl-btn tl-btn--primary tl-btn--sm">Go Premium</a>
           }
+          <tl-theme-toggle />
           <a routerLink="/app/settings" class="gear" aria-label="Settings">⚙</a>
-        </div>
-      } @else {
-        <a routerLink="/app" class="tl-back">← Back to dashboard</a>
-      }
+        } @else {
+          <tl-theme-toggle />
+          <a routerLink="/app" class="tl-back">← Back to dashboard</a>
+        }
+      </div>
     </div>
   `,
   styles: [`
