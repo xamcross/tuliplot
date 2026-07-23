@@ -65,6 +65,46 @@
   :root { --tl-page-pad: 24px; }
 }
 
+/* --- Ink Purple dark theme (design: 2026-07-23 dark-theme plan) --- */
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --tl-ink: #EDEBF7;
+  --tl-ink-soft: #A9A4C4;
+  --tl-ink-faint: #6F6A8E;
+  --tl-ink-label: #8D88AC;
+  --tl-ink-dim: #6A6590;
+  --tl-prose: #C6C2DC;
+  --tl-prose-lead: #D6D2E8;
+  --tl-primary-hover: #6FAAFF;
+  --tl-primary-tint: rgba(77, 150, 255, 0.16);
+  --tl-pink-ink: #FFB1B1;
+  --tl-peach-ink: #FFD8A8; --tl-peach-tint: rgba(255, 216, 168, 0.14);
+  --tl-sky-ink: #A5D8FF;   --tl-sky-tint: rgba(165, 216, 255, 0.14);
+  --tl-mint-ink: #B2F2BB;  --tl-mint-tint: rgba(178, 242, 187, 0.14);
+  --tl-lilac-ink: #D0BFFF; --tl-lilac-tint: rgba(208, 191, 255, 0.14);
+  --tl-surface: #232040;
+  --tl-surface-2: #201D3A;
+  --tl-surface-3: #2A2748;
+  --tl-app-bg: #1A1830;
+  --tl-bg: #16142A;
+  --tl-card-bg: #232040;
+  --tl-header-bg: rgba(22, 20, 42, 0.9);
+  --tl-border: #2E2B4E;
+  --tl-border-strong: #423D68;
+  --tl-border-cell: #363258;
+  --tl-border-dashed: #4A4574;
+  --tl-grad: linear-gradient(135deg, #232048, #2A2358);
+  --tl-shadow-card: 0 20px 50px rgba(0, 0, 0, 0.45);
+  --tl-shadow-btn: 0 8px 20px rgba(77, 150, 255, 0.22);
+  --tl-error: #FF8A7A;
+  --tl-backdrop: rgba(0, 0, 0, 0.55);
+  --tl-thumb-amber: rgba(255, 216, 168, 0.16);
+  --tl-ad-stripe-a: #232040;
+  --tl-ad-stripe-b: #2A2748;
+  --tl-tile-stripe-a: #262246;
+  --tl-tile-stripe-b: #2C284E;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; }
 body { font-family: var(--tl-font-body); color: var(--tl-ink); background: var(--tl-bg); }
