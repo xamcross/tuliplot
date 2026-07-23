@@ -36,7 +36,7 @@ import { ConsentService } from '../../core/services/consent.service';
     .ad-cell { height: 100%; display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 12px; text-align: center; padding: 16px;
       border: 1.5px dashed var(--tl-border-dashed); border-radius: 12px;
-      background: repeating-linear-gradient(45deg, #F4F2FA, #F4F2FA 9px, #ECE8F6 9px, #ECE8F6 18px); }
+      background: repeating-linear-gradient(45deg, var(--tl-ad-stripe-a), var(--tl-ad-stripe-a) 9px, var(--tl-ad-stripe-b) 9px, var(--tl-ad-stripe-b) 18px); }
     .ad-cell__label { font-family: var(--tl-font-mono); font-size: 11px; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase; color: var(--tl-ink-faint); }
     .ad-cell__promo { display: flex; flex-direction: column; align-items: center; gap: 12px;

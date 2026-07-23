@@ -115,7 +115,7 @@ import { SiteFooterComponent } from './site-footer.component';
     <tl-site-footer />
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-bg); }
     main { flex: 1; }
     .tl-hero-band h1 { font-size: 44px; }
   `],

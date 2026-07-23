@@ -51,7 +51,7 @@ type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
     .page { width: 100vw; height: 100vh; display: flex; flex-direction: column; background: var(--tl-app-bg); }
     .grid-area { flex: 1; min-height: 0; padding: 12px; position: relative; }
     .parked-prompt { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 1100;
-      max-width: 90vw; background: #fff; border: 1px solid var(--tl-border); border-radius: 16px;
+      max-width: 90vw; background: var(--tl-card-bg); border: 1px solid var(--tl-border); border-radius: 16px;
       padding: 16px 20px; box-shadow: var(--tl-shadow-card); font-size: 15px; color: var(--tl-ink); }
     .parked-prompt p { margin: 0 0 4px; }
     .parked-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }

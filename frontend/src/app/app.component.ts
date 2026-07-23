@@ -20,7 +20,7 @@ import { ConsentService } from './core/services/consent.service';
     .browser-notice { display: flex; gap: 16px; align-items: center; justify-content: space-between;
       padding: 10px 20px; background: var(--tl-peach-tint); color: var(--tl-peach-ink);
       font-family: var(--tl-font-body); font-size: 14px; }
-    .browser-notice button { border: none; background: #fff; color: var(--tl-peach-ink); font-weight: 600;
+    .browser-notice button { border: none; background: var(--tl-card-bg); color: var(--tl-peach-ink); font-weight: 600;
       border-radius: 999px; padding: 6px 14px; cursor: pointer; }
   `],
 })

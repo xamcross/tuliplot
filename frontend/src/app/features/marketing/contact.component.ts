@@ -60,7 +60,7 @@ import { SiteFooterComponent } from './site-footer.component';
     <tl-site-footer />
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-bg); }
     main { flex: 1; }
     .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0 8px; }
     .card { background: var(--tl-surface); border: 1px solid var(--tl-border); border-radius: 16px; padding: 22px; }

@@ -35,7 +35,7 @@ import { pillClass } from './pill.util';
     <tl-site-footer />
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-bg); }
     .inner { max-width: 900px; margin: 0 auto; }
     main { flex: 1; max-width: 900px; margin: 0 auto; padding: 48px var(--tl-page-pad); width: 100%; }
     .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }

@@ -58,7 +58,7 @@ export function googleAuthUrl(apiBaseUrl: string): string {
     .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--tl-ink-faint); font-size: 13px; }
     .divider span { flex: 1; height: 1px; background: var(--tl-border); }
     .google { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
-      font-weight: 600; font-size: 15px; color: var(--tl-ink); background: #fff;
+      font-weight: 600; font-size: 15px; color: var(--tl-ink); background: var(--tl-card-bg);
       border: 1.5px solid var(--tl-border-strong); border-radius: 999px; padding: 13px; }
     .g { width: 18px; height: 18px; border-radius: 50%;
       background: conic-gradient(#EA4335, #FBBC05, #34A853, #4285F4); }

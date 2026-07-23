@@ -43,6 +43,23 @@
   --tl-font-body: 'DM Sans', sans-serif;
   --tl-font-mono: 'Space Mono', monospace;
   --tl-page-pad: 56px;
+  --tl-bg: #fff;
+  --tl-card-bg: #fff;
+  --tl-header-bg: rgba(255, 255, 255, 0.9);
+  --tl-error: #c0392b;
+  --tl-backdrop: rgba(51, 48, 74, 0.4);
+  --tl-ink-dim: #b8b3c9;
+  --tl-thumb-amber: #FFEBD1;
+  --tl-ad-stripe-a: #F4F2FA;
+  --tl-ad-stripe-b: #ECE8F6;
+  --tl-tile-stripe-a: #efedf5;
+  --tl-tile-stripe-b: #e6e3f0;
+  /* dark text on SOLID pastel fills — theme-invariant, never overridden */
+  --tl-on-pink: #7a3838;
+  --tl-on-peach: #8a5a1f;
+  --tl-on-sky: #1f5a8a;
+  --tl-on-mint: #2b6b39;
+  --tl-on-lilac: #54398a;
 }
 @media (max-width: 720px) {
   :root { --tl-page-pad: 24px; }
@@ -50,7 +67,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; }
-body { font-family: var(--tl-font-body); color: var(--tl-ink); background: #fff; }
+body { font-family: var(--tl-font-body); color: var(--tl-ink); background: var(--tl-bg); }
 a { color: var(--tl-primary); }
 a:hover { color: var(--tl-primary-hover); }
 details > summary { list-style: none; cursor: pointer; }
@@ -97,7 +114,7 @@ details > summary::-webkit-details-marker { display: none; }
 .tl-pill--neutral { color: var(--tl-ink-soft);  background: var(--tl-surface-3); }
 
 /* --- cards + inputs --- */
-.tl-card { background: #fff; border: 1px solid var(--tl-border); border-radius: 20px; }
+.tl-card { background: var(--tl-card-bg); border: 1px solid var(--tl-border); border-radius: 20px; }
 .tl-card--float { border-radius: 24px; box-shadow: var(--tl-shadow-card); }
 .tl-input {
   width: 100%; font-family: var(--tl-font-body); font-size: 15px; color: var(--tl-ink);
@@ -105,7 +122,7 @@ details > summary::-webkit-details-marker { display: none; }
   background: var(--tl-surface); outline: none;
 }
 .tl-input:focus { border-color: var(--tl-primary); }
-.tl-form-error { color: #c0392b; font-size: 14px; margin: 0 0 12px; }
+.tl-form-error { color: var(--tl-error); font-size: 14px; margin: 0 0 12px; }
 
 /* --- marketing hero band + back link --- */
 .tl-hero-band { background: var(--tl-grad); padding: 64px var(--tl-page-pad) 52px; }
@@ -146,4 +163,4 @@ details > summary::-webkit-details-marker { display: none; }
 .tl-article li { margin-bottom: 8px; }
 
 /* --- CDK dialog overlay --- */
-.cdk-overlay-backdrop.cdk-overlay-dark-backdrop { background: rgba(51, 48, 74, 0.4); }
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop { background: var(--tl-backdrop); }

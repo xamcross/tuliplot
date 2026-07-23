@@ -34,7 +34,7 @@ import { pillClass } from './pill.util';
     <tl-site-footer />
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-bg); }
     .inner { max-width: 720px; margin: 0 auto; }
     .inner .tl-pill { margin-top: 14px; }
     .tl-hero-band h1 { font-size: 42px; }
