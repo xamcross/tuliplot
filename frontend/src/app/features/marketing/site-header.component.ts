@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LogoComponent } from '../../shared/logo.component';
+import { TlThemeToggleComponent } from '../../shared/theme-toggle.component';
 
 @Component({
   selector: 'tl-site-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, LogoComponent],
+  imports: [RouterLink, RouterLinkActive, LogoComponent, TlThemeToggleComponent],
   template: `
     <header class="hdr">
       <tl-logo />
@@ -14,6 +15,7 @@ import { LogoComponent } from '../../shared/logo.component';
         <a class="site" routerLink="/guides" routerLinkActive="active">Guides</a>
         <a class="site" routerLink="/blog" routerLinkActive="active">Blog</a>
         <a class="site" routerLink="/about" routerLinkActive="active">About</a>
+        <tl-theme-toggle />
         <a routerLink="/login">Log in</a>
         <a routerLink="/register" class="cta">Get started</a>
       </nav>
