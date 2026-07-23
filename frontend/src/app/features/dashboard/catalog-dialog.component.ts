@@ -37,7 +37,7 @@ type CatalogChoice = CatalogApp | 'ADD_URL';
     </div>
   `,
   styles: [`
-    .dialog { background: #fff; border-radius: 24px; box-shadow: var(--tl-shadow-card); padding: 28px;
+    .dialog { background: var(--tl-card-bg); border-radius: 24px; box-shadow: var(--tl-shadow-card); padding: 28px;
       width: 100%; max-width: 480px; font-family: var(--tl-font-body); color: var(--tl-ink); }
     h2 { margin: 0 0 16px; font-family: var(--tl-font-display); font-weight: 700; font-size: 22px; }
     .apps { list-style: none; margin: 14px 0; padding: 0; max-height: 320px; overflow: auto;

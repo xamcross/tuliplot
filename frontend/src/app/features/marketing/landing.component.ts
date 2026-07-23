@@ -130,12 +130,12 @@ import { SiteFooterComponent } from './site-footer.component';
       gap: 16px; aspect-ratio: 3 / 1.35; background: var(--tl-surface-2); border-radius: 24px; padding: 16px; }
     .tile { border-radius: 16px; padding: 14px; display: flex; align-items: flex-end;
       font-family: var(--tl-font-mono); font-size: 12px; font-weight: 700; }
-    .tile--pink { background: var(--tl-pink); color: var(--tl-pink-ink); }
-    .tile--peach { background: var(--tl-peach); color: var(--tl-peach-ink); }
-    .tile--sky { background: var(--tl-sky); color: var(--tl-sky-ink); }
-    .tile--mint { background: var(--tl-mint); color: var(--tl-mint-ink); }
-    .tile--lilac { background: var(--tl-lilac); color: var(--tl-lilac-ink); }
-    .tile--ad { background: repeating-linear-gradient(45deg, #efedf5, #efedf5 8px, #e6e3f0 8px, #e6e3f0 16px);
+    .tile--pink { background: var(--tl-pink); color: var(--tl-on-pink); }
+    .tile--peach { background: var(--tl-peach); color: var(--tl-on-peach); }
+    .tile--sky { background: var(--tl-sky); color: var(--tl-on-sky); }
+    .tile--mint { background: var(--tl-mint); color: var(--tl-on-mint); }
+    .tile--lilac { background: var(--tl-lilac); color: var(--tl-on-lilac); }
+    .tile--ad { background: repeating-linear-gradient(45deg, var(--tl-tile-stripe-a), var(--tl-tile-stripe-a) 8px, var(--tl-tile-stripe-b) 8px, var(--tl-tile-stripe-b) 16px);
       border: 1.5px dashed var(--tl-border-dashed); align-items: center; justify-content: center;
       text-align: center; font-size: 11px; color: var(--tl-ink-faint); }
     .features { padding: 56px var(--tl-page-pad); background: var(--tl-surface); }
@@ -152,9 +152,9 @@ import { SiteFooterComponent } from './site-footer.component';
     .step { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .num { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
       font-family: var(--tl-font-display); font-weight: 700; font-size: 22px; border-radius: 999px; }
-    .num--pink { background: var(--tl-pink); color: var(--tl-pink-ink); }
-    .num--peach { background: var(--tl-peach); color: var(--tl-peach-ink); }
-    .num--mint { background: var(--tl-mint); color: var(--tl-mint-ink); }
+    .num--pink { background: var(--tl-pink); color: var(--tl-on-pink); }
+    .num--peach { background: var(--tl-peach); color: var(--tl-on-peach); }
+    .num--mint { background: var(--tl-mint); color: var(--tl-on-mint); }
     .pricing { padding: 56px var(--tl-page-pad); background: var(--tl-surface); }
     .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
     .plan { padding: 32px; border-radius: 22px; }

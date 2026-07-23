@@ -65,10 +65,10 @@ import { Compatibility } from '../../core/models/enums';
       height: 100%;
       position: relative;
     }
-    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid var(--tl-border-cell); border-radius: 12px; background: #fff; display: flex; flex-direction: column; }
+    .cell { position: relative; min-height: 0; min-width: 0; overflow: hidden; border: 1px solid var(--tl-border-cell); border-radius: 12px; background: var(--tl-card-bg); display: flex; flex-direction: column; }
     .cell--ad { background: transparent; border: none; }
     .drag { width: 100%; height: 100%; display: flex; flex-direction: column; }
-    .cell.focused { position: fixed; inset: 0; z-index: 1000; border-radius: 0; background: #fff; }
+    .cell.focused { position: fixed; inset: 0; z-index: 1000; border-radius: 0; background: var(--tl-card-bg); }
     .iframe-shield { position: absolute; inset: 0; z-index: 50; pointer-events: auto; background: transparent; }
     .grid.dragging iframe { pointer-events: none; }
   `],

@@ -38,13 +38,13 @@ import { pillClass, thumbClass } from './pill.util';
     <tl-site-footer />
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: #fff; }
+    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-bg); }
     .inner { max-width: 900px; margin: 0 auto; }
     main { flex: 1; max-width: 900px; margin: 0 auto; padding: 48px var(--tl-page-pad); width: 100%; }
     .posts { display: flex; flex-direction: column; gap: 18px; }
     .post { display: flex; gap: 24px; align-items: center; padding: 28px; text-decoration: none; }
     .thumb { flex: none; width: 120px; height: 96px; border-radius: 14px; }
-    .thumb--amber { background: #FFEBD1; }
+    .thumb--amber { background: var(--tl-thumb-amber); }
     .thumb--sky { background: var(--tl-sky-tint); }
     .thumb--mint { background: var(--tl-mint-tint); }
     .thumb--neutral { background: var(--tl-surface-3); }

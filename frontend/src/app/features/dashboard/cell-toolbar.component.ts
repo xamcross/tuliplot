@@ -28,7 +28,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
       white-space: nowrap; max-width: 40%; }
     .spacer { flex: 1; }
     button { border: none; background: transparent; cursor: pointer; padding: 2px 4px;
-      line-height: 1; font-size: 13px; color: #b8b3c9; }
+      line-height: 1; font-size: 13px; color: var(--tl-ink-dim); }
     button:hover { color: var(--tl-ink); }
   `],
 })

@@ -28,7 +28,7 @@ import { LogoComponent } from './logo.component';
   `,
   styles: [`
     .bar { display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 20px; background: #fff; border-bottom: 1px solid var(--tl-border); }
+      padding: 12px 20px; background: var(--tl-card-bg); border-bottom: 1px solid var(--tl-border); }
     .right { display: flex; align-items: center; gap: 14px; }
     .plan { font-family: var(--tl-font-mono); font-size: 11px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.06em; color: var(--tl-peach-ink);

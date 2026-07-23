@@ -22,7 +22,7 @@ import { LogoComponent } from '../../shared/logo.component';
   styles: [`
     .hdr { position: sticky; top: 0; z-index: 10; display: flex; align-items: center;
       justify-content: space-between; gap: 16px; padding: 18px var(--tl-page-pad);
-      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+      background: var(--tl-header-bg); backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--tl-app-bg); }
     .nav { display: flex; align-items: center; gap: 26px; font-weight: 500; font-size: 15px; }
     .nav a { text-decoration: none; color: var(--tl-ink-soft); }
