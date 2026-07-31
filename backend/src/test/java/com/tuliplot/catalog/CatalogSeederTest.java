@@ -24,7 +24,7 @@ class CatalogSeederTest {
 
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        registry.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired

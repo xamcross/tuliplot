@@ -35,7 +35,7 @@ class AuthControllerRegisterTest {
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        r.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     @Autowired MockMvc mvc;

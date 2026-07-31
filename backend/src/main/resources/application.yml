@@ -1,10 +1,10 @@
 spring:
   application:
     name: tuliplot-backend
-  data:
-    mongodb:
-      # Prod MONGODB_URI MUST include ?maxPoolSize=50 (shared contract: cap the Mongo pool 20–50).
-      uri: ${MONGODB_URI:mongodb://localhost:27017/tuliplot?maxPoolSize=50&minPoolSize=5}
+  mongodb:
+    # Prod MONGODB_URI MUST include ?maxPoolSize=50 (shared contract: cap the Mongo pool 20–50).
+    # Boot 4 renamed spring.data.mongodb.uri -> spring.mongodb.uri (old name is dead, deprecation level "error").
+    uri: ${MONGODB_URI:mongodb://localhost:27017/tuliplot?maxPoolSize=50&minPoolSize=5}
   security:
     oauth2:
       client:

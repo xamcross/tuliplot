@@ -27,7 +27,7 @@ class SkeletonContextTest {
 
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        registry.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
     }
 
     // Boot 4.x removed TestRestTemplate; hit the running server with Spring's RestClient instead.
