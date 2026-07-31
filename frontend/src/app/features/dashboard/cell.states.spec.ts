@@ -100,4 +100,54 @@ describe('CellComponent fallback states', () => {
       'noopener,noreferrer',
     );
   });
+
+  it('renders the toolbar in the needs-extension state', () => {
+    bridge.installed.set(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="needs-extension"]')).not.toBeNull();
+  });
+
+  it('renders the toolbar in the login-in-tab state', () => {
+    const fixture = create(makeCell({ openMode: 'WINDOW' }), 'LOGIN_IN_TAB');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="login-in-tab"]')).not.toBeNull();
+  });
+
+  it('renders the toolbar in the load-failed state', () => {
+    const fixture = create(makeCell(), 'FRAMES_CLEAN');
+    fixture.detectChanges();
+    fixture.componentInstance.onFrameLoadFailed();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="load-failed"]')).not.toBeNull();
+  });
+
+  it('hides frame-only toolbar actions in fallback states', () => {
+    bridge.installed.set(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    for (const id of ['tb-reload', 'tb-focus', 'tb-popout', 'tb-sleep']) {
+      expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).toBeNull();
+    }
+    for (const id of ['tb-opentab', 'tb-edit', 'tb-remove']) {
+      expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).not.toBeNull();
+    }
+  });
+
+  it('emits remove and edit with the slot from a fallback-state toolbar', () => {
+    bridge.installed.set(false);
+    const fixture = create(makeCell({ slot: 3 }), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    const remove = vi.fn();
+    const edit = vi.fn();
+    fixture.componentInstance.remove.subscribe(remove);
+    fixture.componentInstance.edit.subscribe(edit);
+    (fixture.nativeElement.querySelector('[data-testid="tb-remove"]') as HTMLButtonElement).click();
+    (fixture.nativeElement.querySelector('[data-testid="tb-edit"]') as HTMLButtonElement).click();
+    expect(remove).toHaveBeenCalledWith(3);
+    expect(edit).toHaveBeenCalledWith(3);
+  });
 });
