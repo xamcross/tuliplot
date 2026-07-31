@@ -76,7 +76,7 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
   `,
   styles: [`
     :host { display: flex; flex-direction: column; width: 100%; height: 100%; }
-    tl-safe-frame, .cell-fallback { flex: 1 1 0; min-height: 0; }
+    tl-safe-frame, .cell-fallback, tl-ad-cell { flex: 1 1 0; min-height: 0; }
     .add-btn { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 8px; border: 1.5px dashed var(--tl-border-dashed); border-radius: 12px;
       background: transparent; cursor: pointer; font-family: var(--tl-font-body); font-size: 14px;
