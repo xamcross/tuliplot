@@ -28,4 +28,28 @@ describe('CellToolbarComponent', () => {
     expect(remove).toHaveBeenCalledTimes(1);
     expect(sleep).toHaveBeenCalledTimes(1);
   });
+
+  it('hides frame-only actions when framed=false, keeps open-in-tab/edit/remove', () => {
+    TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
+    const f = TestBed.createComponent(CellToolbarComponent);
+    f.componentRef.setInput('framed', false);
+    f.detectChanges();
+
+    for (const id of ['tb-reload', 'tb-focus', 'tb-popout', 'tb-sleep']) {
+      expect(f.nativeElement.querySelector(`[data-testid="${id}"]`), id).toBeNull();
+    }
+    for (const id of ['tb-opentab', 'tb-edit', 'tb-remove']) {
+      expect(f.nativeElement.querySelector(`[data-testid="${id}"]`), id).not.toBeNull();
+    }
+  });
+
+  it('shows all seven actions by default (framed=true)', () => {
+    TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
+    const f = TestBed.createComponent(CellToolbarComponent);
+    f.detectChanges();
+
+    for (const id of ['tb-reload', 'tb-focus', 'tb-popout', 'tb-opentab', 'tb-edit', 'tb-sleep', 'tb-remove']) {
+      expect(f.nativeElement.querySelector(`[data-testid="${id}"]`), id).not.toBeNull();
+    }
+  });
 });

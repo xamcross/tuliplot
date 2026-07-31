@@ -9,14 +9,18 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
       <span class="dot" [style.background]="accent()" aria-hidden="true"></span>
       <span class="title">{{ title() }}</span>
       <span class="spacer"></span>
-      <button type="button" title="Reload" data-testid="tb-reload" (click)="reload.emit()">&#8635;</button>
-      <button type="button" title="Expand" data-testid="tb-focus" (click)="focusToggle.emit()">&#8690;</button>
-      <button type="button" title="Pop out" data-testid="tb-popout" (click)="popOut.emit()">&#9099;</button>
+      @if (framed()) {
+        <button type="button" title="Reload" data-testid="tb-reload" (click)="reload.emit()">&#8635;</button>
+        <button type="button" title="Expand" data-testid="tb-focus" (click)="focusToggle.emit()">&#8690;</button>
+        <button type="button" title="Pop out" data-testid="tb-popout" (click)="popOut.emit()">&#9099;</button>
+      }
       <button type="button" title="Open in tab" data-testid="tb-opentab" (click)="openInTab.emit()">&#8599;</button>
       <button type="button" title="Edit" data-testid="tb-edit" (click)="edit.emit()">&#9998;</button>
-      <button type="button" [title]="asleep() ? 'Wake' : 'Sleep'" data-testid="tb-sleep" (click)="sleep.emit()">
-        {{ asleep() ? '☾' : '☀' }}
-      </button>
+      @if (framed()) {
+        <button type="button" [title]="asleep() ? 'Wake' : 'Sleep'" data-testid="tb-sleep" (click)="sleep.emit()">
+          {{ asleep() ? '☾' : '☀' }}
+        </button>
+      }
       <button type="button" title="Remove" data-testid="tb-remove" (click)="remove.emit()">&#128465;</button>
     </div>
   `,
@@ -36,6 +40,7 @@ export class CellToolbarComponent {
   title = input<string>('');
   asleep = input<boolean>(false);
   accent = input<string>('var(--tl-lilac)');
+  framed = input<boolean>(true);
 
   reload = output<void>();
   focusToggle = output<void>();
