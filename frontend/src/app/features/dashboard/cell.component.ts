@@ -27,20 +27,21 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
         }
       }
       @case ('APP') {
+        <tl-cell-toolbar
+          [title]="cell().title ?? ''"
+          [asleep]="asleep()"
+          [accent]="accent()"
+          [framed]="frameState() === 'frame'"
+          (reload)="onReload()"
+          (popOut)="popOut.emit(cell().slot)"
+          (openInTab)="openInTab.emit(cell().slot)"
+          (focusToggle)="focusToggle.emit(cell().slot)"
+          (edit)="edit.emit(cell().slot)"
+          (sleep)="sleepToggle.emit(cell().slot)"
+          (remove)="remove.emit(cell().slot)"
+        />
         @switch (frameState()) {
           @case ('frame') {
-            <tl-cell-toolbar
-              [title]="cell().title ?? ''"
-              [asleep]="asleep()"
-              [accent]="accent()"
-              (reload)="onReload()"
-              (popOut)="popOut.emit(cell().slot)"
-              (openInTab)="openInTab.emit(cell().slot)"
-              (focusToggle)="focusToggle.emit(cell().slot)"
-              (edit)="edit.emit(cell().slot)"
-              (sleep)="sleepToggle.emit(cell().slot)"
-              (remove)="remove.emit(cell().slot)"
-            />
             <tl-safe-frame
               [url]="cell().url!"
               [title]="cell().title ?? ''"
@@ -74,7 +75,8 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
     }
   `,
   styles: [`
-    :host { display: block; width: 100%; height: 100%; }
+    :host { display: flex; flex-direction: column; width: 100%; height: 100%; }
+    tl-safe-frame, .cell-fallback { flex: 1 1 0; min-height: 0; }
     .add-btn { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 8px; border: 1.5px dashed var(--tl-border-dashed); border-radius: 12px;
       background: transparent; cursor: pointer; font-family: var(--tl-font-body); font-size: 14px;
