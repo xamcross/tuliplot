@@ -127,13 +127,22 @@ describe('CellComponent fallback states', () => {
 
   it('hides frame-only toolbar actions in fallback states', () => {
     bridge.installed.set(false);
-    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
-    fixture.detectChanges();
-    for (const id of ['tb-reload', 'tb-focus', 'tb-popout', 'tb-sleep']) {
-      expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).toBeNull();
-    }
-    for (const id of ['tb-opentab', 'tb-edit', 'tb-remove']) {
-      expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).not.toBeNull();
+    const fixtures = [
+      create(makeCell(), 'NEEDS_EXTENSION'),
+      create(makeCell({ openMode: 'WINDOW' }), 'LOGIN_IN_TAB'),
+    ];
+    const failed = create(makeCell(), 'FRAMES_CLEAN');
+    failed.detectChanges();
+    failed.componentInstance.onFrameLoadFailed();
+    fixtures.push(failed);
+    for (const fixture of fixtures) {
+      fixture.detectChanges();
+      for (const id of ['tb-reload', 'tb-focus', 'tb-popout', 'tb-sleep']) {
+        expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).toBeNull();
+      }
+      for (const id of ['tb-opentab', 'tb-edit', 'tb-remove']) {
+        expect(fixture.nativeElement.querySelector(`[data-testid="${id}"]`), id).not.toBeNull();
+      }
     }
   });
 
