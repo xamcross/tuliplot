@@ -46,4 +46,15 @@ describe('CellComponent AD slot integration', () => {
 
     expect(fixture.nativeElement.querySelector('tl-ad-cell')).toBeNull();
   });
+
+  it('never renders a toolbar for the AD cell', async () => {
+    await setup();
+    const fixture = TestBed.createComponent(CellComponent);
+    fixture.componentRef.setInput('cell', AD_CELL);
+    fixture.componentRef.setInput('adConfig', { showAd: true, adClient: '', adSlot: '' });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[data-testid="cell-toolbar"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="tb-remove"]')).toBeNull();
+  });
 });
