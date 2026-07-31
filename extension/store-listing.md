@@ -55,8 +55,10 @@ The extension is open source: https://github.com/xamcross/tuliplot
 **Graphic assets:**
 - Store icon (128×128): `icons/icon128.png` — the dashboard prefills it from
   the uploaded package; upload the file manually only if it asks.
-- Screenshots (1–5, 1280×800 preferred, 640×400 accepted) — capture at
-  submit time from a locally running app with the extension loaded unpacked:
+- Screenshots (1–5, 1280×800 preferred, 640×400 accepted) — **READY: upload
+  the three files in `store-assets/`** (captured 2026-08-01 from the live
+  tuliplot.com, dark theme; regenerate via `scripts/store-shots.mjs`).
+  Original shot list for reference:
   1. The dashboard grid with 3–4 sites rendering inside cells. Use neutral
      public sites (e.g. wikipedia.org, developer.mozilla.org) — no personal
      or logged-in content visible.
