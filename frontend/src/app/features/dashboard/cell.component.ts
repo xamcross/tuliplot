@@ -34,7 +34,7 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
           [framed]="frameState() === 'frame'"
           (reload)="onReload()"
           (popOut)="popOut.emit(cell().slot)"
-          (openInTab)="openInTab.emit(cell().slot)"
+          (openInTab)="openInWindow()"
           (focusToggle)="focusToggle.emit(cell().slot)"
           (edit)="edit.emit(cell().slot)"
           (sleep)="sleepToggle.emit(cell().slot)"
@@ -105,7 +105,6 @@ export class CellComponent {
   remove = output<number>();
   sleepToggle = output<number>();
   popOut = output<number>();
-  openInTab = output<number>();
   focusToggle = output<number>();
 
   private safeFrame = viewChild(SafeFrameComponent);

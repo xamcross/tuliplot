@@ -150,4 +150,13 @@ describe('CellComponent fallback states', () => {
     expect(remove).toHaveBeenCalledWith(3);
     expect(edit).toHaveBeenCalledWith(3);
   });
+
+  it('toolbar open-in-tab opens the cell url in a new tab', () => {
+    const openSpy = vi.spyOn(window, 'open').mockReturnValue(null);
+    bridge.installed.set(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    (fixture.nativeElement.querySelector('[data-testid="tb-opentab"]') as HTMLButtonElement).click();
+    expect(openSpy).toHaveBeenCalledWith('https://mail.google.com', '_blank', 'noopener,noreferrer');
+  });
 });
