@@ -4,6 +4,11 @@ primary_region = "iad"
 [build]
   dockerfile = "Dockerfile"
 
+[env]
+  # fly-proxy terminates TLS; Spring must honor X-Forwarded-Proto or OAuth
+  # redirect URIs are built as http:// and Google rejects the mismatch.
+  SERVER_FORWARD_HEADERS_STRATEGY = "framework"
+
 [http_service]
   internal_port = 8080
   force_https = true
