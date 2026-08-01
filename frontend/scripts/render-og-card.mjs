@@ -18,10 +18,10 @@ const svg = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <rect width="1200" height="630" fill="#FFFDF9"/>
   <rect width="1200" height="10" fill="#4D96FF"/>
   ${grid}
-  <text x="80" y="250" font-family="sans-serif" font-weight="700" font-size="88" fill="#33304A">TulipLot</text>
-  <text x="80" y="330" font-family="sans-serif" font-size="36" fill="#5B5875">Your web apps, side by side</text>
-  <text x="80" y="380" font-family="sans-serif" font-size="36" fill="#5B5875">in one browser tab.</text>
-  <text x="80" y="540" font-family="sans-serif" font-weight="700" font-size="28" fill="#4D96FF">tuliplot.com</text>
+  <text x="80" y="250" font-family="Segoe UI, Arial, DejaVu Sans, sans-serif" font-weight="700" font-size="88" fill="#33304A">TulipLot</text>
+  <text x="80" y="330" font-family="Segoe UI, Arial, DejaVu Sans, sans-serif" font-size="36" fill="#5B5875">Your web apps, side by side</text>
+  <text x="80" y="380" font-family="Segoe UI, Arial, DejaVu Sans, sans-serif" font-size="36" fill="#5B5875">in one browser tab.</text>
+  <text x="80" y="540" font-family="Segoe UI, Arial, DejaVu Sans, sans-serif" font-weight="700" font-size="28" fill="#4D96FF">tuliplot.com</text>
 </svg>`;
 
 const buf = await sharp(Buffer.from(svg)).png().toBuffer();
