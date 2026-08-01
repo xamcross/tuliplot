@@ -28,7 +28,7 @@ The catalog is grouped by category — email, productivity, news, media — and 
 
 One rule either way: the URL has to be HTTPS. Plain http is rejected, because a dashboard that mixes secure and insecure pages in the same tab isn't one you can trust.
 
-Not every app behaves the same once it lands in a cell, and TulipLot is upfront about which is which. Some sites — Trello is one — load live in the grid with nothing extra to do. Some, like Notion and Hacker News, need the TulipLot Companion extension before they'll embed; the cell tells you so and offers a one-click install. And sites that insist on their own login window, like Gmail and Google Calendar, open in a new tab instead of framing in the grid — still one click away, just not embedded. All three are useful; you'll just meet them a little differently.
+Not every app behaves the same once it lands in a cell, and TulipLot is upfront about which is which. Some sites — Trello is one — load live in the grid with nothing extra to do. Some, like Notion and Hacker News, need the TulipLot Companion extension before they'll embed; the cell walks you through it — a button to install the Companion from the Chrome Web Store, then a second click back in the cell, "Enable for this site," once it's installed. And sites that insist on their own login window, like Gmail and Google Calendar, open in a new tab instead of framing in the grid — still one click away, just not embedded. All three are useful; you'll just meet them a little differently.
 
 If you're not sure where to start, a solid first five looks like this: Gmail for mail, Google Calendar, Trello for boards or tasks, Hacker News for a news source, and Notion for notes and docs. That mix touches all three behaviors above, so you'll see how each one works from day one. It fills five cells and leaves the sixth for whatever you add next — or for Premium later.
 
@@ -42,7 +42,7 @@ Since the layout is fixed, it's worth being deliberate about where things go. Pu
 
 ## 4. Every cell control, explained
 
-A cell that's loading live in the grid gets the full toolbar: six controls. A cell that opens in its own tab instead — Gmail and Calendar, from the starter five above — shows a simpler three: open in tab, edit, remove. There's no in-grid frame on those cells to reload, expand, or put to sleep, so those controls just don't apply. Here's what each one does, and where you'll see it.
+A cell that's loading live in the grid gets the full toolbar: six controls. A cell that opens in its own tab instead — Gmail and Calendar, from the starter five above — shows a simpler three: open in tab, edit, remove. A cell still waiting on the Companion shows that same simpler three until you enable it, then picks up the rest. Either way, there's no in-grid frame yet to reload, expand, or put to sleep, so those controls just don't apply. Here's what each one does, and where you'll see it.
 
 **Reload** refreshes just that cell, the same as hitting refresh on a single tab — handy when a site's gone stale but you don't want to touch anything else on the grid. Live cells only.
 
