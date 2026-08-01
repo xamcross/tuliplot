@@ -9,6 +9,16 @@ jobs:
   backend:
     name: Backend (Gradle + Testcontainers)
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     defaults:
       run:
         working-directory: backend
@@ -35,6 +45,8 @@ jobs:
 
       - name: Build and test
         run: ./gradlew --no-daemon build
+        env:
+          MONGODB_TEST_URI: mongodb://localhost:27017
 
   frontend:
     name: Frontend (Vitest + ng build)
