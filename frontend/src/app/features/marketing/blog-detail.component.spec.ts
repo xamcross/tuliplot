@@ -55,4 +55,12 @@ describe('BlogDetailComponent', () => {
       expect(a.getAttribute('href')).not.toContain(POSTS[0].slug);
     }
   });
+
+  it('renders the per-post banner image', () => {
+    const f = render(POSTS[0].slug);
+    const img = f.nativeElement.querySelector('img.banner') as HTMLImageElement;
+    expect(img).not.toBeNull();
+    expect(img.getAttribute('src')).toBe(`/banners/${POSTS[0].slug}.png`);
+    expect(img.getAttribute('alt')).toBe('');
+  });
 });
