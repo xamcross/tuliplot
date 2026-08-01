@@ -33,7 +33,7 @@ That's the whole trade. You give up the infinite, anything-goes tab bar for six 
 
 ## Built for the real web
 
-Here's the part we won't dress up: a lot of the web doesn't want to be put in a box like this, and that's the site's call to make. Some sites send an explicit signal telling browsers not to frame them elsewhere, full stop. That's a real security choice by real teams, and TulipLot isn't in the business of overriding it.
+Here's the part we won't dress up: a lot of the web doesn't want to be put in a box like this, and that's the site's call to make. Some sites send an explicit signal telling browsers not to frame them elsewhere, full stop. That's a real security choice by real teams, and when a site refuses outright like that, TulipLot isn't in the business of overriding it.
 
 What we can do is be honest about which case you're in, cell by cell. Add a site and one of three things happens. Plenty of the catalog, and plenty of custom HTTPS URLs, just embed and load live right there in the grid. Some sites need a nudge: install the free TulipLot Companion extension once, then flip it on for that specific site, and the cell unlocks. It only touches the sites you explicitly enable, one at a time, and it isn't a bypass for everything. A handful of sites, Gmail and Google Calendar are the common examples, stay outside the grid no matter what you enable. The Companion doesn't change that. For those, the cell becomes a one-click launcher: click it, and the app opens in its own tab the way it always has.
 
