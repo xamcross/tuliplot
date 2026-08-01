@@ -4,6 +4,12 @@ import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
 
+const FAQ: ReadonlyArray<{ q: string; a: string }> = [
+  { q: 'Can I embed any website?', a: 'Any HTTPS URL. Some sites block embedding — the optional Chrome companion unlocks most of them.' },
+  { q: 'Is my data private?', a: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' },
+  { q: 'What happens if I cancel Premium?', a: 'You drop back to the free 5-cell layout; the 6th app is parked so you can re-place or discard it.' },
+];
+
 @Component({
   selector: 'tl-landing',
   standalone: true,
@@ -97,18 +103,12 @@ import { SiteFooterComponent } from './site-footer.component';
 
       <section class="faq">
         <h2>Questions</h2>
-        <details>
-          <summary>Can I embed any website?</summary>
-          <p>Any HTTPS URL. Some sites block embedding — the optional Chrome companion unlocks most of them.</p>
-        </details>
-        <details>
-          <summary>Is my data private?</summary>
-          <p>Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.</p>
-        </details>
-        <details>
-          <summary>What happens if I cancel Premium?</summary>
-          <p>You drop back to the free 5-cell layout; the 6th app is parked so you can re-place or discard it.</p>
-        </details>
+        @for (item of faq; track item.q) {
+          <details>
+            <summary>{{ item.q }}</summary>
+            <p>{{ item.a }}</p>
+          </details>
+        }
       </section>
     </main>
 
@@ -183,6 +183,8 @@ import { SiteFooterComponent } from './site-footer.component';
   `],
 })
 export class LandingComponent {
+  protected readonly faq = FAQ;
+
   constructor() {
     inject(SeoService).set({
       title: 'Browser dashboard — your apps on one calm screen',
@@ -200,11 +202,11 @@ export class LandingComponent {
         },
         {
           '@context': 'https://schema.org', '@type': 'FAQPage',
-          mainEntity: [
-            { '@type': 'Question', name: 'Can I embed any website?', acceptedAnswer: { '@type': 'Answer', text: 'Any HTTPS URL. Some sites block embedding — the optional Chrome companion unlocks most of them.' } },
-            { '@type': 'Question', name: 'Is my data private?', acceptedAnswer: { '@type': 'Answer', text: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' } },
-            { '@type': 'Question', name: 'What happens if I cancel Premium?', acceptedAnswer: { '@type': 'Answer', text: 'You drop back to the free 5-cell layout; the 6th app is parked so you can re-place or discard it.' } },
-          ],
+          mainEntity: FAQ.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
         },
       ],
     });

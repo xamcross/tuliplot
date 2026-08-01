@@ -37,4 +37,20 @@ describe('LandingComponent', () => {
     expect(types).toContain('Organization');
     expect(types).toContain('WebSite');
   });
+
+  it('renders the FAQ from the same source as the FAQPage JSON-LD', async () => {
+    await TestBed.configureTestingModule({
+      imports: [LandingComponent],
+      providers: [provideZonelessChangeDetection(), provideRouter([])],
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(LandingComponent);
+    fixture.detectChanges();
+
+    const summaries = Array.from(document.querySelectorAll('.faq summary')).map((s) => s.textContent?.trim());
+    const jsonLd = JSON.parse(document.getElementById('tl-jsonld')!.textContent ?? '[]') as Array<Record<string, unknown>>;
+    const faq = jsonLd.find((d) => d['@type'] === 'FAQPage') as { mainEntity: Array<{ name: string }> };
+    expect(summaries.length).toBe(3);
+    expect(faq.mainEntity.map((m) => m.name)).toEqual(summaries);
+  });
 });
