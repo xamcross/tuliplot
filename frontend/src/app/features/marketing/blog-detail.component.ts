@@ -24,7 +24,7 @@ import { pillClass } from './pill.util';
           <h1>{{ d.title }}</h1>
         </div>
       </div>
-      <div class="banner" aria-hidden="true"></div>
+      <img class="banner" [src]="'/banners/' + d.slug + '.png'" alt="" />
       <article class="tl-article" [innerHTML]="d.html"></article>
       <nav class="related" aria-labelledby="related-h">
         <h2 id="related-h">Keep reading</h2>
@@ -50,7 +50,7 @@ import { pillClass } from './pill.util';
     .tl-hero-band h1 { font-size: 42px; }
     article { flex: 1; padding-top: 36px; }
     .banner { max-width: 720px; margin: 44px auto 0; height: 260px; border-radius: 20px;
-      background: var(--tl-sky-tint); width: calc(100% - 2 * var(--tl-page-pad)); }
+      object-fit: cover; display: block; width: calc(100% - 2 * var(--tl-page-pad)); }
     .cta-row { max-width: 720px; margin: 0 auto; padding: 0 var(--tl-page-pad) 44px; width: 100%;
       display: flex; gap: 14px; border-top: 1px solid var(--tl-border); padding-top: 28px; }
     .related { max-width: 720px; margin: 0 auto; padding: 8px var(--tl-page-pad) 28px; width: 100%; }
