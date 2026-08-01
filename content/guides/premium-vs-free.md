@@ -39,13 +39,17 @@ Who reaches for that space varies, but a common pattern is one more thing that d
 
 Billing runs entirely through Stripe. To upgrade, go to Settings and click **Go Premium** — that takes you to an upgrade page where you enter payment details directly with Stripe. TulipLot never sees your card number; there's no card form built into the app itself, because the app never needs to touch it.
 
-Managing or canceling works the same way, any time you want: Settings → **Manage billing** opens the Stripe billing portal. That's where your payment method, invoices, and cancellation all live — TulipLot hands the whole job to Stripe rather than building a second version of it. Premium bills monthly, with no annual contract and nothing to lock you in beyond the current month.
+Managing or canceling works the same way, any time you want: Settings → **Manage billing** opens the Stripe billing portal. That's where your payment method, invoices, and cancellation all live — TulipLot hands the whole job to Stripe rather than building a second version of it. Before you confirm anything, the portal shows you exactly when your subscription ends, so there's no guessing about timing. Premium bills monthly, with no annual contract.
 
 ## What happens when you cancel
 
-Canceling doesn't cut you off mid-month. You keep Premium — all six cells, no ads — through the end of the period you already paid for. When that period ends, your account reverts to the free plan on its own, with no extra step required from you.
+Cancellation itself happens in the Stripe billing portal, and it tells you exactly when your subscription ends before you confirm. When that date arrives, your account reverts to the free plan automatically — no extra step required from you.
 
-Reverting means the bottom-right cell becomes the ad slot again. If you had fewer than six cells filled, nothing else changes — your remaining apps stay exactly where you put them. If all six were filled, the app that had been sitting in what's about to become the ad slot needs somewhere to go, and TulipLot doesn't just delete it. Instead, it's parked, and you get a prompt to place it into a different slot — replacing whatever's there — or discard it if you'd rather not keep it. Either way, it's your call to make, not something that happens silently in the background.
+Reverting means the bottom-right cell becomes the ad slot again. What happens to whatever was in your sixth cell depends on the rest of your grid at that moment:
+
+- **Sixth cell was empty.** There's nothing to move — it just becomes the ad cell, and your other five cells stay exactly where they are.
+- **Sixth cell had an app, and at least one of your other five cells was empty.** That app moves automatically into the first empty slot it finds. Your other cells don't shift; only the displaced app relocates.
+- **All six cells were full.** There's no empty slot to move it into, so TulipLot doesn't just delete it. Instead, it's parked, and you get a prompt to place it into a different slot — replacing whatever's there — or discard it if you'd rather not keep it. Either way, it's your call to make, not something that happens silently in the background.
 
 ## Questions before you decide
 
