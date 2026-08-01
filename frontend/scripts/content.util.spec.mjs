@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -61,5 +61,22 @@ describe('sitemapXml', () => {
     expect(xml).toContain('<url><loc>https://tuliplot.com/guides/getting-started/</loc><lastmod>2026-06-01</lastmod></url>');
     expect(xml).toContain('<url><loc>https://tuliplot.com/x/</loc></url>');
     expect(xml).toMatch(/^<\?xml version="1.0" encoding="UTF-8"\?>\n<urlset/);
+  });
+});
+
+describe('xmlEscape', () => {
+  it('escapes ampersand, angle brackets, and quotes', () => {
+    expect(xmlEscape('a&b<c>"d"')).toBe('a&amp;b&lt;c&gt;&quot;d&quot;');
+  });
+
+  it('leaves clean strings untouched', () => {
+    expect(xmlEscape('https://tuliplot.com/guides/x/')).toBe('https://tuliplot.com/guides/x/');
+  });
+});
+
+describe('sitemapXml escaping', () => {
+  it('escapes reserved characters in loc', () => {
+    const xml = sitemapXml([{ loc: 'https://tuliplot.com/a&b/', lastmod: '2026-08-01' }]);
+    expect(xml).toContain('<loc>https://tuliplot.com/a&amp;b/</loc>');
   });
 });

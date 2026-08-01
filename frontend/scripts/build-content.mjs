@@ -17,6 +17,13 @@ const outFile = resolve(
 
 marked.setOptions({ gfm: true, breaks: false });
 
+function requireDate(date, file) {
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    throw new Error(`content: ${file} is missing a valid frontmatter date (YYYY-MM-DD)`);
+  }
+  return date;
+}
+
 function loadDir(kind) {
   const dir = join(contentDir, kind);
   if (!existsSync(dir)) return [];
@@ -30,7 +37,7 @@ function loadDir(kind) {
         slug,
         title: data.title || slug,
         description: data.description || '',
-        date: data.date || '1970-01-01',
+        date: requireDate(data.date, f),
         category: data.category || '',
         order: Number.parseInt(data.order ?? '0', 10) || 0,
         readingMinutes: readingMinutes(body),
