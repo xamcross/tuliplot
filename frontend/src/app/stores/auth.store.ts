@@ -80,6 +80,7 @@ export const AuthStore = signalStore(
     ),
     logout: rxMethod<void>(
       pipe(
+        tap(() => patchState(store, { user: null, status: 'anonymous', error: null })),
         switchMap(() =>
           api.logout().pipe(
             tap(() => patchState(store, { user: null, status: 'anonymous', error: null })),

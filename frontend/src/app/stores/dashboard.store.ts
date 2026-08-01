@@ -47,7 +47,7 @@ export const DashboardStore = signalStore(
 
     const load = rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { error: null })),
+        tap(() => patchState(store, { cells: [], parkedApp: null, loaded: false, error: null })),
         switchMap(() =>
           api.get().pipe(
             tap((dash: Dashboard) =>

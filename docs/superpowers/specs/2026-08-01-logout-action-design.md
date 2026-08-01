@@ -41,9 +41,13 @@ without logging in is redirected to `/login` by the existing `authGuard`.
 
 ### Error handling
 
-Nothing new. `AuthStore.logout`'s `catchError` already clears the user and
-sets `anonymous` even when the network call fails — logged out on this device
-regardless.
+Nothing new in the pipeline. `AuthStore.logout`'s `catchError` clears the
+in-memory user and sets `anonymous` even when the network call fails, so the
+UI treats the user as logged out. Caveat, on record: if the `/auth/logout`
+request never reaches the server, the httpOnly session cookie survives and a
+later reload's `loadMe()` will silently restore the session — the client
+cannot clear an httpOnly cookie itself. Retry-on-reconnect is a possible
+future hardening item.
 
 ### Testing
 
