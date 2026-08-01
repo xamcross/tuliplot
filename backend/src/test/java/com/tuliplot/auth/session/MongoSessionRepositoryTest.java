@@ -11,20 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @SpringBootTest
 class MongoSessionRepositoryTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        r.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(MongoSessionRepositoryTest.class));
     }
 
     @Autowired MongoSessionRepository repository;
