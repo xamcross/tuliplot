@@ -53,11 +53,17 @@ both deploys on green; path-filtered triggers; one workflow file.
   the backend filter; `superfly/flyctl-actions/setup-flyctl@master` then
   `flyctl deploy --remote-only` with `working-directory: backend` (Fly builds
   the Dockerfile on its remote builders).
-- **Concurrency**: deploy jobs share `concurrency: { group: deploy,
-  cancel-in-progress: false }` so overlapping merges serialize.
+- **Concurrency**: each deploy job has its own group (`deploy-frontend` /
+  `deploy-backend`, `cancel-in-progress: false`). A shared group was
+  originally specified, but GitHub cancels an older *pending* job in a group
+  when a newer one arrives — a frontend deploy could silently drop a pending
+  backend deploy. Same-target supersession is safe (the newer SHA contains
+  the older's changes); cross-target serialization bought nothing.
 - **Manual escape hatch**: `workflow_dispatch` with two boolean inputs
   (`deploy_frontend`, `deploy_backend`) forces the respective deploy job,
-  replacing the manual wrangler/flyctl commands entirely.
+  replacing the manual wrangler/flyctl commands entirely. Dispatch deploys
+  are additionally guarded to `main` — dispatching from another branch runs
+  tests but skips the deploy jobs.
 - PR builds are unchanged: tests only, no deploy jobs, no artifact upload.
 
 ### Secrets (one-time setup)
