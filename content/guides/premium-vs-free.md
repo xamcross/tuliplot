@@ -1,35 +1,64 @@
 ---
 title: Premium vs Free — what you get
 slug: premium-vs-free
-description: A side-by-side of the free plan and Premium, and how upgrading and downgrading work.
-date: 2026-06-15
+description: Everything the free plan includes, exactly what $4/month adds, and what happens to your grid when you upgrade, downgrade, or cancel.
+date: 2026-08-01
 category: Billing
 order: 3
 ---
-# Premium vs Free
+# Premium vs Free — what you get
 
-TulipLot is free to use. Premium is an optional subscription that removes ads
-and unlocks the sixth cell.
+Every TulipLot account starts on the free plan, and for plenty of people that's the whole story — five live cells and the full toolbar cover a normal day just fine. Premium exists for one reason: you want that sixth cell for something of your own, and you'd rather not look at an ad to get it. Here's exactly what changes, what stays the same, and what happens to your grid if you switch either direction.
 
-## Free plan
+## At a glance
 
-- Five usable cells.
-- One advertising cell (fixed bottom-right).
-- Full drag-to-swap, catalog, and companion-extension support.
+| | Free | Premium |
+|---|---|---|
+| Usable cells | 5 | 6 |
+| Ad cell | 1, bottom-right | None |
+| Price | $0, forever | $4/month |
+| Catalog + custom URLs | Yes | Yes |
+| Drag-to-arrange, focus, sleep | Yes | Yes |
+| Companion support | Yes | Yes |
 
-## Premium plan
+## What free actually includes
 
-- All six cells usable — no ad slot.
-- No advertising cookies.
-- Everything in the free plan.
+Free isn't a trial with a countdown — it's a complete, permanent version of TulipLot. Five cells load live apps from the moment you sign up, and every one of them gets the full catalog: email, productivity, news, media, and anything else the built-in list covers. If the catalog doesn't have what you want, paste any HTTPS URL into a cell yourself and it loads the same way.
 
-## Upgrading
+Every cell control works identically to Premium, too. Drag any two cells to swap positions, reload a single cell without touching the rest, expand one into focus mode, edit a cell to swap in a different site, sleep a cell you're not using right now, remove one you're done with. None of that is gated behind payment — it's the same toolbar either way.
 
-Click **Remove ad — go Premium**. You are taken to Stripe Checkout. When
-payment succeeds, your account flips to Premium and the ad disappears.
+The one difference sits in a single spot: the bottom-right cell carries an ad. It's fixed there, it doesn't move around the grid, and it doesn't shrink your other five cells to make room. Free needs no credit card to start and has no time limit — you can run five cells and an ad indefinitely and never see a prompt to upgrade.
 
-## Downgrading
+## What Premium adds
 
-Cancel anytime through the Stripe billing portal. When Premium ends, the
-bottom-right cell becomes the ad slot again; any app you had there moves to the
-first empty slot.
+Premium adds exactly one thing: the sixth cell, with zero ads anywhere in the grid. That's the entire difference. The catalog is the same, custom URLs work the same, every cell control behaves the same, and Companion support for stubborn sites is identical on both plans. Premium doesn't unlock a hidden feature — it unlocks space.
+
+Who reaches for that space varies, but a common pattern is one more thing that doesn't quite fit into the first five: a music player running quietly in the corner, a group chat you want visible without alt-tabbing, or a second calendar sitting next to your main one. If your first five cells already cover the essentials and you keep eyeing a sixth thing you'd add if you could, that's the plan Premium is built for. It's $4 a month, and that's the only cost — no setup fee, no per-cell pricing, no tiers above it.
+
+## How billing works
+
+Billing runs entirely through Stripe. To upgrade, go to Settings and click **Go Premium** — that takes you to an upgrade page where you enter payment details directly with Stripe. TulipLot never sees your card number; there's no card form built into the app itself, because the app never needs to touch it.
+
+Managing or canceling works the same way, any time you want: Settings → **Manage billing** opens the Stripe billing portal. That's where your payment method, invoices, and cancellation all live — TulipLot hands the whole job to Stripe rather than building a second version of it. Premium bills monthly, with no annual contract and nothing to lock you in beyond the current month.
+
+## What happens when you cancel
+
+Canceling doesn't cut you off mid-month. You keep Premium — all six cells, no ads — through the end of the period you already paid for. When that period ends, your account reverts to the free plan on its own, with no extra step required from you.
+
+Reverting means the bottom-right cell becomes the ad slot again. If you had fewer than six cells filled, nothing else changes — your remaining apps stay exactly where you put them. If all six were filled, the app that had been sitting in what's about to become the ad slot needs somewhere to go, and TulipLot doesn't just delete it. Instead, it's parked, and you get a prompt to place it into a different slot — replacing whatever's there — or discard it if you'd rather not keep it. Either way, it's your call to make, not something that happens silently in the background.
+
+## Questions before you decide
+
+### Can I switch back and forth?
+
+Yes, any time, in either direction. Upgrade, downgrade, upgrade again later — there's no limit on how often you change plans, and no penalty for switching back after canceling.
+
+### Do I lose my layout when upgrading?
+
+No. Upgrading leaves your existing five cells exactly where they are. The ad cell simply turns into a normal, usable sixth cell — nothing gets rearranged, and nothing you've already set up moves.
+
+### Is there a trial?
+
+Free is the trial, and it doesn't expire. Five full cells, the entire catalog, custom URLs, every cell control, no credit card required — you can run that setup for as long as you like before deciding whether the sixth cell is worth $4 a month to you.
+
+If you haven't built your grid yet, start with [Getting started with TulipLot](/guides/getting-started) — five minutes gets your first five cells filled, and you can decide about the sixth whenever you're ready. [Create a free account](/register) — no card, no deadline.
