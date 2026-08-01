@@ -17,8 +17,7 @@ import { SiteFooterComponent } from './site-footer.component';
         <span class="tl-eyebrow">One window · six apps</span>
         <h1>Everything you check all day, on <span class="hl">one calm screen</span></h1>
         <p class="sub">
-          A fixed 3×2 grid where every cell hosts a live web app — Gmail, Trello,
-          your news, any URL you choose.
+          A browser dashboard: a fixed 3×2 grid where every cell hosts a live web app — Gmail, Trello, your news, any URL you choose.
         </p>
         <div class="cta-row">
           <a routerLink="/register" class="tl-btn tl-btn--primary">Get started free →</a>
@@ -186,9 +185,9 @@ import { SiteFooterComponent } from './site-footer.component';
 export class LandingComponent {
   constructor() {
     inject(SeoService).set({
-      title: 'TulipLot — your apps on one calm screen',
+      title: 'Browser dashboard — your apps on one calm screen',
       description:
-        'Turn one browser window into a personal dashboard: a fixed 3×2 grid of the web apps you use all day.',
+        'Turn one tab into a browser dashboard: a fixed 3×2 grid of live web apps — Gmail, Trello, news, any URL — side by side on one calm screen. Free to start.',
       path: '/',
       jsonLd: [
         { '@context': 'https://schema.org', '@type': 'Organization', name: 'TulipLot', url: 'https://tuliplot.com/', logo: 'https://tuliplot.com/favicon.svg' },

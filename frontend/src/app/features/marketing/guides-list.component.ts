@@ -52,8 +52,8 @@ export class GuidesListComponent {
 
   constructor() {
     inject(SeoService).set({
-      title: 'Guides',
-      description: 'Step-by-step help getting the most out of TulipLot.',
+      title: 'Browser dashboard guides',
+      description: 'Step-by-step guides to set up your TulipLot browser dashboard: your first grid, adding stubborn sites, and what Premium unlocks. Start in five minutes.',
       path: '/guides',
     });
   }

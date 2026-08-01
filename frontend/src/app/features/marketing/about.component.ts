@@ -59,8 +59,8 @@ import { SiteFooterComponent } from './site-footer.component';
 export class AboutComponent {
   constructor() {
     inject(SeoService).set({
-      title: 'About',
-      description: 'Why TulipLot exists and how the single-window dashboard works.',
+      title: 'About TulipLot — why we built a browser dashboard',
+      description: 'Why TulipLot exists: the tab-overload problem, how the single-window 3×2 dashboard works, and what Free versus Premium includes.',
       path: '/about',
     });
   }
