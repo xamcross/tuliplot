@@ -189,7 +189,6 @@ details > summary::-webkit-details-marker { display: none; }
 /* --- article prose (guide/blog detail; targets [innerHTML] so it must be global) --- */
 .tl-article { max-width: 720px; margin: 0 auto; padding: 48px var(--tl-page-pad); width: 100%;
   font-size: 17px; line-height: 1.7; color: var(--tl-prose); }
-.tl-article > h1:first-child, .tl-article h1 { display: none; } /* generated html repeats the title */
 .tl-article h2 { margin: 34px 0 12px; font-family: var(--tl-font-display); font-weight: 700; font-size: 23px; color: var(--tl-ink); }
 .tl-article p { margin: 0 0 22px; }
 .tl-article code {

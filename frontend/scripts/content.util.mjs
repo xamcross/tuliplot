@@ -26,3 +26,22 @@ export function readingMinutes(text) {
   const words = String(text).trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
 }
+
+export function stripLeadingH1(body) {
+  return String(body).replace(/^\s*#[ \t][^\n]*\n+/, '');
+}
+
+export function sitemapXml(entries) {
+  const urls = entries
+    .map(
+      ({ loc, lastmod }) =>
+        `  <url><loc>${loc}</loc>` + (lastmod ? `<lastmod>${lastmod}</lastmod>` : '') + `</url>`,
+    )
+    .join('\n');
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    urls +
+    `\n</urlset>\n`
+  );
+}

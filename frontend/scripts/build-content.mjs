@@ -4,7 +4,7 @@ import {
 import { join, resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
-import { splitFrontmatter, readingMinutes } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml } from './content.util.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
@@ -34,7 +34,7 @@ function loadDir(kind) {
         category: data.category || '',
         order: Number.parseInt(data.order ?? '0', 10) || 0,
         readingMinutes: readingMinutes(body),
-        html: marked.parse(body),
+        html: marked.parse(stripLeadingH1(body)),
       };
     });
 }
@@ -75,18 +75,12 @@ console.log(
 );
 
 const staticRoutes = ['/', '/about', '/privacy', '/terms', '/contact', '/guides', '/blog'];
-const guideRoutes = guides.map((g) => `/guides/${g.slug}`);
-const postRoutes = posts.map((p) => `/blog/${p.slug}`);
-const allRoutes = [...staticRoutes, ...guideRoutes, ...postRoutes];
-const sitemap =
-  `<?xml version="1.0" encoding="UTF-8"?>\n` +
-  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  allRoutes
-    .map(
-      (r) =>
-        `  <url><loc>https://tuliplot.com${r === '/' ? '' : r}</loc></url>`,
-    )
-    .join('\n') +
-  `\n</urlset>\n`;
-writeFileSync(resolve(frontendRoot, 'public/sitemap.xml'), sitemap, 'utf8');
-console.log(`sitemap: ${allRoutes.length} urls -> public/sitemap.xml`);
+const STATIC_LASTMOD = '2026-08-01'; // bump when static-page copy changes
+const withSlash = (r) => `https://tuliplot.com${r === '/' ? '/' : r + '/'}`;
+const entries = [
+  ...staticRoutes.map((r) => ({ loc: withSlash(r), lastmod: STATIC_LASTMOD })),
+  ...guides.map((g) => ({ loc: withSlash(`/guides/${g.slug}`), lastmod: g.date })),
+  ...posts.map((p) => ({ loc: withSlash(`/blog/${p.slug}`), lastmod: p.date })),
+];
+writeFileSync(resolve(frontendRoot, 'public/sitemap.xml'), sitemapXml(entries), 'utf8');
+console.log(`sitemap: ${entries.length} urls -> public/sitemap.xml`);

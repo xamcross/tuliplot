@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -33,5 +33,33 @@ describe('readingMinutes', () => {
   it('scales roughly with word count (~200 wpm)', () => {
     const words = Array.from({ length: 400 }, () => 'word').join(' ');
     expect(readingMinutes(words)).toBe(2);
+  });
+});
+
+describe('stripLeadingH1', () => {
+  it('removes a leading ATX h1 and following blank lines', () => {
+    expect(stripLeadingH1('# Title\n\nBody text.')).toBe('Body text.');
+  });
+
+  it('leaves bodies without a leading h1 untouched', () => {
+    expect(stripLeadingH1('Body first.\n\n## Section')).toBe('Body first.\n\n## Section');
+  });
+
+  it('only strips the first h1, not later ones', () => {
+    expect(stripLeadingH1('# Title\n\nText\n# Not stripped')).toBe('Text\n# Not stripped');
+  });
+});
+
+describe('sitemapXml', () => {
+  it('renders loc with optional lastmod', () => {
+    const xml = sitemapXml([
+      { loc: 'https://tuliplot.com/', lastmod: '2026-08-01' },
+      { loc: 'https://tuliplot.com/guides/getting-started/', lastmod: '2026-06-01' },
+      { loc: 'https://tuliplot.com/x/' },
+    ]);
+    expect(xml).toContain('<url><loc>https://tuliplot.com/</loc><lastmod>2026-08-01</lastmod></url>');
+    expect(xml).toContain('<url><loc>https://tuliplot.com/guides/getting-started/</loc><lastmod>2026-06-01</lastmod></url>');
+    expect(xml).toContain('<url><loc>https://tuliplot.com/x/</loc></url>');
+    expect(xml).toMatch(/^<\?xml version="1.0" encoding="UTF-8"\?>\n<urlset/);
   });
 });
