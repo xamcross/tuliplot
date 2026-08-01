@@ -1,9 +1,9 @@
 # SPA shell only for client-rendered routes (login/register/app are RenderMode.Client).
 # Everything else: prerendered HTML, or 404.html with a real 404 status.
 # NOTE: any new RenderMode.Client route needs a row here — hard navigations 404 otherwise (e.g. a future /reset-password).
-/login /index.html 200
-/login/ /index.html 200
-/register /index.html 200
-/register/ /index.html 200
-/app /index.html 200
-/app/* /index.html 200
+/login / 200
+/login/ / 200
+/register / 200
+/register/ / 200
+/app / 200
+/app/* / 200
