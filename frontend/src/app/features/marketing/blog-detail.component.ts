@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { POSTS, GUIDES } from './content.generated';
+import { buildArticleJsonLd } from './article-jsonld';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
@@ -87,18 +88,7 @@ export class BlogDetailComponent {
           title: d.title,
           description: d.description,
           path: `/blog/${d.slug}`,
-          jsonLd: [{
-            '@context': 'https://schema.org',
-            '@type': 'Article',
-            headline: d.title,
-            description: d.description,
-            datePublished: d.date,
-            dateModified: d.date,
-            mainEntityOfPage: `https://tuliplot.com/blog/${d.slug}/`,
-            image: 'https://tuliplot.com/og-card.png',
-            author: { '@type': 'Organization', name: 'TulipLot' },
-            publisher: { '@type': 'Organization', name: 'TulipLot', logo: { '@type': 'ImageObject', url: 'https://tuliplot.com/og-card.png' } },
-          }],
+          jsonLd: [buildArticleJsonLd(d, '/blog')],
         });
       } else if (this.slug()) {
         seo.set({
