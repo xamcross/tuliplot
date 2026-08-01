@@ -63,6 +63,18 @@ export class GuideDetailComponent {
           title: d.title,
           description: d.description,
           path: `/guides/${d.slug}`,
+          jsonLd: [{
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: d.title,
+            description: d.description,
+            datePublished: d.date,
+            dateModified: d.date,
+            mainEntityOfPage: `https://tuliplot.com/guides/${d.slug}/`,
+            image: 'https://tuliplot.com/og-card.png',
+            author: { '@type': 'Organization', name: 'TulipLot' },
+            publisher: { '@type': 'Organization', name: 'TulipLot', logo: { '@type': 'ImageObject', url: 'https://tuliplot.com/og-card.png' } },
+          }],
         });
       }
     });
