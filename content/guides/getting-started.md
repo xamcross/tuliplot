@@ -32,5 +32,4 @@ six cells, so you always know where each app lives.
 On the free plan, the bottom-right cell shows a single ad and you get five
 usable cells. Upgrading to Premium removes the ad and unlocks all six.
 
-You are ready to go. The next guide covers adding sites that normally refuse to
-be embedded.
+You are ready to go. Next: [Adding sites that refuse to be framed](/guides/add-any-site) — for the apps that don't load on the first try.

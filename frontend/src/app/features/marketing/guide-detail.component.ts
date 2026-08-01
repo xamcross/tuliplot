@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { GUIDES } from './content.generated';
+import { GUIDES, POSTS } from './content.generated';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
@@ -24,6 +24,14 @@ import { pillClass } from './pill.util';
         </div>
       </div>
       <article class="tl-article" [innerHTML]="d.html"></article>
+      <nav class="related" aria-labelledby="related-h">
+        <h2 id="related-h">Keep reading</h2>
+        <ul>
+          @for (r of related(); track r.path) {
+            <li><a [routerLink]="r.path">{{ r.title }}</a></li>
+          }
+        </ul>
+      </nav>
       <div class="cta-row">
         <a routerLink="/register" class="tl-btn tl-btn--primary tl-btn--sm">Get started free →</a>
         <a routerLink="/guides" class="tl-btn tl-btn--soft tl-btn--sm">More guides</a>
@@ -41,6 +49,11 @@ import { pillClass } from './pill.util';
     article { flex: 1; }
     .cta-row { max-width: 720px; margin: 0 auto; padding: 0 var(--tl-page-pad) 44px; width: 100%;
       display: flex; gap: 14px; border-top: 1px solid var(--tl-border); padding-top: 28px; }
+    .related { max-width: 720px; margin: 0 auto; padding: 8px var(--tl-page-pad) 28px; width: 100%; }
+    .related h2 { margin: 0 0 10px; font-family: var(--tl-font-display); font-size: 20px; color: var(--tl-ink); }
+    .related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .related a { color: var(--tl-primary); text-decoration: none; font-weight: 600; }
+    .related a:hover { text-decoration: underline; }
     @media (max-width: 720px) { .tl-hero-band h1 { font-size: 30px; } }
   `],
 })
@@ -52,6 +65,14 @@ export class GuideDetailComponent {
   protected readonly doc = computed(
     () => GUIDES.find((g) => g.slug === this.slug()) ?? null,
   );
+  protected readonly related = computed(() => {
+    const current = this.slug();
+    const guides = GUIDES.filter((g) => g.slug !== current)
+      .slice(0, 2)
+      .map((g) => ({ path: `/guides/${g.slug}`, title: g.title }));
+    const posts = POSTS.slice(0, 1).map((p) => ({ path: `/blog/${p.slug}`, title: p.title }));
+    return [...guides, ...posts];
+  });
   protected readonly pillClass = pillClass;
 
   constructor() {

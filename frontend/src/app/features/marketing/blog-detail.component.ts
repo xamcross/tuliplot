@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { POSTS } from './content.generated';
+import { POSTS, GUIDES } from './content.generated';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
@@ -25,6 +25,14 @@ import { pillClass } from './pill.util';
       </div>
       <div class="banner" aria-hidden="true"></div>
       <article class="tl-article" [innerHTML]="d.html"></article>
+      <nav class="related" aria-labelledby="related-h">
+        <h2 id="related-h">Keep reading</h2>
+        <ul>
+          @for (r of related(); track r.path) {
+            <li><a [routerLink]="r.path">{{ r.title }}</a></li>
+          }
+        </ul>
+      </nav>
       <div class="cta-row">
         <a routerLink="/register" class="tl-btn tl-btn--primary tl-btn--sm">Try TulipLot free →</a>
         <a routerLink="/blog" class="tl-btn tl-btn--soft tl-btn--sm">More posts</a>
@@ -44,6 +52,11 @@ import { pillClass } from './pill.util';
       background: var(--tl-sky-tint); width: calc(100% - 2 * var(--tl-page-pad)); }
     .cta-row { max-width: 720px; margin: 0 auto; padding: 0 var(--tl-page-pad) 44px; width: 100%;
       display: flex; gap: 14px; border-top: 1px solid var(--tl-border); padding-top: 28px; }
+    .related { max-width: 720px; margin: 0 auto; padding: 8px var(--tl-page-pad) 28px; width: 100%; }
+    .related h2 { margin: 0 0 10px; font-family: var(--tl-font-display); font-size: 20px; color: var(--tl-ink); }
+    .related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .related a { color: var(--tl-primary); text-decoration: none; font-weight: 600; }
+    .related a:hover { text-decoration: underline; }
     @media (max-width: 720px) { .tl-hero-band h1 { font-size: 30px; } }
   `],
 })
@@ -55,6 +68,14 @@ export class BlogDetailComponent {
   protected readonly doc = computed(
     () => POSTS.find((p) => p.slug === this.slug()) ?? null,
   );
+  protected readonly related = computed(() => {
+    const current = this.slug();
+    const posts = POSTS.filter((p) => p.slug !== current)
+      .slice(0, 2)
+      .map((p) => ({ path: `/blog/${p.slug}`, title: p.title }));
+    const guides = GUIDES.slice(0, 2).map((g) => ({ path: `/guides/${g.slug}`, title: g.title }));
+    return [...posts, ...guides];
+  });
   protected readonly pillClass = pillClass;
 
   constructor() {

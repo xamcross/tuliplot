@@ -30,4 +30,13 @@ describe('GuideDetailComponent', () => {
     expect(article?.['headline']).toBe(GUIDES[0].title);
     expect(article?.['datePublished']).toBe(GUIDES[0].date);
   });
+
+  it('renders Keep reading links excluding the current guide', () => {
+    const f = render(GUIDES[0].slug);
+    const links = Array.from(f.nativeElement.querySelectorAll('.related a')) as HTMLAnchorElement[];
+    expect(links.length).toBeGreaterThanOrEqual(2);
+    for (const a of links) {
+      expect(a.getAttribute('href')).not.toContain(GUIDES[0].slug);
+    }
+  });
 });
