@@ -62,8 +62,8 @@ export class BlogListComponent {
 
   constructor() {
     inject(SeoService).set({
-      title: 'Blog',
-      description: 'Product news and thinking on focused, single-window work.',
+      title: 'Blog — tab overload & focused work',
+      description: 'Thinking on tab overload, browser dashboards, and focused single-window work, plus TulipLot product news and layout ideas for your six-cell grid.',
       path: '/blog',
     });
   }
