@@ -1,4 +1,12 @@
 // Pure, dependency-free helpers for the build-time content pipeline.
+export function xmlEscape(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
 export function splitFrontmatter(raw) {
   const normalized = String(raw).replace(/\r\n/g, '\n');
   const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/.exec(normalized);
@@ -35,7 +43,7 @@ export function sitemapXml(entries) {
   const urls = entries
     .map(
       ({ loc, lastmod }) =>
-        `  <url><loc>${loc}</loc>` + (lastmod ? `<lastmod>${lastmod}</lastmod>` : '') + `</url>`,
+        `  <url><loc>${xmlEscape(loc)}</loc>` + (lastmod ? `<lastmod>${xmlEscape(lastmod)}</lastmod>` : '') + `</url>`,
     )
     .join('\n');
   return (
