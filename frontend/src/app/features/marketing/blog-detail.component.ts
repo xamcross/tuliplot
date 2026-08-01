@@ -100,6 +100,12 @@ export class BlogDetailComponent {
             publisher: { '@type': 'Organization', name: 'TulipLot', logo: { '@type': 'ImageObject', url: 'https://tuliplot.com/og-card.png' } },
           }],
         });
+      } else if (this.slug()) {
+        seo.set({
+          title: 'Post not found',
+          description: 'That post does not exist.',
+          path: '/blog',
+        });
       }
     });
   }

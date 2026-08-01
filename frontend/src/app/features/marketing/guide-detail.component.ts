@@ -97,6 +97,12 @@ export class GuideDetailComponent {
             publisher: { '@type': 'Organization', name: 'TulipLot', logo: { '@type': 'ImageObject', url: 'https://tuliplot.com/og-card.png' } },
           }],
         });
+      } else if (this.slug()) {
+        seo.set({
+          title: 'Guide not found',
+          description: 'That guide does not exist.',
+          path: '/guides',
+        });
       }
     });
   }

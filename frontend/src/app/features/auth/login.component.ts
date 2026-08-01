@@ -4,6 +4,7 @@ import { FormField, email, form, required } from '@angular/forms/signals';
 import { AuthStore } from '../../stores/auth.store';
 import { environment } from '../../../environments/environment';
 import { LogoComponent } from '../../shared/logo.component';
+import { SeoService } from '../../core/services/seo.service';
 
 /** Builds the Spring-managed Google OAuth2 authorization URL from the API base URL
  *  (a full-page navigation to the API origin, which 302-redirects to Google). */
@@ -80,6 +81,12 @@ export class LoginComponent {
   });
 
   constructor() {
+    inject(SeoService).set({
+      title: 'Log in',
+      description: 'Log in to your TulipLot dashboard.',
+      path: '/login',
+    });
+
     effect(() => {
       if (this.store.isAuthenticated()) {
         this.router.navigateByUrl('/app');

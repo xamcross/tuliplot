@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormField, email, form, minLength, required } from '@angular/forms/signals';
 import { AuthStore } from '../../stores/auth.store';
 import { LogoComponent } from '../../shared/logo.component';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'tl-register',
@@ -64,6 +65,12 @@ export class RegisterComponent {
   });
 
   constructor() {
+    inject(SeoService).set({
+      title: 'Create your account',
+      description: 'Create a free TulipLot account — five usable cells, no credit card required.',
+      path: '/register',
+    });
+
     effect(() => {
       if (this.store.isAuthenticated()) {
         this.router.navigateByUrl('/app');
