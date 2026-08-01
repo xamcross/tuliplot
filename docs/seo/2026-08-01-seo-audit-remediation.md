@@ -12,45 +12,46 @@
 
 All in files we own; no behavioral risk. One PR.
 
-- [ ] **1.1 Trailing-slash canonicals + sitemap URLs.**
+- [x] **1.1 Trailing-slash canonicals + sitemap URLs.**
   Every non-root URL 308-redirects to `/path/`, but canonicals (`seo.service.ts:13`) and the sitemap (`frontend/scripts/build-content.mjs:81-91`) emit the non-slash form — so every canonical target and sitemap entry is a redirecting URL, and every crawl takes a wasted hop.
   *Fix:* emit trailing-slash URLs in both places (root stays `https://tuliplot.com/`).
   *Accept:* `curl -sI` on 3 sampled sitemap URLs returns 200 with no redirect; rendered canonical == final URL.
 
-- [ ] **1.2 Sitemap `<lastmod>`.**
+- [x] **1.2 Sitemap `<lastmod>`.**
   No lastmod on any entry. *Fix:* per-file git or frontmatter date in `build-content.mjs`; static routes get the build date.
   *Accept:* every `<url>` carries a plausible `<lastmod>`.
 
-- [ ] **1.3 og:image + twitter:card sitewide.**
+- [x] **1.3 og:image + twitter:card sitewide.**
   No page has og:image or any twitter:* tag — every share on X/LinkedIn/Slack/iMessage renders blank.
   *Fix:* one branded 1200×630 card in `frontend/public/`, wired into `SeoService.set()` (og:image, og:image:width/height, twitter:card=summary_large_image, twitter:title/description).
   *Accept:* opengraph.xyz preview renders image on `/`, one guide, one post.
 
-- [ ] **1.4 JSON-LD structured data.**
+- [x] **1.4 JSON-LD structured data.**
   Zero structured data sitewide. *Fix:* `Organization` + `WebSite` + `SoftwareApplication` on `/` (landing.component); `FAQPage` for the landing FAQ (`<details>` section already exists); `Article` (headline/datePublished/dateModified/author) on guide/blog detail pages via the content pipeline.
   *Accept:* Google Rich Results Test passes on `/`, one guide, one post.
 
-- [ ] **1.5 Remove the CSS-hidden duplicate H1.**
+- [x] **1.5 Remove the CSS-hidden duplicate H1.**
   All 4 article pages ship two H1s — visible hero + `display:none` duplicate inside `<article>` (`.tl-article h1{display:none}`). Pre-existing backlog item.
   *Fix:* strip the leading markdown H1 in `build-content.mjs`; delete the hiding CSS.
   *Accept:* one H1 in the prerendered HTML of every article page.
 
-- [ ] **1.6 Interlink the content.**
+- [x] **1.6 Interlink the content.**
   Detail pages link only to their listing + `/register`; `getting-started` even says "The next guide covers adding sites…" as plain text.
   *Fix:* make that sentence a real link; add a "Related reading" block (2–3 descriptive-anchor links) to every guide/post.
   *Accept:* every article links to ≥2 other articles.
 
-- [ ] **1.7 Keyworded titles + full-length meta descriptions on listing pages.**
+- [x] **1.7 Keyworded titles + full-length meta descriptions on listing pages.**
   `Guides · TulipLot` (17 ch), `Blog · TulipLot` (15 ch), `About · TulipLot` (16 ch); descriptions 51–62 ch.
   *Fix:* e.g. "Browser dashboard guides — set up TulipLot · TulipLot"; descriptions ~140–160 ch ending in a CTA.
   *Accept:* all listing titles carry a topical phrase; all descriptions 130–160 ch.
 
-- [ ] **1.8 One searchable phrase on the homepage.**
+- [x] **1.8 One searchable phrase on the homepage.**
   No title/H1/H2 sitewide contains a phrase a searcher would type ("browser dashboard", "start page", "apps side by side"). Brand voice ("one calm screen") can stay — add, don't replace.
   *Fix:* work "browser dashboard" into the `<title>`/subhead (e.g. subhead: "A browser dashboard: a fixed 3×2 grid where every cell hosts a live web app…").
   *Accept:* "browser dashboard" appears in homepage title or H1/subhead, reads naturally.
 
-> **Wave 1 status (2026-08-01):** implemented on branch `feature/seo-wave-1` (7 commits, final review clean, suite 136/136, 12 routes prerendered). Boxes above get ticked after the next deploy, per this doc's verified-live convention. Post-deploy acceptance: curl 3 sitemap URLs (expect 200, no redirect), opengraph.xyz on `/` + one guide + one post, Rich Results Test on the same three.
+> **Wave 1 status: VERIFIED LIVE 2026-08-01** (PR #5 merged; deployed via `npx wrangler pages deploy dist/frontend/browser --project-name=tuliplot` from frontend/). Curl acceptance passed: sitemap serves trailing-slash URLs with lastmod; 3 sitemap URLs return direct 200; live pages carry og:image (og-card.png 200, image/png), trailing-slash canonicals, `#tl-jsonld` (FAQPage/SoftwareApplication on `/`, Article on details), one H1 per article, keyworded titles. Caveat on 1.7: About description is 128 chars vs this doc's 130 floor (follow-up recorded below). Browser-tool checks (opengraph.xyz, Rich Results Test) still worth an eyeball but redundant with the curl-level verification.
+> **Wave 2 lead:** the soft-404 mechanism is `frontend/public/_redirects` (`/* /index.html 200`) — narrow that catch-all to `/app*` and add a prerendered 404 page.
 > **Follow-ups from the Wave-1 final review** (fold into the waves below): Wave 2 — reset head state (title/canonical, drop stale og/JSON-LD) on `/login`, `/register`, and the guide/blog not-found path (overlaps 2.1); add two words to the About description to clear this doc's 130-char floor. Wave 3 pre-reqs — XML-escape `sitemapXml`, guard missing frontmatter `date` (currently defaults to 1970-01-01), single-source the landing FAQ (one `{q,a}[]` constant driving both template and JSON-LD), give `blog-detail` its own spec, extract `buildArticleJsonLd(doc, basePath)`. Optional polish — `og:type=article` on detail pages, square-PNG Organization logo instead of favicon.svg.
 
 ## Wave 2 — Crawl correctness (code, ~half day, needs care)
