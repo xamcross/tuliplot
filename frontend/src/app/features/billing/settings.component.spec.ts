@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -14,12 +15,17 @@ describe('SettingsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
         provideRouter([]),
         {
           provide: AuthStore,
-          useValue: { tier: signal('FREE'), user: signal({ displayName: 'Jane Doe', email: 'jane@example.com' }) },
+          useValue: {
+            tier: signal('FREE'),
+            user: signal({ displayName: 'Jane Doe', email: 'jane@example.com' }),
+            logout: vi.fn(),
+          },
         },
       ],
     });
@@ -40,5 +46,17 @@ describe('SettingsComponent', () => {
 
     expect(redirect).toHaveBeenCalledWith('https://billing.stripe.com/p/session/test_1');
     httpMock.verify();
+  });
+
+  it('logout button calls AuthStore.logout and navigates to the landing page', () => {
+    const fixture = TestBed.createComponent(SettingsComponent);
+    fixture.detectChanges();
+    const router = TestBed.inject(Router);
+    const nav = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+
+    (fixture.nativeElement.querySelector('[data-testid="logout-btn"]') as HTMLButtonElement).click();
+
+    expect(TestBed.inject(AuthStore).logout).toHaveBeenCalled();
+    expect(nav).toHaveBeenCalledWith('/');
   });
 });

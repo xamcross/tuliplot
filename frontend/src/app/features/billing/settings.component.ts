@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BillingApi } from '../../core/api/billing.api';
 import { AuthStore } from '../../stores/auth.store';
 import { AppTopbarComponent } from '../../shared/app-topbar.component';
@@ -21,6 +21,8 @@ import { AppTopbarComponent } from '../../shared/app-topbar.component';
               <div class="name">{{ user()?.displayName }}</div>
               <div class="email">{{ user()?.email }}</div>
             </div>
+            <button type="button" class="logout tl-btn tl-btn--soft tl-btn--sm"
+              data-testid="logout-btn" (click)="onLogout()">Log out</button>
           </div>
         </section>
         <section class="tl-card sec">
@@ -54,6 +56,7 @@ import { AppTopbarComponent } from '../../shared/app-topbar.component';
     .sec-label { font-family: var(--tl-font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.06em; color: var(--tl-ink-faint); margin-bottom: 14px; }
     .account { display: flex; align-items: center; gap: 14px; }
+    .logout { margin-left: auto; }
     .avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--tl-lilac-tint);
       color: var(--tl-lilac-ink); display: flex; align-items: center; justify-content: center;
       font-family: var(--tl-font-display); font-weight: 700; font-size: 18px; }
@@ -73,6 +76,7 @@ import { AppTopbarComponent } from '../../shared/app-topbar.component';
 export class SettingsComponent {
   private readonly billingApi = inject(BillingApi);
   private readonly authStore = inject(AuthStore);
+  private readonly router = inject(Router);
   protected readonly tier = this.authStore.tier;
   protected readonly loading = signal(false);
   protected readonly user = this.authStore.user;
@@ -86,6 +90,11 @@ export class SettingsComponent {
       next: (res) => this.redirectTo(res.url),
       error: () => this.loading.set(false),
     });
+  }
+
+  onLogout(): void {
+    this.authStore.logout();
+    void this.router.navigateByUrl('/');
   }
 
   protected redirectTo(url: string): void {
