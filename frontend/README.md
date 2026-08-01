@@ -31,10 +31,10 @@ ng generate --help
 To build the project run:
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed. Use `npm run build` (not bare `ng build`) — it runs the content prebuild and 404 postbuild hooks.
 
 ## Running unit tests
 
