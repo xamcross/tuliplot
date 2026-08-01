@@ -10,7 +10,7 @@ order: 1
 
 ## What you'll have in five minutes
 
-By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps live and side by side. Mail on one side, calendar on another, your task board where you can see it — no more digging through tabs to find the thing you were just looking at.
+By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps within reach at once. Some load right there in the grid, live. Others — Gmail and Google Calendar are the common ones — are one click from opening in their own tab instead. Either way, you stop digging through tabs to find the thing you were just looking at.
 
 Set up takes about five minutes. Here's the whole path, start to finish.
 
@@ -24,11 +24,13 @@ Once you're in, you'll land on an empty grid: six cells, all blank, waiting for 
 
 Click the + on any empty cell. You'll get two ways to fill it: pick from the built-in catalog, or paste any HTTPS URL and TulipLot will load it directly.
 
-The catalog covers the apps most people reach for first — mail, calendar, docs — already configured so you don't have to hunt for the right address. Paste-a-URL covers everything else: your team wiki, a status page, a site the catalog doesn't have yet.
+The catalog is grouped by category — email, productivity, news, media — and covers the apps most people reach for first: Gmail and Outlook, Trello and Notion, Hacker News, and more, each already addressed so you don't have to hunt for the right URL. Paste-a-URL covers everything else: your team wiki, a status page, a site the catalog doesn't have yet.
 
 One rule either way: the URL has to be HTTPS. Plain http is rejected, because a dashboard that mixes secure and insecure pages in the same tab isn't one you can trust.
 
-If you're not sure where to start, a solid first five looks like this: mail, calendar, a boards or tasks app, a news source, and somewhere to keep notes. That fills five cells and leaves the sixth for whatever you add next — or for Premium later.
+Not every app behaves the same once it lands in a cell, and TulipLot is upfront about which is which. Some sites — Trello is one — load live in the grid with nothing extra to do. Some, like Notion and Hacker News, need the TulipLot Companion extension before they'll embed; the cell tells you so and offers a one-click install. And sites that insist on their own login window, like Gmail and Google Calendar, open in a new tab instead of framing in the grid — still one click away, just not embedded. All three are useful; you'll just meet them a little differently.
+
+If you're not sure where to start, a solid first five looks like this: Gmail for mail, Google Calendar, Trello for boards or tasks, Hacker News for a news source, and Notion for notes and docs. That mix touches all three behaviors above, so you'll see how each one works from day one. It fills five cells and leaves the sixth for whatever you add next — or for Premium later.
 
 ## 3. Arrange the grid
 
@@ -40,19 +42,19 @@ Since the layout is fixed, it's worth being deliberate about where things go. Pu
 
 ## 4. Every cell control, explained
 
-Every cell has a small toolbar with six controls. Here's what each one does.
+A cell that's loading live in the grid gets the full toolbar: six controls. A cell that opens in its own tab instead — Gmail and Calendar, from the starter five above — shows a simpler three: open in tab, edit, remove. There's no in-grid frame on those cells to reload, expand, or put to sleep, so those controls just don't apply. Here's what each one does, and where you'll see it.
 
-**Reload** refreshes just that cell, the same as hitting refresh on a single tab — handy when a site's gone stale but you don't want to touch anything else on the grid.
+**Reload** refreshes just that cell, the same as hitting refresh on a single tab — handy when a site's gone stale but you don't want to touch anything else on the grid. Live cells only.
 
-**Expand** puts one cell into focus mode, filling the browser window so you can work in it without the other five competing for space. Press Esc to exit and return to the full grid.
+**Expand** puts one cell into focus mode, filling the browser window so you can work in it without the other five competing for space. Press Esc to exit and return to the full grid. Live cells only.
 
-**Open in tab** launches that cell's site in a normal browser tab, with its full URL bar and browser chrome. Use it when a cell's cramped view isn't enough, or when a site works better on its own.
+**Open in tab** launches that cell's site in a normal browser tab, with its full URL bar and browser chrome. Every cell has this one — it's how the tab-only apps like Gmail and Calendar get used day to day.
 
-**Edit** swaps the site loaded in a cell without disturbing its position. Change your mind about which calendar app you want? Edit the cell and the new site takes over the same slot — no rebuilding the grid.
+**Edit** swaps the site loaded in a cell without disturbing its position. Change your mind about which calendar app you want? Edit the cell and the new site takes over the same slot — no rebuilding the grid. Works on every cell.
 
-**Sleep** pauses a cell — it stops refreshing and its background noise goes quiet. **Wake** brings it back exactly where you left off. Useful for a cell you need in view but don't need active every minute.
+**Sleep** pauses a live cell — it stops refreshing and its background noise goes quiet. **Wake** brings it back exactly where you left off. Useful for a cell you need in view but don't need active every minute.
 
-**Remove** clears a cell back to empty, ready for something new.
+**Remove** clears a cell back to empty, ready for something new. Works on every cell.
 
 ## 5. When a site won't load
 
