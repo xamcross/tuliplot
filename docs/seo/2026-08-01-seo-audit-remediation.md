@@ -50,6 +50,9 @@ All in files we own; no behavioral risk. One PR.
   *Fix:* work "browser dashboard" into the `<title>`/subhead (e.g. subhead: "A browser dashboard: a fixed 3×2 grid where every cell hosts a live web app…").
   *Accept:* "browser dashboard" appears in homepage title or H1/subhead, reads naturally.
 
+> **Wave 1 status (2026-08-01):** implemented on branch `feature/seo-wave-1` (7 commits, final review clean, suite 136/136, 12 routes prerendered). Boxes above get ticked after the next deploy, per this doc's verified-live convention. Post-deploy acceptance: curl 3 sitemap URLs (expect 200, no redirect), opengraph.xyz on `/` + one guide + one post, Rich Results Test on the same three.
+> **Follow-ups from the Wave-1 final review** (fold into the waves below): Wave 2 — reset head state (title/canonical, drop stale og/JSON-LD) on `/login`, `/register`, and the guide/blog not-found path (overlaps 2.1); add two words to the About description to clear this doc's 130-char floor. Wave 3 pre-reqs — XML-escape `sitemapXml`, guard missing frontmatter `date` (currently defaults to 1970-01-01), single-source the landing FAQ (one `{q,a}[]` constant driving both template and JSON-LD), give `blog-detail` its own spec, extract `buildArticleJsonLd(doc, basePath)`. Optional polish — `og:type=article` on detail pages, square-PNG Organization logo instead of favicon.svg.
+
 ## Wave 2 — Crawl correctness (code, ~half day, needs care)
 
 - [ ] **2.1 Real 404s.**
