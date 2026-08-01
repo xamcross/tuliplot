@@ -20,6 +20,7 @@ jobs:
     name: Detect changed paths
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: read
     outputs:
       frontend: ${{ steps.filter.outputs.frontend }}
@@ -102,7 +103,7 @@ jobs:
         run: npx vitest run
 
       - name: Production build
-        run: npx ng build --configuration production
+        run: npm run build -- --configuration production
 
       - name: Upload build artifact (deploy handoff)
         if: github.event_name != 'pull_request'
@@ -116,11 +117,11 @@ jobs:
     name: Deploy frontend (Cloudflare Pages)
     needs: [changes, frontend]
     if: >-
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_frontend) ||
+      (github.event_name == 'workflow_dispatch' && inputs.deploy_frontend && github.ref == 'refs/heads/main') ||
       (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.frontend == 'true')
     runs-on: ubuntu-latest
     concurrency:
-      group: deploy
+      group: deploy-frontend
       cancel-in-progress: false
     steps:
       - name: Download build artifact
@@ -139,18 +140,18 @@ jobs:
     name: Deploy backend (Fly.io)
     needs: [changes, backend]
     if: >-
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_backend) ||
+      (github.event_name == 'workflow_dispatch' && inputs.deploy_backend && github.ref == 'refs/heads/main') ||
       (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.backend == 'true')
     runs-on: ubuntu-latest
     concurrency:
-      group: deploy
+      group: deploy-backend
       cancel-in-progress: false
     defaults:
       run:
         working-directory: backend
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
       - name: Deploy
         run: flyctl deploy --remote-only
         env:
