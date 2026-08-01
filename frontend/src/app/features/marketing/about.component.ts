@@ -60,7 +60,8 @@ export class AboutComponent {
   constructor() {
     inject(SeoService).set({
       title: 'About TulipLot — why we built a browser dashboard',
-      description: 'Why TulipLot exists: the tab-overload problem, how the single-window 3×2 dashboard works, and what Free versus Premium includes.',
+      description:
+        'Why TulipLot exists: the tab-overload problem, how the single-window 3×2 dashboard works, and what Free versus Premium includes. Meet the product.',
       path: '/about',
     });
   }

@@ -1,5 +1,9 @@
-import { googleAuthUrl } from './login.component';
+import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { googleAuthUrl, LoginComponent } from './login.component';
 import { environment } from '../../../environments/environment';
+import { AuthStore } from '../../stores/auth.store';
 
 describe('googleAuthUrl', () => {
   it('strips /api/v1 and targets the Spring OAuth2 authorization endpoint', () => {
@@ -15,5 +19,19 @@ describe('googleAuthUrl', () => {
     const url = googleAuthUrl(environment.apiBaseUrl);
     expect(url).toContain('/oauth2/authorization/google');
     expect(url).not.toContain('/api/v1');
+  });
+
+  it('sets its own page title (head reset)', () => {
+    TestBed.configureTestingModule({
+      imports: [LoginComponent],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        { provide: AuthStore, useValue: { isAuthenticated: signal(false), status: signal('idle') } },
+      ],
+    });
+    TestBed.createComponent(LoginComponent).detectChanges();
+
+    expect(document.title).toBe('Log in · TulipLot');
   });
 });

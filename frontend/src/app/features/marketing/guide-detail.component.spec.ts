@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { GuideDetailComponent } from './guide-detail.component';
 import { GUIDES } from './content.generated';
 
@@ -21,6 +21,13 @@ function render(slug: string) {
 }
 
 describe('GuideDetailComponent', () => {
+  beforeEach(() => {
+    // Each test starts from a clean <head>: SeoService mutates document.head directly
+    // (outside Angular's fixture lifecycle), so a stale #tl-jsonld from a prior test
+    // would otherwise linger and shadow the one this test creates.
+    document.getElementById('tl-jsonld')?.remove();
+  });
+
   it('emits Article JSON-LD for the current guide', () => {
     render(GUIDES[0].slug);
     const script = document.getElementById('tl-jsonld');
@@ -38,5 +45,18 @@ describe('GuideDetailComponent', () => {
     for (const a of links) {
       expect(a.getAttribute('href')).not.toContain(GUIDES[0].slug);
     }
+  });
+
+  it('resets the head when the slug does not exist', () => {
+    const stale = document.createElement('script');
+    stale.id = 'tl-jsonld';
+    stale.setAttribute('type', 'application/ld+json');
+    stale.textContent = '[{"@type":"Article"}]';
+    document.head.appendChild(stale);
+
+    render('no-such-guide');
+
+    expect(document.title).toBe('Guide not found · TulipLot');
+    expect(document.getElementById('tl-jsonld')).toBeNull();
   });
 });
