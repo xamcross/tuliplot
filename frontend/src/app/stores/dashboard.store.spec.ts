@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { DashboardStore } from './dashboard.store';
 import { DashboardApi } from '../core/api/dashboard.api';
-import { Cell } from '../core/models/dashboard.model';
+import { Cell, Dashboard } from '../core/models/dashboard.model';
 
 function freeCells(): Cell[] {
   const cells: Cell[] = [];
@@ -77,5 +77,31 @@ describe('DashboardStore', () => {
   it('exposes adSlotIndex of 5', () => {
     const store = TestBed.inject(DashboardStore);
     expect(store.adSlotIndex()).toBe(5);
+  });
+
+  it('load clears previously-populated cells and parkedApp before the response arrives', () => {
+    const store = TestBed.inject(DashboardStore);
+    const populatedCells = freeCells();
+    populatedCells[0] = { slot: 0, type: 'APP', url: 'https://a.com', openMode: 'FRAME' };
+    const parkedApp: Cell = { slot: 4, type: 'APP', url: 'https://parked.com', openMode: 'FRAME' };
+    apiMock.get.mockReturnValue(of({ cells: populatedCells, parkedApp }));
+    store.load();
+
+    // Sanity check: the store is populated from the first (synchronous) load.
+    expect(store.cells()[0].url).toBe('https://a.com');
+    expect(store.parkedApp()).toEqual(parkedApp);
+    expect(store.loaded()).toBe(true);
+
+    // Second load's request never resolves within this assertion window.
+    const pending = new Subject<Dashboard>();
+    apiMock.get.mockReturnValue(pending.asObservable());
+    store.load();
+
+    expect(store.cells()).toEqual([]);
+    expect(store.parkedApp()).toBeNull();
+    expect(store.loaded()).toBe(false);
+
+    pending.next({ cells: freeCells() });
+    pending.complete();
   });
 });

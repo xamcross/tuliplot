@@ -55,7 +55,7 @@ import { AppTopbarComponent } from '../../shared/app-topbar.component';
     .sec { padding: 28px; margin-bottom: 18px; }
     .sec-label { font-family: var(--tl-font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.06em; color: var(--tl-ink-faint); margin-bottom: 14px; }
-    .account { display: flex; align-items: center; gap: 14px; }
+    .account { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .logout { margin-left: auto; }
     .avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--tl-lilac-tint);
       color: var(--tl-lilac-ink); display: flex; align-items: center; justify-content: center;

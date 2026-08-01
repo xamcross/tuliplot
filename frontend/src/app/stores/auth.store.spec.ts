@@ -55,4 +55,25 @@ describe('AuthStore', () => {
     expect(store.status()).toBe('error');
     expect(store.error()).toBe('Invalid email or password');
   });
+
+  it('logout eagerly clears the user and goes anonymous before the request resolves', () => {
+    store.login({ email: 'a@b.com', password: 'secret123' });
+    httpMock
+      .expectOne(`${environment.apiBaseUrl}/auth/login`)
+      .flush({ id: '1', email: 'a@b.com', displayName: 'A', tier: 'PREMIUM', adFree: true });
+    expect(store.isAuthenticated()).toBe(true);
+
+    store.logout();
+
+    // Eager: the store flips to anonymous immediately, before the HTTP request settles.
+    expect(store.user()).toBeNull();
+    expect(store.status()).toBe('anonymous');
+
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/auth/logout`);
+    expect(req.request.method).toBe('POST');
+    req.flush(null);
+
+    expect(store.user()).toBeNull();
+    expect(store.status()).toBe('anonymous');
+  });
 });
