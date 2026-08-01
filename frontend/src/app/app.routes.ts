@@ -45,4 +45,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/billing/settings.component').then((m) => m.SettingsComponent),
   },
+  { path: '404', loadComponent: () =>
+      import('./features/marketing/not-found.component').then((m) => m.NotFoundComponent) },
+  { path: '**', loadComponent: () =>
+      import('./features/marketing/not-found.component').then((m) => m.NotFoundComponent) },
 ];
