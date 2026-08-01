@@ -10,6 +10,7 @@
     "test:watch": "vitest",
     "generate:content": "node scripts/build-content.mjs",
     "prebuild": "node scripts/build-content.mjs",
+    "postbuild": "node scripts/copy-404.mjs",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
     "og": "node scripts/render-og-card.mjs"
   },
