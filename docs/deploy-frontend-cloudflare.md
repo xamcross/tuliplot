@@ -6,16 +6,19 @@
 |------------------------|-----------------------------------------|
 | Framework preset       | Angular                                 |
 | Root directory         | `frontend`                              |
-| Build command          | `npm ci && npx ng build --configuration production` |
+| Build command          | `npm ci && npm run build -- --configuration production` |
 | Build output directory | `dist/frontend/browser`                 |
 | Node version           | `22` (set env var `NODE_VERSION=22`)    |
 
 ## SPA routing
 
-`frontend/public/_redirects` contains `/* /index.html 200`. Angular copies
-`public/` into the build output, so Cloudflare Pages serves it at the site root
-and every client-side route resolves to the SPA shell. Prerendered public pages
-(added in Plan 06) are emitted as real files and win over this catch-all.
+SPA routing: `frontend/public/_redirects` rewrites ONLY the client-rendered
+routes (`/login`, `/register`, `/app`, `/app/*`, plus trailing-slash twins) to
+`/index.html`. Everything else serves prerendered HTML, or `404.html` with a
+real 404 status. `404.html` is produced by the `postbuild` npm hook
+(`scripts/copy-404.mjs`) — always build with `npm run build`, never bare
+`ng build`, or the 404 page is silently missing and Pages falls back to
+sitewide soft-404s.
 
 ## Custom domain
 
