@@ -17,20 +17,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @DataMongoTest
 class UserRepositoryTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        registry.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(UserRepositoryTest.class));
     }
 
     @Autowired UserRepository users;

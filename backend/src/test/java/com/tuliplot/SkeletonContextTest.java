@@ -14,20 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestClient;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SkeletonContextTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        registry.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(SkeletonContextTest.class));
     }
 
     // Boot 4.x removed TestRestTemplate; hit the running server with Spring's RestClient instead.

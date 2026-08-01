@@ -26,21 +26,14 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.databind.ObjectMapper;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc   // full security filter chain active
 class AuthControllerLoginTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        r.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(AuthControllerLoginTest.class));
     }
 
     @Autowired MockMvc mvc;

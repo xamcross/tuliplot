@@ -21,21 +21,14 @@ import tools.jackson.databind.ObjectMapper;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)   // exercise the controller/service/session write without the security chain (Task 4 tests the chain)
 class AuthControllerRegisterTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        r.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(AuthControllerRegisterTest.class));
     }
 
     @Autowired MockMvc mvc;

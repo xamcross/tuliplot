@@ -7,24 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
 @DataMongoTest
 class CatalogSeederTest {
 
-    @Container
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:7");
-
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.mongodb.uri", () -> MongoTestUri.directConnection(mongo));
+        registry.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(CatalogSeederTest.class));
     }
 
     @Autowired
