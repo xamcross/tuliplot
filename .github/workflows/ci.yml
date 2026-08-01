@@ -4,8 +4,39 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy_frontend:
+        type: boolean
+        default: false
+        description: Force a frontend deploy
+      deploy_backend:
+        type: boolean
+        default: false
+        description: Force a backend deploy
 
 jobs:
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.ref_name }}
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - 'content/**'
+            backend:
+              - 'backend/**'
+
   backend:
     name: Backend (Gradle + Testcontainers)
     runs-on: ubuntu-latest
@@ -72,3 +103,34 @@ jobs:
 
       - name: Production build
         run: npx ng build --configuration production
+
+      - name: Upload build artifact (deploy handoff)
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/frontend/browser
+          retention-days: 3
+
+  deploy-frontend:
+    name: Deploy frontend (Cloudflare Pages)
+    needs: [changes, frontend]
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.deploy_frontend) ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.frontend == 'true')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=tuliplot --branch=main --commit-hash=${{ github.sha }}
