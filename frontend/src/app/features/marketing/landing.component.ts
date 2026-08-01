@@ -190,6 +190,24 @@ export class LandingComponent {
       description:
         'Turn one browser window into a personal dashboard: a fixed 3×2 grid of the web apps you use all day.',
       path: '/',
+      jsonLd: [
+        { '@context': 'https://schema.org', '@type': 'Organization', name: 'TulipLot', url: 'https://tuliplot.com/', logo: 'https://tuliplot.com/favicon.svg' },
+        { '@context': 'https://schema.org', '@type': 'WebSite', name: 'TulipLot', url: 'https://tuliplot.com/' },
+        {
+          '@context': 'https://schema.org', '@type': 'SoftwareApplication',
+          name: 'TulipLot', applicationCategory: 'BrowserApplication', operatingSystem: 'Web',
+          description: 'A browser dashboard: a fixed 3×2 grid of live web apps in one tab.',
+          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        },
+        {
+          '@context': 'https://schema.org', '@type': 'FAQPage',
+          mainEntity: [
+            { '@type': 'Question', name: 'Can I embed any website?', acceptedAnswer: { '@type': 'Answer', text: 'Any HTTPS URL. Some sites block embedding — the optional Chrome companion unlocks most of them.' } },
+            { '@type': 'Question', name: 'Is my data private?', acceptedAnswer: { '@type': 'Answer', text: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' } },
+            { '@type': 'Question', name: 'What happens if I cancel Premium?', acceptedAnswer: { '@type': 'Answer', text: 'You drop back to the free 5-cell layout; the 6th app is parked so you can re-place or discard it.' } },
+          ],
+        },
+      ],
     });
   }
 }
