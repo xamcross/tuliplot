@@ -15,10 +15,10 @@ const banners = {
 for (const [slug, [a, b]] of Object.entries(banners)) {
   const svg = `<svg width="1440" height="520" xmlns="http://www.w3.org/2000/svg">
     <rect width="1440" height="520" fill="#FFFDF9"/>
-    <rect x="-80" y="60" width="900" height="400" rx="48" fill="${a}"/>
-    <rect x="760" y="120" width="300" height="300" rx="40" fill="${b}"/>
-    <rect x="1100" y="60" width="220" height="220" rx="32" fill="${b}" opacity="0.55"/>
-    <rect x="1010" y="330" width="150" height="150" rx="28" fill="#FFFFFF" opacity="0.75"/>
+    <rect x="80" y="90" width="520" height="340" rx="40" fill="${a}"/>
+    <rect x="640" y="90" width="340" height="150" rx="32" fill="${b}"/>
+    <rect x="640" y="280" width="340" height="150" rx="32" fill="${b}" opacity="0.55"/>
+    <rect x="1020" y="90" width="340" height="340" rx="40" fill="${a}" opacity="0.45"/>
   </svg>`;
   const buf = await sharp(Buffer.from(svg)).png().toBuffer();
   const meta = await sharp(buf).metadata();
