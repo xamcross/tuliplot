@@ -19,6 +19,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => POSTS.map((p) => ({ slug: p.slug })),
   },
+  { path: '404', renderMode: RenderMode.Prerender },
   // Dashboard + auth are client-side only (CSR).
   { path: '**', renderMode: RenderMode.Client },
 ];
