@@ -56,11 +56,14 @@ All in files we own; no behavioral risk. One PR.
 
 ## Wave 2 — Crawl correctness (code, ~half day, needs care)
 
-- [ ] **2.1 Real 404s.**
+- [x] **2.1 Real 404s.**
   Any unknown URL (verified: `/this-page-does-not-exist-xyz`) returns 200 with homepage content — classic Cloudflare Pages SPA-fallback soft 404.
   *Fix:* add a prerendered `404.html`; add a `_redirects` 200-rewrite scoped to `/app*` only, so the client-side app routes (`/app`, `/app/settings`, `/app/upgrade`) keep resolving while everything else genuinely 404s.
   *Risk:* must not break the SPA fallback for `/app*` or OAuth return URLs — test `/app?checkout=success` and a hard reload of `/app/settings` on a preview deploy before promoting.
   *Accept:* unknown paths return HTTP 404 with the 404 page; `/app` + `/app/settings` hard-reload still work logged in; OAuth round-trip still lands.
+
+> **Wave 2 status: VERIFIED LIVE 2026-08-01, after one production incident.** PR #7's merge broke `/login`/`/register`/`/app*` for ~45 min: Cloudflare Pages converts **per-path** 200-rewrites to `/index.html` into clean-URL 308s to `/` (only the `/*` catch-all form serves directly). The wrangler emulator flagged exactly this during the pre-merge smoke and was wrongly adjudicated a false positive. Hotfix `7a33a25`: rewrite destinations are `/`, not `/index.html`. All 9 production probes green (junk + deep paths → real 404 with branded page; login/register/app + trailing-slash twins + checkout-return → 200 shell).
+> **Hard-won rules:** (1) `_redirects` rewrite destinations must be `/`, never `/index.html`. (2) The ONLY valid test bed for `_redirects`/`_headers` changes is a **preview deployment** (`npx wrangler pages deploy <dist> --project-name=tuliplot --branch=preview`) — the emulator is directionally right but was dismissed once; production-equivalence reasoning is banned.
 
 ## Wave 3 — Content expansion (pre-AdSense gate, ~3 days)
 
