@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "generate:content": "node scripts/build-content.mjs",
     "prebuild": "node scripts/build-content.mjs",
-    "serve:ssr:frontend": "node dist/frontend/server/server.mjs"
+    "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
+    "og": "node scripts/render-og-card.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
@@ -42,6 +43,7 @@
     "jsdom": "^28.1.0",
     "marked": "^12.0.2",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.3",
     "typescript": "~6.0.2",
     "vitest": "^4.1.10"
   }
