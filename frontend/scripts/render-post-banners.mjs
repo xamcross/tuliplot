@@ -10,6 +10,9 @@ mkdirSync(outDir, { recursive: true });
 const banners = {
   'dashboard-productivity-tips': ['#A5D8FF', '#B2F2BB'],
   'why-we-built-tuliplot': ['#FFB1B1', '#D0BFFF'],
+  'view-multiple-websites-at-once': ['#D0BFFF', '#A5D8FF'],
+  'gmail-and-calendar-side-by-side': ['#FFD8A8', '#FFB1B1'],
+  'what-is-a-browser-start-page': ['#B2F2BB', '#FFD8A8'],
 };
 
 for (const [slug, [a, b]] of Object.entries(banners)) {
