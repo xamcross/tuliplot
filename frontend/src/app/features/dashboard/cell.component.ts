@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy, Component, computed, inject, input, output, signal, viewChild,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Cell } from '../../core/models/dashboard.model';
 import type { Compatibility } from '../../core/models/enums';
 import { AdConfig } from '../../core/models/ads.model';
@@ -13,62 +14,69 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
   selector: 'tl-cell',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CellToolbarComponent, SafeFrameComponent, AdCellComponent],
+  imports: [CellToolbarComponent, SafeFrameComponent, AdCellComponent, RouterLink],
   template: `
-    @switch (cell().type) {
-      @case ('EMPTY') {
-        <button type="button" class="add-btn" data-testid="add-btn" (click)="edit.emit(cell().slot)">
-          <span class="plus">+</span> Add app
-        </button>
-      }
-      @case ('AD') {
-        @if (!!adConfig()?.showAd) {
-          <tl-ad-cell [config]="adConfig()!" />
+    @if (locked()) {
+      <a class="locked" data-testid="locked-cell" routerLink="/register">
+        <span class="locked__icon" aria-hidden="true">🔒</span>
+        <span class="locked__text">Sign up free to unlock this cell</span>
+      </a>
+    } @else {
+      @switch (cell().type) {
+        @case ('EMPTY') {
+          <button type="button" class="add-btn" data-testid="add-btn" (click)="edit.emit(cell().slot)">
+            <span class="plus">+</span> Add app
+          </button>
         }
-      }
-      @case ('APP') {
-        <tl-cell-toolbar
-          [title]="cell().title ?? ''"
-          [asleep]="asleep()"
-          [accent]="accent()"
-          [framed]="frameState() === 'frame'"
-          (reload)="onReload()"
-          (popOut)="popOut.emit(cell().slot)"
-          (openInTab)="openInWindow()"
-          (focusToggle)="focusToggle.emit(cell().slot)"
-          (edit)="edit.emit(cell().slot)"
-          (sleep)="sleepToggle.emit(cell().slot)"
-          (remove)="remove.emit(cell().slot)"
-        />
-        @switch (frameState()) {
-          @case ('frame') {
-            <tl-safe-frame
-              [url]="cell().url!"
-              [title]="cell().title ?? ''"
-              [asleep]="asleep()"
-              (loadFailed)="onFrameLoadFailed()"
-            />
+        @case ('AD') {
+          @if (!!adConfig()?.showAd) {
+            <tl-ad-cell [config]="adConfig()!" />
           }
-          @case ('needs-extension') {
-            <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
-              <p>This app needs the TulipLot Companion extension to load in the grid.</p>
-              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="onInstallExtension()">Install TulipLot Companion</button>
-              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="onEnableForThisApp()">Enable for this site</button>
-              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab instead</button>
-            </div>
-          }
-          @case ('login-in-tab') {
-            <div class="cell-fallback state" data-testid="login-in-tab" data-state="login-in-tab">
-              <p>{{ cell().title }} opens in its own browser tab.</p>
-              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
-            </div>
-          }
-          @case ('load-failed') {
-            <div class="cell-fallback state" data-testid="load-failed" data-state="load-failed">
-              <p>{{ cell().title }} didn't load in the grid.</p>
-              <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="retry()">Retry</button>
-              <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
-            </div>
+        }
+        @case ('APP') {
+          <tl-cell-toolbar
+            [title]="cell().title ?? ''"
+            [asleep]="asleep()"
+            [accent]="accent()"
+            [framed]="frameState() === 'frame'"
+            (reload)="onReload()"
+            (popOut)="popOut.emit(cell().slot)"
+            (openInTab)="openInWindow()"
+            (focusToggle)="focusToggle.emit(cell().slot)"
+            (edit)="edit.emit(cell().slot)"
+            (sleep)="sleepToggle.emit(cell().slot)"
+            (remove)="remove.emit(cell().slot)"
+          />
+          @switch (frameState()) {
+            @case ('frame') {
+              <tl-safe-frame
+                [url]="cell().url!"
+                [title]="cell().title ?? ''"
+                [asleep]="asleep()"
+                (loadFailed)="onFrameLoadFailed()"
+              />
+            }
+            @case ('needs-extension') {
+              <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
+                <p>This app needs the TulipLot Companion extension to load in the grid.</p>
+                <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="onInstallExtension()">Install TulipLot Companion</button>
+                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="onEnableForThisApp()">Enable for this site</button>
+                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab instead</button>
+              </div>
+            }
+            @case ('login-in-tab') {
+              <div class="cell-fallback state" data-testid="login-in-tab" data-state="login-in-tab">
+                <p>{{ cell().title }} opens in its own browser tab.</p>
+                <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
+              </div>
+            }
+            @case ('load-failed') {
+              <div class="cell-fallback state" data-testid="load-failed" data-state="load-failed">
+                <p>{{ cell().title }} didn't load in the grid.</p>
+                <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="retry()">Retry</button>
+                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab</button>
+              </div>
+            }
           }
         }
       }
@@ -88,6 +96,13 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
       align-items: center; justify-content: center; gap: 12px; padding: 16px; text-align: center; }
     .cell-fallback p { margin: 0; font-family: var(--tl-font-display); font-weight: 600; font-size: 15px;
       color: var(--tl-ink-soft); max-width: 230px; line-height: 1.4; }
+    .locked { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 10px; text-decoration: none; border: 1.5px dashed var(--tl-border-dashed);
+      border-radius: 12px; background: var(--tl-surface); text-align: center; padding: 16px; }
+    .locked:hover { background: var(--tl-surface-3); }
+    .locked__icon { font-size: 20px; }
+    .locked__text { font-family: var(--tl-font-display); font-weight: 600; font-size: 14px;
+      color: var(--tl-ink-soft); max-width: 150px; line-height: 1.4; }
   `],
 })
 export class CellComponent {
@@ -98,6 +113,7 @@ export class CellComponent {
   asleep = input<boolean>(false);
   readonly compatibility = input<Compatibility | null>(null);
   readonly adConfig = input<AdConfig | null>(null);
+  readonly locked = input<boolean>(false);
 
   protected readonly accent = computed(() => CellComponent.ACCENTS[this.cell().slot % CellComponent.ACCENTS.length]);
 
