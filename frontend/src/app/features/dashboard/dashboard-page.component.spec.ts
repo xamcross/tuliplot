@@ -81,6 +81,13 @@ describe('DashboardPageComponent', () => {
     expect(store.cells()[0].type).toBe('EMPTY');
   });
 
+  it('renders zero locked cells for a signed-in account (server source never signup-locks a slot)', () => {
+    const fixture = TestBed.createComponent(DashboardPageComponent);
+    fixture.detectChanges(); // ngOnInit → store.load()
+
+    expect(fixture.nativeElement.querySelectorAll('[data-testid="locked-cell"]').length).toBe(0);
+  });
+
   it('resolveParkedApp places the parked app into the chosen slot and clears the prompt', () => {
     apiMock.get.mockReturnValue(
       of({

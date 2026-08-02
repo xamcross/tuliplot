@@ -100,13 +100,21 @@ export class GridComponent {
     // so skip the fetch during SSR/prerender entirely — that also removes the build's dependency on
     // a live backend response. A failed request (offline, blocked, backend down) leaves adConfig null
     // and the ad cell degrades to empty instead of throwing.
+    // Same reasoning for the catalog: it only feeds the client-side add/edit dialogs and the
+    // compatibility badge on already-placed APP cells. No prerendered route seeds an APP cell
+    // (/try's defaults are EMPTY + AD only, and localStorage — the only source of a restored APP
+    // cell — isn't available during SSR), so no prerendered markup depends on this response. Skip
+    // it server-side and degrade to an empty catalog on a browser-side failure instead of throwing.
     if (isPlatformBrowser(this.platformId)) {
       this.adsApi.getConfig().subscribe({
         next: (c) => this.adConfig.set(c),
         error: () => this.adConfig.set(null),
       });
+      this.catalogApi.list().subscribe({
+        next: (apps) => this.catalog.set(apps),
+        error: () => this.catalog.set([]),
+      });
     }
-    this.catalogApi.list().subscribe((apps) => this.catalog.set(apps));
   }
 
   /** Resolve a cell's compatibility from the catalog; null when the cell has no app or the catalog isn't loaded yet. */
