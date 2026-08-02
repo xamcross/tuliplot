@@ -75,7 +75,7 @@ If you're checking five or six things all day, every day, and you keep catching 
 
 ### What's the difference between a start page and a home page?
 
-A start page loads when you launch the browser from fully closed, a cold start, controlled by your browser's startup setting. A home page loads only when you click the dedicated Home button next to the address bar, a separate setting most people configure once and rarely revisit. The two can point at the same URL, which is exactly why they get confused, but they're triggered by two different actions and live in two different settings menus.
+In Chrome and Edge, a start page loads when you launch the browser from fully closed, a cold start, controlled by the browser's startup setting, while a home page loads only when you click the dedicated Home button next to the address bar, a separate setting most people configure once and rarely revisit. Firefox is the exception: its single "Homepage and new windows" setting covers both, so there's no separate start-page setting to distinguish there. In Chrome and Edge, where the two settings are separate, they can still point at the same URL, which is part of why the terms get confused even though they're triggered by two different actions.
 
 ### Is there a modern replacement for iGoogle?
 
