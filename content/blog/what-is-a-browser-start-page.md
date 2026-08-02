@@ -69,7 +69,7 @@ If your actual routine is two sites, an inbox and one other tab, you don't need 
 
 If you're checking five or six things all day, every day, and you keep catching yourself hunting through a pile of tabs to find the one you actually need, that's a different situation. A fixed layout, the same spot every time you look, beats re-finding the same handful of tabs over and over, day after day. At that point the apps aren't the problem. Where they live is.
 
-[Try TulipLot free](/register), no credit card required, and see whether your five or six actually settle into a place that sticks.
+[Try TulipLot free](/try), no credit card required, and see whether your five or six actually settle into a place that sticks.
 
 ## Questions
 

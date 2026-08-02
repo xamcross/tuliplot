@@ -36,7 +36,7 @@ import { pickRelated } from './related.util';
         </ul>
       </nav>
       <div class="cta-row">
-        <a routerLink="/register" class="tl-btn tl-btn--primary tl-btn--sm">Try TulipLot free →</a>
+        <a routerLink="/try" class="tl-btn tl-btn--primary tl-btn--sm">Try TulipLot free →</a>
         <a routerLink="/blog" class="tl-btn tl-btn--soft tl-btn--sm">More posts</a>
       </div>
     } @else {
