@@ -28,9 +28,10 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
         </p>
         <div class="cta-row">
           <a routerLink="/register" class="tl-btn tl-btn--primary">Get started free →</a>
+          <a routerLink="/try" class="tl-btn tl-btn--soft">Try with no account →</a>
           <a routerLink="/guides" class="tl-btn tl-btn--soft">Read the guides</a>
         </div>
-        <p class="tl-mono-note">Free forever · 5 cells + 1 ad slot · Premium = 6 cells, no ads</p>
+        <p class="tl-mono-note">Try free, no signup · Free forever · 5 cells + 1 ad slot · Premium = 6 cells, no ads</p>
       </section>
 
       <section class="preview">
@@ -77,6 +78,17 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
       <section class="pricing">
         <h2>Simple pricing</h2>
         <div class="plans">
+          <div class="plan tl-card">
+            <span class="plan-tag">Try</span>
+            <div class="price">$0<span>/no signup</span></div>
+            <ul>
+              <li>✓ 2 usable cells</li>
+              <li>✓ Full catalog + custom URLs</li>
+              <li>✓ Drag to rearrange</li>
+              <li class="dim">• Saved to this browser only</li>
+            </ul>
+            <a routerLink="/try" class="tl-btn tl-btn--soft plan-cta">Try now</a>
+          </div>
           <div class="plan tl-card">
             <span class="plan-tag">Free</span>
             <div class="price">$0<span>/forever</span></div>
@@ -156,7 +168,7 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
     .num--peach { background: var(--tl-peach); color: var(--tl-on-peach); }
     .num--mint { background: var(--tl-mint); color: var(--tl-on-mint); }
     .pricing { padding: 56px var(--tl-page-pad); background: var(--tl-surface); }
-    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
+    .plans { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; max-width: 1080px; margin: 0 auto; }
     .plan { padding: 32px; border-radius: 22px; }
     .plan--premium { background: var(--tl-primary-tint); border: 1.5px solid var(--tl-primary); }
     .plan-tag { font-family: var(--tl-font-mono); font-weight: 700; text-transform: uppercase;

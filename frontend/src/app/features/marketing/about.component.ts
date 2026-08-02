@@ -37,11 +37,12 @@ import { SiteFooterComponent } from './site-footer.component';
         strips the blocking headers — but only for frames inside your own dashboard, and
         only for sites you explicitly allow.
       </p>
-      <h2>Free and Premium</h2>
+      <h2>Try, Free, and Premium</h2>
       <p>
-        The free tier gives you five usable cells plus one ad-supported cell.
-        Premium removes the ad and unlocks all six cells. Billing runs through
-        Stripe; we never see your card details.
+        Not ready for an account? <a routerLink="/try">Try TulipLot</a> first: two live
+        cells, no signup required. The free tier gives you five usable cells plus one
+        ad-supported cell. Premium removes the ad and unlocks all six cells. Billing runs
+        through Stripe; we never see your card details.
       </p>
       <h2>Contact</h2>
       <p>
@@ -61,7 +62,7 @@ export class AboutComponent {
     inject(SeoService).set({
       title: 'About TulipLot — why we built a browser dashboard',
       description:
-        'Why TulipLot exists: the tab-overload problem, how the single-window 3×2 dashboard works, and what Free versus Premium includes. Meet the product.',
+        'Why TulipLot exists: the tab-overload problem, how the single-window 3×2 dashboard works, and what Try, Free, and Premium include. Meet the product.',
       path: '/about',
     });
   }
