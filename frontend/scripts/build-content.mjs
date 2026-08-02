@@ -82,7 +82,7 @@ console.log(
   `content: ${guides.length} guides, ${posts.length} posts -> ${outFile}`,
 );
 
-const staticRoutes = ['/', '/about', '/privacy', '/terms', '/contact', '/guides', '/blog'];
+const staticRoutes = ['/', '/about', '/privacy', '/terms', '/contact', '/guides', '/blog', '/try'];
 const STATIC_LASTMOD = '2026-08-01'; // bump when static-page copy changes
 const withSlash = (r) => `https://tuliplot.com${r === '/' ? '/' : r + '/'}`;
 const entries = [

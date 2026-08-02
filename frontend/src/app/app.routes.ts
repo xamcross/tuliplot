@@ -3,6 +3,7 @@ import { LoginComponent } from './features/auth/login.component';
 import { RegisterComponent } from './features/auth/register.component';
 import { authGuard } from './core/guards/auth.guard';
 import { provideServerDashboardSource } from './features/dashboard/dashboard-source';
+import { provideAnonymousDashboardSource } from './features/dashboard/anonymous-dashboard.store';
 
 // Route table is authoritative in the shared contract (Canonical Resolutions v2 -> Frontend route table):
 // /login + /register are top-level public; /app is guarded (DashboardPageComponent).
@@ -26,6 +27,12 @@ export const routes: Routes = [
       import('./features/marketing/blog-list.component').then((m) => m.BlogListComponent) },
   { path: 'blog/:slug', loadComponent: () =>
       import('./features/marketing/blog-detail.component').then((m) => m.BlogDetailComponent) },
+  {
+    path: 'try',
+    providers: [provideAnonymousDashboardSource()],
+    loadComponent: () =>
+      import('./features/dashboard/try-page.component').then((m) => m.TryPageComponent),
+  },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
