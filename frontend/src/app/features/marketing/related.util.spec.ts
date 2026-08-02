@@ -33,4 +33,10 @@ describe('pickRelated', () => {
   it('handles an unknown slug without throwing', () => {
     expect(pickRelated(items, 'nope', 2)).toHaveLength(2);
   });
+
+  it('uses the anchor to vary picks when the slug is not in this collection', () => {
+    const a = pickRelated(items, 'nope', 2, 0).map((i) => i.slug).join();
+    const b = pickRelated(items, 'nope', 2, 2).map((i) => i.slug).join();
+    expect(a).not.toBe(b);
+  });
 });

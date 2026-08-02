@@ -48,7 +48,7 @@ It's worth naming the workaround people reach for anyway: routing the site throu
 
 ## The honest limits
 
-Some sites will never embed anywhere, in any tool, no matter which extension you install. Banks are the obvious case. Most Google properties are too, which is part of why Gmail, Outlook, and Google Calendar all open in their own tab rather than a frame. Some single sign-on flows, the shared login systems that let one account cover several separate apps, behave the same way, because the same deep protections that keep your session safe also keep it from working inside a frame.
+Some sites will never embed anywhere, in any tool, no matter which extension you install. Banks are the obvious case. Most Google properties are too, and Microsoft's Outlook behaves the same way, which is why Gmail, Outlook, and Google Calendar all open in their own tab rather than a frame. Some single sign-on flows, the shared login systems that let one account cover several separate apps, behave the same way, because the same deep protections that keep your session safe also keep it from working inside a frame.
 
 A launcher cell that opens a site in its own tab isn't a downgrade from the "real" experience. It is the real experience, one click away, with the site's own login and security fully intact instead of routed through something else. TulipLot would rather say that plainly than suggest a future update might unlock Gmail, because it won't: the limits described here aren't a gap waiting to be closed, they're the same protections keeping your accounts safe everywhere else you already use them.
 

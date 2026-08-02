@@ -5,7 +5,7 @@ import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
 
 const FAQ: ReadonlyArray<{ q: string; a: string }> = [
-  { q: 'Can I embed any website?', a: 'Any HTTPS URL. Some sites block embedding — the optional TulipLot Companion (a Chrome extension) unlocks most of them.' },
+  { q: 'Can I embed any website?', a: 'Any HTTPS URL. Some sites block embedding, and the optional TulipLot Companion (a Chrome extension) unlocks many of them. A few, like Gmail and Google Calendar, never embed anywhere and become one-click launchers instead.' },
   { q: 'Is my data private?', a: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' },
   { q: 'What happens if I cancel Premium?', a: 'You drop back to the free 5-cell layout. If all six cells were full, the sixth app is parked so you can re-place or discard it — nothing is deleted.' },
 ];
