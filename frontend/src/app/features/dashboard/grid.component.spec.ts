@@ -6,6 +6,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { GridComponent } from './grid.component';
 import { CellComponent } from './cell.component';
 import { DashboardStore } from '../../stores/dashboard.store';
+import { provideServerDashboardSource } from './dashboard-source';
 import { DashboardApi } from '../../core/api/dashboard.api';
 import { AdsApi } from '../../core/api/ads.api';
 import { CatalogApi } from '../../core/api/catalog.api';
@@ -24,6 +25,7 @@ describe('GridComponent', () => {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
+        provideServerDashboardSource(),
         {
           provide: DashboardApi,
           useValue: {
