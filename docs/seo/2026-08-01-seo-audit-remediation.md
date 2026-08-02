@@ -86,12 +86,12 @@ Everything on the site is under 300 words (145–213 per article, ~984 total). N
 
 Highest-leverage new pages first; each targets a SERP currently held by forums, dev docs, or nobody.
 
-- [ ] **4.1 Iframe explainer pillar** — "Why some sites won't load in a dashboard (and how to fix it)".
+- [x] **4.1 Iframe explainer pillar** — "Why some sites won't load in a dashboard (and how to fix it)".
   Target: "why won't a website load in an iframe", ""refused to display in a frame" fix", "X-Frame-Options" (plain-English). SERP today is 100% MDN/GitHub/vendor KBs — zero consumer content. This is also our objection-handler: SplitView already markets *against* iframe tools; this page + the Companion extension is the rebuttal. 1,500+ words, FAQPage schema, links to `add-any-site` and `/register`.
-- [ ] **4.2 JTBD guide** — "How to view multiple websites at once (side by side, one tab)".
+- [x] **4.2 JTBD guide** — "How to view multiple websites at once (side by side, one tab)".
   Target: "view multiple websites at once", "open two websites side by side", "how to see two websites at the same time", "is there a website to view multiple websites at once" (Quora holds #1 — beatable). Cover all methods honestly (split screen, extensions, TulipLot), question-phrased H2s for PAA.
-- [ ] **4.3 Micro how-to** — "Gmail and Google Calendar side by side". Only Google's own docs rank. 600–800 words.
-- [ ] **4.4 Definitional post** — "What is a browser start page (and do you still need one)?" Quora/Wix-tier SERP; feeds the head term long-game. Fold in the iGoogle/Netvibes-shutdown migration angle (openly acknowledged gap in press).
+- [x] **4.3 Micro how-to** — "Gmail and Google Calendar side by side". Only Google's own docs rank. 600–800 words.
+- [x] **4.4 Definitional post** — "What is a browser start page (and do you still need one)?" Quora/Wix-tier SERP; feeds the head term long-game. Fold in the iGoogle/Netvibes-shutdown migration angle (openly acknowledged gap in press).
 
 ## Wave 5 — Commercial content (~3 days)
 
