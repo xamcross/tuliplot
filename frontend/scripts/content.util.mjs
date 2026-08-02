@@ -39,6 +39,43 @@ export function stripLeadingH1(body) {
   return String(body).replace(/^\s*#[ \t][^\n]*\n+/, '');
 }
 
+/** Strips the inline markdown we actually use (links, bold, italics, code) down to plain text. */
+function plainText(md) {
+  return String(md)
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .trim();
+}
+
+/**
+ * FAQ pairs for schema.org FAQPage: every `### ` heading that ends with a question mark,
+ * answered by the paragraph directly beneath it. Headings that aren't questions are skipped.
+ */
+export function extractFaq(body) {
+  const lines = String(body).replace(/\r\n/g, '\n').split('\n');
+  const faq = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = /^###\s+(.*\?)\s*$/.exec(lines[i]);
+    if (!m) continue;
+    const answer = [];
+    for (let j = i + 1; j < lines.length; j++) {
+      const line = lines[j];
+      if (/^#{1,6}\s/.test(line)) break;
+      if (line.trim() === '') {
+        if (answer.length) break;
+        continue;
+      }
+      answer.push(line.trim());
+    }
+    if (answer.length) {
+      faq.push({ q: plainText(m[1]), a: plainText(answer.join(' ')) });
+    }
+  }
+  return faq;
+}
+
 export function sitemapXml(entries) {
   const urls = entries
     .map(

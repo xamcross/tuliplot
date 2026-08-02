@@ -5,5 +5,6 @@ export interface ContentDoc {
   date: string;          // ISO date (YYYY-MM-DD)
   category: string;
   readingMinutes: number;
+  faq: { q: string; a: string }[];   // question-style h3s, for FAQPage schema
   html: string;          // pre-rendered HTML from markdown
 }
