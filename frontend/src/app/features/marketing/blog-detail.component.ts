@@ -25,7 +25,7 @@ import { pickRelated } from './related.util';
           <h1>{{ d.title }}</h1>
         </div>
       </div>
-      <img class="banner" [src]="'/banners/' + d.slug + '.png'" alt="" />
+      <img class="banner" [src]="'/banners/' + d.slug + '.png'" alt="" width="1440" height="520" />
       <article class="tl-article" [innerHTML]="d.html"></article>
       <nav class="related" aria-labelledby="related-h">
         <h2 id="related-h">Keep reading</h2>
