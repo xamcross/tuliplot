@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { of, throwError } from 'rxjs';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
@@ -12,6 +12,7 @@ import { AdsApi } from '../../core/api/ads.api';
 import { CatalogApi } from '../../core/api/catalog.api';
 import { CatalogApp } from '../../core/models/catalog.model';
 import { Cell } from '../../core/models/dashboard.model';
+import { TRY_STORAGE_KEY } from './anonymous-dashboard.store';
 
 function freeCells(): Cell[] {
   const c: Cell[] = [];
@@ -97,5 +98,72 @@ describe('DashboardPageComponent', () => {
     expect(store.cells()[2].type).toBe('APP');
     expect(store.cells()[2].url).toBe('https://parked.com');
     expect(store.parkedApp()).toBeNull();
+  });
+
+  describe('try-cell migration on first load', () => {
+    const triedApp = (slot: number, title: string): Cell =>
+      ({ slot, type: 'APP', url: 'https://example.com', title, openMode: 'FRAME' });
+
+    function fullCells(): Cell[] {
+      const c: Cell[] = [];
+      for (let i = 0; i < 5; i++) c.push(triedApp(i, `Existing ${i}`));
+      c.push({ slot: 5, type: 'AD', openMode: 'FRAME' });
+      return c;
+    }
+
+    afterEach(() => localStorage.removeItem(TRY_STORAGE_KEY));
+
+    it('merges pending /try cells into empty slots and clears storage once the load succeeds', async () => {
+      localStorage.setItem(TRY_STORAGE_KEY, JSON.stringify([triedApp(0, 'Tried')]));
+      apiMock.get.mockReturnValue(of({ cells: freeCells() }));
+
+      const fixture = TestBed.createComponent(DashboardPageComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const store = TestBed.inject(DashboardStore);
+      expect(store.cells()[0].type).toBe('APP');
+      expect(store.cells()[0].title).toBe('Tried');
+      expect(localStorage.getItem(TRY_STORAGE_KEY)).toBeNull();
+    });
+
+    // Pins the Task 6 correction: DashboardStore.load's catchError sets loaded:true while
+    // cells stays []. mergeIntoEmptySlots([], pending) then finds no EMPTY slot and returns
+    // null. The uncorrected brief logic cleared storage anyway (it only checked
+    // pending.length), destroying the visitor's cells before they ever reached the account.
+    // This test fails against that original logic — see task-6-report.md for the RED proof.
+    it('leaves the try-cells key in place when the dashboard load fails, so a later load can retry', async () => {
+      localStorage.setItem(TRY_STORAGE_KEY, JSON.stringify([triedApp(0, 'Tried')]));
+      apiMock.get.mockReturnValue(throwError(() => new Error('network down')));
+
+      const fixture = TestBed.createComponent(DashboardPageComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const store = TestBed.inject(DashboardStore);
+      expect(store.loaded()).toBe(true); // loaded flips true even on a failed load
+      expect(store.cells()).toEqual([]); // nothing to merge into — the visitor's cells are not lost
+      const stored = localStorage.getItem(TRY_STORAGE_KEY);
+      expect(stored).not.toBeNull();
+      expect(JSON.parse(stored!)).toEqual([triedApp(0, 'Tried')]);
+    });
+
+    // Also fails against the uncorrected logic, for the same reason: a full dashboard means
+    // mergeIntoEmptySlots returns null, but the original code cleared storage regardless.
+    it('leaves the try-cells key in place when the account already has no empty slot', async () => {
+      localStorage.setItem(TRY_STORAGE_KEY, JSON.stringify([triedApp(0, 'Tried')]));
+      apiMock.get.mockReturnValue(of({ cells: fullCells() }));
+
+      const fixture = TestBed.createComponent(DashboardPageComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const store = TestBed.inject(DashboardStore);
+      expect(store.cells()[0].title).toBe('Existing 0'); // untouched — nothing displaced
+      expect(localStorage.getItem(TRY_STORAGE_KEY)).not.toBeNull();
+    });
   });
 });

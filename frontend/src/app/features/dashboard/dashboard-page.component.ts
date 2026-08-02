@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, afterNextRender, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, afterNextRender, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { firstValueFrom } from 'rxjs';
@@ -11,6 +11,7 @@ import { CatalogApp } from '../../core/models/catalog.model';
 import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
 import { openModeFor } from '../../core/services/compatibility.util';
 import { AppTopbarComponent } from '../../shared/app-topbar.component';
+import { pendingTryCells, mergeIntoEmptySlots, clearTryCells } from './try-migration';
 
 type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 
@@ -73,6 +74,28 @@ export class DashboardPageComponent implements OnInit {
   constructor() {
     afterNextRender(() => {
       void this.extensionBridge.ping();
+    });
+
+    // One-shot: once the store's first load settles (loaded() flips true on success AND on
+    // failure), carry any /try cells this visitor configured before signing up into their
+    // now-empty account slots. Storage is cleared only when the merge actually applied
+    // (mergeIntoEmptySlots returned non-null) — if the load failed (cells stay [], so merge
+    // finds no EMPTY slot) or the account is already full, the key is left in place so a later
+    // load can retry instead of silently losing the visitor's cells.
+    let migrated = false;
+    effect(() => {
+      if (migrated || !this.store.loaded()) {
+        return;
+      }
+      migrated = true;
+      const pending = pendingTryCells();
+      const merged = mergeIntoEmptySlots(this.store.cells(), pending);
+      if (merged) {
+        for (const cell of merged) {
+          this.store.setCell(cell);
+        }
+        clearTryCells();
+      }
     });
   }
 
