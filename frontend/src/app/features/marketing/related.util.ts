@@ -7,13 +7,14 @@ export function pickRelated<T extends { slug: string }>(
   items: readonly T[],
   currentSlug: string | null,
   count: number,
+  anchor = -1,
 ): T[] {
   const others = items.filter((i) => i.slug !== currentSlug);
   if (others.length === 0) {
     return [];
   }
   const index = items.findIndex((i) => i.slug === currentSlug);
-  const start = index < 0 ? 0 : index;
+  const start = index >= 0 ? index : Math.max(anchor, 0);
   const take = Math.min(count, others.length);
   return Array.from({ length: take }, (_, offset) => others[(start + offset) % others.length]);
 }

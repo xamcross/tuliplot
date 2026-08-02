@@ -71,7 +71,7 @@ export class GuideDetailComponent {
     const current = this.slug();
     return [
       ...pickRelated(GUIDES, current, 2).map((g) => ({ path: `/guides/${g.slug}`, title: g.title })),
-      ...pickRelated(POSTS, current, 1).map((p) => ({ path: `/blog/${p.slug}`, title: p.title })),
+      ...pickRelated(POSTS, current, 1, GUIDES.findIndex((g) => g.slug === current)).map((p) => ({ path: `/blog/${p.slug}`, title: p.title })),
     ];
   });
   protected readonly pillClass = pillClass;

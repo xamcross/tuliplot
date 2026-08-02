@@ -85,7 +85,7 @@ The tradeoff, stated plainly: methods 1 through 4 need nothing but what's alread
 
 ### Is there a website that shows multiple websites at once?
 
-Not one that works for every site, no. Tools that try, TulipLot included, run into the same rule described above: some sites allow it, some need a browser extension first, and a handful refuse outright no matter which tool is asking, because that choice belongs to the site itself, not to whatever's trying to display it. What you can find, and what's worth looking for, are tools that are upfront about which case each of your sites falls into instead of quietly showing a broken pane and leaving you to guess.
+Not one that works for every site, no. Tools that try, TulipLot included, run into the same rule: a site can tell browsers not to display it inside another page, and browsers obey. Some sites allow it, some need a browser extension first, and a handful refuse outright no matter which tool is asking, because that choice belongs to the site itself, not to whatever's trying to display it. What you can find, and what's worth looking for, are tools that are upfront about which case each of your sites falls into instead of quietly showing a broken pane and leaving you to guess.
 
 ### Why won't some sites open side by side?
 

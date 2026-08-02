@@ -27,7 +27,7 @@ The tradeoff is that it doesn't stick. Close the windows, restart your computer,
 
 TulipLot takes a different approach: a fixed grid where Gmail and Calendar each get their own cell, in the same spot every time you open it. Neither one loads live inside that cell. Click it, and it opens the real Gmail or the real Calendar in its own browser tab, exactly as if you'd typed the address yourself.
 
-That's not embedded mail, and it isn't pretending to be. What you get instead is one predictable place to click from, sitting next to cells that do load live: a Trello board, a news site, whatever else you check in the same few minutes. Gmail and Calendar become two fixed spots in your daily lineup instead of two tabs buried among the rest.
+That's not embedded mail, and it isn't pretending to be. What you get instead is one predictable place to click from, sitting next to cells that do load live: a Trello board, a docs page, whatever else you check in the same few minutes. Gmail and Calendar become two fixed spots in your daily lineup instead of two tabs buried among the rest.
 
 ## Why neither one embeds
 
