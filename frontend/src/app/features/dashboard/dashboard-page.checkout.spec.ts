@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, it, expect, vi } from 'vitest';
 import { DashboardPageComponent } from './dashboard-page.component';
+import { provideServerDashboardSource } from './dashboard-source';
 import { AuthStore } from '../../stores/auth.store';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { AdsApi } from '../../core/api/ads.api';
@@ -52,6 +53,7 @@ function setup(checkout: string | null) {
       },
       { provide: AuthStore, useValue: authStoreStub(loadMe) },
       { provide: DashboardStore, useValue: dashboardStoreStub(load) },
+      provideServerDashboardSource(),
       { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
       { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
     ],

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, computed, inject, output, signal } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { DashboardStore } from '../../stores/dashboard.store';
+import { DASHBOARD_SOURCE } from './dashboard-source';
 import { AuthStore } from '../../stores/auth.store';
 import { CellComponent } from './cell.component';
 import { AdsApi } from '../../core/api/ads.api';
@@ -74,7 +74,7 @@ import { Compatibility } from '../../core/models/enums';
   `],
 })
 export class GridComponent {
-  protected store = inject(DashboardStore);
+  protected store = inject(DASHBOARD_SOURCE);
   private readonly authStore = inject(AuthStore);
   private readonly adsApi = inject(AdsApi);
   private readonly catalogApi = inject(CatalogApi);

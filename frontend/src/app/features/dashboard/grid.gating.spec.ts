@@ -3,7 +3,7 @@ import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { describe, it, expect, vi } from 'vitest';
 import { GridComponent } from './grid.component';
-import { DashboardStore } from '../../stores/dashboard.store';
+import { DASHBOARD_SOURCE } from './dashboard-source';
 import { AuthStore } from '../../stores/auth.store';
 import { AdsApi } from '../../core/api/ads.api';
 import { CatalogApi } from '../../core/api/catalog.api';
@@ -17,19 +17,13 @@ function sixCells(): Cell[] {
   })) as Cell[];
 }
 
-function dashboardStoreStub() {
+function dashboardSourceStub() {
   return {
     cells: signal(sixCells()),
-    loaded: signal(true),
-    saving: signal(false),
-    error: signal(null),
-    adSlotIndex: signal(5),
-    filledCount: signal(0),
-    load: () => {},
-    swap: () => {},
+    lockedSlots: signal<number[]>([]),
     setCell: () => {},
     clearCell: () => {},
-    persist: () => {},
+    swap: () => {},
   };
 }
 
@@ -37,7 +31,7 @@ function createGrid(adFree: boolean) {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
-      { provide: DashboardStore, useValue: dashboardStoreStub() },
+      { provide: DASHBOARD_SOURCE, useValue: dashboardSourceStub() },
       { provide: AuthStore, useValue: { adFree: signal(adFree), tier: signal(adFree ? 'PREMIUM' : 'FREE') } },
       { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
       { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },

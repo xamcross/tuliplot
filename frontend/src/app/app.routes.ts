@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login.component';
 import { RegisterComponent } from './features/auth/register.component';
 import { authGuard } from './core/guards/auth.guard';
+import { provideServerDashboardSource } from './features/dashboard/dashboard-source';
 
 // Route table is authoritative in the shared contract (Canonical Resolutions v2 -> Frontend route table):
 // /login + /register are top-level public; /app is guarded (DashboardPageComponent).
@@ -30,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'app',
     canActivate: [authGuard],
+    providers: [provideServerDashboardSource()],
     loadComponent: () =>
       import('./features/dashboard/dashboard-page.component').then((m) => m.DashboardPageComponent),
   },

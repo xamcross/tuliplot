@@ -5,6 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { DashboardPageComponent } from './dashboard-page.component';
+import { provideServerDashboardSource } from './dashboard-source';
 import { DashboardStore } from '../../stores/dashboard.store';
 import { DashboardApi } from '../../core/api/dashboard.api';
 import { AdsApi } from '../../core/api/ads.api';
@@ -32,6 +33,7 @@ describe('DashboardPageComponent', () => {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
+        provideServerDashboardSource(),
         { provide: DashboardApi, useValue: apiMock },
         { provide: AdsApi, useValue: { getConfig: vi.fn().mockReturnValue(of({ showAd: false, adClient: '', adSlot: '' })) } },
         { provide: CatalogApi, useValue: { list: vi.fn().mockReturnValue(of([])) } },
