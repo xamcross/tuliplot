@@ -42,7 +42,7 @@ Installing the Companion doesn't unlock anything by itself — it just makes unl
 2. Back in the cell, click **Enable for this site** — the required second step, specific to that one site.
 3. The cell retries and, for most sites, loads live in the grid from then on.
 
-That "Enable for this site" button is a one-time thing — it only shows up while the Companion isn't installed yet. Add another stubborn site later and the cell skips straight to trying to load; if it isn't granted, you'll land on "didn't load" instead of the button. That's expected, and the fix is just as quick: open `chrome://extensions`, click **TulipLot Companion**, go to **Site access**, and add the new site there, then hit **Retry** in the cell. Same permission, same one-at-a-time scoping — just requested through Chrome's settings instead of the cell.
+The in-cell prompt sticks around until TulipLot detects the Companion, which happens the next time you load your dashboard — so in that first pass you can enable several sites right from their cells, one **Enable for this site** click each. Add a stubborn site after that and the cell goes straight to trying to load; if it isn't granted, you'll land on "didn't load" instead of the button. That's expected, and the fix is just as quick: open `chrome://extensions`, click **TulipLot Companion**, go to **Site access**, and add the new site there, then hit **Retry** in the cell. Same permission, same one-at-a-time scoping — just requested through Chrome's settings instead of the cell.
 
 ## What still can't be embedded
 

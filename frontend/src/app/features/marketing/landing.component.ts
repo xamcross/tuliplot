@@ -5,9 +5,9 @@ import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
 
 const FAQ: ReadonlyArray<{ q: string; a: string }> = [
-  { q: 'Can I embed any website?', a: 'Any HTTPS URL. Some sites block embedding — the optional Chrome companion unlocks most of them.' },
+  { q: 'Can I embed any website?', a: 'Any HTTPS URL. Some sites block embedding — the optional TulipLot Companion (a Chrome extension) unlocks most of them.' },
   { q: 'Is my data private?', a: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' },
-  { q: 'What happens if I cancel Premium?', a: 'You drop back to the free 5-cell layout; the 6th app is parked so you can re-place or discard it.' },
+  { q: 'What happens if I cancel Premium?', a: 'You drop back to the free 5-cell layout. If all six cells were full, the sixth app is parked so you can re-place or discard it — nothing is deleted.' },
 ];
 
 @Component({
@@ -23,7 +23,7 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
         <span class="tl-eyebrow">One window · six apps</span>
         <h1>Everything you check all day, on <span class="hl">one calm screen</span></h1>
         <p class="sub">
-          A browser dashboard: a fixed 3×2 grid where every cell hosts a live web app — Gmail, Trello, your news, any URL you choose.
+          A browser dashboard: a fixed 3×2 grid where every cell hosts a live web app — Trello, Notion, your news, any URL you choose.
         </p>
         <div class="cta-row">
           <a routerLink="/register" class="tl-btn tl-btn--primary">Get started free →</a>
@@ -52,7 +52,7 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
           </article>
           <article class="tl-card"><div class="swatch swatch--sky"></div>
             <h3>Any site, framed safely</h3>
-            <p>Every URL is validated as HTTPS and sandboxed. The Chrome companion unlocks stubborn sites.</p>
+            <p>Every URL is validated as HTTPS and sandboxed. The optional TulipLot Companion (a Chrome extension) unlocks most stubborn sites.</p>
           </article>
           <article class="tl-card"><div class="swatch swatch--mint"></div>
             <h3>Yours, private, portable</h3>
@@ -189,7 +189,7 @@ export class LandingComponent {
     inject(SeoService).set({
       title: 'Browser dashboard — your apps on one calm screen',
       description:
-        'Turn one tab into a browser dashboard: a fixed 3×2 grid of live web apps — Gmail, Trello, news, any URL — side by side on one calm screen. Free to start.',
+        'Turn one tab into a browser dashboard: a fixed 3×2 grid of live web apps — Trello, Notion, news, any URL — side by side on one calm screen. Free to start.',
       path: '/',
       jsonLd: [
         { '@context': 'https://schema.org', '@type': 'Organization', name: 'TulipLot', url: 'https://tuliplot.com/', logo: 'https://tuliplot.com/favicon.svg' },
