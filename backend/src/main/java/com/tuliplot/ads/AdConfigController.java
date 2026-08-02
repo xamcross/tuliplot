@@ -26,6 +26,9 @@ public class AdConfigController {
 
   @GetMapping("/ads")
   public AdConfigDto getAdsConfig(@AuthenticationPrincipal DashPrincipal principal) {
+    if (principal == null) {
+      return adConfigService.forAnonymous();
+    }
     User user =
         userRepository
             .findById(principal.getUserId())

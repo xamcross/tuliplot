@@ -28,4 +28,9 @@ public class AdConfigService {
     boolean showAd = !userService.isPremium(user);
     return new AdConfigDto(showAd, adClient, adSlot);
   }
+
+  /** Signed-out visitors on the public /try page always see the ad cell. */
+  public AdConfigDto forAnonymous() {
+    return new AdConfigDto(true, adClient, adSlot);
+  }
 }

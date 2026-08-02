@@ -55,4 +55,15 @@ class AdConfigServiceTest {
     assertThat(dto.adClient()).isEmpty();
     assertThat(dto.adSlot()).isEmpty();
   }
+
+  // Signed-out visitors on the public /try page: no User, no UserService call —
+  // the anonymous branch must never depend on account state.
+  @Test
+  void anonymousVisitorsSeeAds() {
+    AdConfigService service = new AdConfigService(userService, "ca-pub-test", "1234567890");
+    AdConfigDto dto = service.forAnonymous();
+    assertThat(dto.showAd()).isTrue();
+    assertThat(dto.adClient()).isEqualTo("ca-pub-test");
+    assertThat(dto.adSlot()).isEqualTo("1234567890");
+  }
 }
