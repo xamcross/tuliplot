@@ -7,7 +7,7 @@ category: Tips
 ---
 # Five ways to lay out a productive dashboard
 
-A fixed 3×2 grid is one of several [other ways to view multiple websites at once](/blog/view-multiple-websites-at-once), and it only pays off if you arrange it around how you actually work. Six cells look the same empty, but a productive dashboard for someone glued to a support queue looks nothing like one for someone deep in a single project all day. The apps matter less than the dashboard layout: where each sits, what's asleep, and what earns the cell your eyes hit first.
+A fixed 3×2 grid only pays off if you arrange it around how you actually work. Six cells look the same empty, but a productive dashboard for someone glued to a support queue looks nothing like one for someone deep in a single project all day. The apps matter less than the dashboard layout: where each sits, what's asleep, and what earns the cell your eyes hit first. A grid isn't the only way to do this, either; if you're still weighing your options, [other ways to view multiple websites at once](/blog/view-multiple-websites-at-once) covers the rest.
 
 Below are five layouts, each built for a different way of working. Pick whichever sounds like your day, or borrow pieces from two. Every layout fits a real 3×2 grid; one uses Premium's sixth cell, and says so.
 
