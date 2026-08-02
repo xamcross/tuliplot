@@ -69,7 +69,7 @@ That's the gap TulipLot is built to close. It turns one browser tab into a fixed
 
 What actually happens when you add a site depends on the site, the same way it did in method 3, and it's worth being just as upfront about it here. Trello is a catalog example that loads live in the grid the moment you add it, nothing extra required. Notion and Hacker News are catalog examples that need a nudge first: the free TulipLot Companion, a Chrome extension you install once and then turn on for that specific site, after which they load live too. And Gmail, Outlook, and Google Calendar are catalog examples that never embed, Companion or not; each opens in its own browser tab as a one-click launcher instead, because their own protections run deeper than anything the Companion can adjust.
 
-The tradeoff, stated plainly: methods 1 through 4 need nothing but what's already on your computer, and you can start using any of them in the next thirty seconds. TulipLot means creating a free account and spending a few minutes arranging your first grid. What you get in exchange is that you stop spending those thirty seconds every single day.
+The tradeoff, stated plainly: methods 1 through 4 need nothing but what's already on your computer, and you can start using any of them in the next thirty seconds. Trying TulipLot needs nothing either — two cells load with no signup at [/try](/try) — though building out the full grid means creating a free account and spending a few minutes arranging it. What you get in exchange is that you stop spending those thirty seconds every single day.
 
 ## Which one should you use?
 
