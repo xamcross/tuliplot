@@ -22,7 +22,7 @@ import { SiteFooterComponent } from './site-footer.component';
       <p>
         This policy explains what TulipLot collects, why, and the choices you
         have. It covers the TulipLot web app, the public content site, and the
-        optional Chrome companion extension.
+        optional TulipLot Companion extension.
       </p>
 
       <h2>Information we collect</h2>

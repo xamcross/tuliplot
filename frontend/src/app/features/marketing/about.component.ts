@@ -33,8 +33,8 @@ import { SiteFooterComponent } from './site-footer.component';
       <h2>How it works</h2>
       <p>
         The web app composites embed-friendly sites directly. For sites that
-        refuse to be framed, an optional Chrome MV3 companion extension strips
-        the blocking headers — but only for frames inside your own dashboard, and
+        refuse to be framed, the optional TulipLot Companion (a Chrome extension)
+        strips the blocking headers — but only for frames inside your own dashboard, and
         only for sites you explicitly allow.
       </p>
       <h2>Free and Premium</h2>

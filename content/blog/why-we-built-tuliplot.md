@@ -7,9 +7,9 @@ category: Product
 ---
 # Why we built TulipLot
 
-## The tab pile
+## The tab pile: what too many browser tabs actually costs
 
-You know the pile. It starts with a couple of tabs in the morning and by the afternoon it's a wall of them, and somewhere in there is the doc you were editing earlier, except now it's drifted somewhere to the left of where you last saw it, next to another tab from the same site that you opened because you couldn't find the first one.
+You know the pile. It starts with a couple of tabs in the morning, and by the afternoon you've got too many browser tabs open at once — a wall of them, and somewhere in there is the doc you were editing earlier, except now it's drifted somewhere to the left of where you last saw it, next to another tab from the same site that you opened because you couldn't find the first one.
 
 The favicons blur together after a while. You hover, wait for the tooltip, hover the next one, wait again. You've got a duplicate of the same dashboard open because you forgot you already had it. The tab you actually need is the one that always seems to have wandered off, and you spend stray moments, over and over, just relocating things you already opened once.
 

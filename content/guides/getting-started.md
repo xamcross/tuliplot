@@ -10,7 +10,7 @@ order: 1
 
 ## What you'll have in five minutes
 
-By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps within reach at once. Some load right there in the grid, live. Others — Gmail and Google Calendar are the common ones — are one click from opening in their own tab instead. Either way, you stop digging through tabs to find the thing you were just looking at.
+By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps within reach at once. Some load right there in the grid, live. Others — Gmail and Google Calendar are the common ones — are one click from opening in their own tab instead. Either way, you stop digging through tabs to find the thing you were just looking at — which is [the whole point](/blog/why-we-built-tuliplot).
 
 Set up takes about five minutes. Here's the whole path, start to finish.
 
@@ -42,7 +42,7 @@ Since the layout is fixed, it's worth being deliberate about where things go. Pu
 
 ## 4. Every cell control, explained
 
-A cell that's loading live in the grid gets the full toolbar: six controls. A cell that opens in its own tab instead — Gmail and Calendar, from the starter five above — shows a simpler three: open in tab, edit, remove. A cell still waiting on the Companion shows that same simpler three until you enable it, then picks up the rest. Either way, there's no in-grid frame yet to reload, expand, or put to sleep, so those controls just don't apply. Here's what each one does, and where you'll see it.
+A cell that's loading live in the grid gets the full toolbar. A cell that opens in its own tab instead — Gmail and Calendar, from the starter five above — shows a simpler three: open in tab, edit, remove. A cell still waiting on the Companion shows that same simpler three until you enable it, then picks up the rest. Either way, there's no in-grid frame yet to reload, expand, or put to sleep, so those controls just don't apply. Here's what each one does, and where you'll see it.
 
 **Reload** refreshes just that cell, the same as hitting refresh on a single tab — handy when a site's gone stale but you don't want to touch anything else on the grid. Live cells only.
 

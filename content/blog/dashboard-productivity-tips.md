@@ -19,7 +19,7 @@ Top row, left to right: mail, calendar, team chat. Mail and calendar (Gmail, Out
 
 Bottom row: tasks, notes such as Notion, and a news source such as Hacker News. Notion and Hacker News need the TulipLot Companion first — install it once, then enable it for each site separately (Notion and Hacker News are two separate grants), and both load live from then on. Tasks can be whatever you already use.
 
-That's six named apps, so this layout leans on Premium's sixth cell. On the free plan, drop the news cell — mail, calendar, chat, tasks, and notes still fill five cells cleanly, with the ad sitting quietly in the sixth.
+That's six named apps, so this layout leans on [Premium's sixth cell](/guides/premium-vs-free). On the free plan, drop the news cell — mail, calendar, chat, tasks, and notes still fill five cells cleanly, with the ad sitting quietly in the sixth.
 
 Who it suits: support, sales, management — any role where being reachable is most of the job.
 
