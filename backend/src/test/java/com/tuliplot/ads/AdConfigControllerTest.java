@@ -59,4 +59,21 @@ class AdConfigControllerTest {
         .andExpect(jsonPath("$.adClient").value("ca-pub-1"))
         .andExpect(jsonPath("$.adSlot").value("5"));
   }
+
+  // Public /try page: no session, no Authorization header. Must be reachable
+  // through the real SecurityConfig chain (permitAll) and must never touch
+  // UserRepository — an anonymous caller gets zero account-derived data.
+  @Test
+  void returnsAnonymousAdConfigWithoutAuthentication() throws Exception {
+    given(adConfigService.forAnonymous())
+        .willReturn(new AdConfigDto(true, "ca-pub-anon", "42"));
+
+    mvc.perform(get("/api/v1/config/ads"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.showAd").value(true))
+        .andExpect(jsonPath("$.adClient").value("ca-pub-anon"))
+        .andExpect(jsonPath("$.adSlot").value("42"));
+
+    org.mockito.Mockito.verifyNoInteractions(userRepository);
+  }
 }
