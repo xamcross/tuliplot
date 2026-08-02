@@ -8,6 +8,7 @@ import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
 import { pillClass } from './pill.util';
+import { pickRelated } from './related.util';
 
 @Component({
   selector: 'tl-guide-detail',
@@ -68,11 +69,10 @@ export class GuideDetailComponent {
   );
   protected readonly related = computed(() => {
     const current = this.slug();
-    const guides = GUIDES.filter((g) => g.slug !== current)
-      .slice(0, 2)
-      .map((g) => ({ path: `/guides/${g.slug}`, title: g.title }));
-    const posts = POSTS.slice(0, 1).map((p) => ({ path: `/blog/${p.slug}`, title: p.title }));
-    return [...guides, ...posts];
+    return [
+      ...pickRelated(GUIDES, current, 2).map((g) => ({ path: `/guides/${g.slug}`, title: g.title })),
+      ...pickRelated(POSTS, current, 1).map((p) => ({ path: `/blog/${p.slug}`, title: p.title })),
+    ];
   });
   protected readonly pillClass = pillClass;
 
