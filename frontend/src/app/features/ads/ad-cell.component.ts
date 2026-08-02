@@ -11,6 +11,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { AdConfig } from '../../core/models/ads.model';
 import { ConsentService } from '../../core/services/consent.service';
+import { AuthStore } from '../../stores/auth.store';
 
 @Component({
   selector: 'tl-ad-cell',
@@ -22,9 +23,9 @@ import { ConsentService } from '../../core/services/consent.service';
       <section class="ad-cell" aria-label="Advertisements">
         <span class="ad-cell__label">Ad · Free plan</span>
         @if (showHousePromo()) {
-          <a class="ad-cell__promo" routerLink="/app/upgrade">
+          <a class="ad-cell__promo" [routerLink]="promoRoute()">
             <span class="promo-text">Your 6th cell shows one ad.</span>
-            <span class="tl-btn tl-btn--primary tl-btn--sm">Remove ad — go Premium</span>
+            <span class="tl-btn tl-btn--primary tl-btn--sm">{{ promoCta() }}</span>
           </a>
         } @else {
           <div #adHost class="ad-cell__slot"></div>
@@ -50,6 +51,7 @@ export class AdCellComponent {
   readonly config = input.required<AdConfig>();
 
   private readonly consent = inject(ConsentService);
+  private readonly authStore = inject(AuthStore);
   private readonly adHost =
     viewChild<ElementRef<HTMLDivElement>>('adHost');
 
@@ -57,6 +59,20 @@ export class AdCellComponent {
     const c = this.config();
     return !c.adClient || !c.adSlot || !this.consent.consentGranted();
   });
+
+  /**
+   * The house promo's CTA must never point a signed-out visitor at /app/upgrade — that route is
+   * authGuard-protected and would bounce them to /login from inside the ad slot itself. Derived
+   * from auth state here (root-provided AuthStore) rather than threaded as an input through
+   * GridComponent/CellComponent, since both /app and /try already share this component untouched.
+   * A single promo template branch (not a duplicated one per variant) keeps the authenticated
+   * /app rendering structurally identical to before this change.
+   */
+  protected readonly isAuthenticated = computed(() => this.authStore.isAuthenticated());
+  protected readonly promoRoute = computed(() => (this.isAuthenticated() ? '/app/upgrade' : '/register'));
+  protected readonly promoCta = computed(() =>
+    this.isAuthenticated() ? 'Remove ad — go Premium' : 'Get all five cells free →',
+  );
 
   constructor() {
     // Renders (and re-renders on config change) the AdSense unit once the
