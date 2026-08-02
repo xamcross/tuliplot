@@ -11,19 +11,21 @@ category: Product
 
 ## Start page, home page, new tab: three different things
 
-A start page is whatever loads the moment you open the browser itself, or open a brand-new window inside it. It's controlled by your browser's startup setting, usually a choice between a blank page, one specific URL, or picking up your previous tabs right where you left off.
+A start page is whatever loads when you launch the browser from fully closed, a cold start. It's controlled by your browser's startup setting, usually a choice between a blank page, one specific URL, or picking up your previous tabs right where you left off. In Chrome and Edge, that setting is launch-only: opening a fresh window while the browser is already running shows the New Tab page instead, not your configured start page.
 
-A home page is what loads when you click the Home button, the small house icon some browsers still show next to the address bar. It's a separate setting from startup, one most people configure once and never touch again, and plenty of people have turned the Home button off entirely without realizing the setting underneath it is still there.
+A home page is what loads when you click the Home button, the small house icon some browsers still show next to the address bar. In Chrome and Edge, that's a separate setting from startup, one most people configure once and never touch again, and plenty of people have turned the Home button off entirely without realizing the setting underneath it is still there. Firefox draws the line differently: its single "Homepage and new windows" setting covers the Home button and the startup page together, so the two-setting split described here collapses into one there.
 
 A new tab page is whatever appears every time you press Ctrl+T or Cmd+T. It's usually the browser's own screen of shortcuts and thumbnails, but it can be swapped out for something else, typically by installing an extension built for exactly that.
 
-All three can point at the same URL, or three completely different ones, and browsers let you set each independently. That's exactly why they get confused with each other: once you've landed on one, it looks identical to whatever page happens to be showing in the tab. What changes is how you got there.
+All three can point at the same URL, or three completely different ones. In Chrome and Edge, the settings are independent; in Firefox, the start page and home page are the same setting, and only the new tab page is separate. Either way, that overlap is exactly why the terms get confused with each other: once you've landed on one, it looks identical to whatever page happens to be showing in the tab. What changes is how you got there.
 
 | Term | Opens when | Set in |
 |---|---|---|
-| Start page | The browser launches, or you open a new window | Startup settings |
-| Home page | You click the Home button | Home-button settings |
+| Start page | The browser launches from a cold start | Startup settings |
+| Home page | You click the Home button | Home-button settings (Chrome, Edge) |
 | New tab page | You open a new tab | New Tab settings, often via an extension |
+
+That's the shape in Chrome and Edge. Firefox combines the first two rows into one "Homepage and new windows" setting, so check there first if you're on Firefox and only one of these seems to exist.
 
 ## What start pages were for
 
@@ -53,9 +55,9 @@ That's a different job than the old portal did. The portal's job was surfacing m
 
 That shift in what people actually want is exactly where "start page" stops being the right word for some of today's tools, TulipLot included.
 
-A start page, by definition, is a place you leave. You land there when the browser opens, click through to wherever you're actually going, and its job is done until you open a fresh window and see it again. Even the old portals worked this way underneath the widgets: useful for the first thirty seconds, then out of the picture.
+A start page, by definition, is a place you leave. You land there when the browser opens, click through to wherever you're actually going, and its job is done until you close the browser fully and launch it again. Even the old portals worked this way underneath the widgets: useful for the first thirty seconds, then out of the picture.
 
-A dashboard is a place you stay. TulipLot is built as a fixed 3×2 grid, six cells, each holding one app, and instead of a launch pad, it works more like a permanent workspace. Free accounts get five usable cells plus an ad cell in the corner; Premium is $4 a month for all six cells with no ads, no credit card required either way, no time limit on the free tier. Add a site from the catalog or paste any HTTPS link, and drag two cells to swap them whenever your routine shifts. The grid stays exactly where you left it, tomorrow and the week after, because you're not passing through it. You're working inside it, same layout, same six spots, every day.
+A dashboard is a place you stay. TulipLot is built as a fixed 3×2 grid, six cells, each holding one app, and instead of a launch pad, it works more like a permanent workspace. Free accounts get five usable cells plus an ad cell in the corner; Premium is $4 a month for all six cells with no ads. Free needs no credit card and has no time limit either way. Add a site from the catalog or paste any HTTPS link, and drag two cells to swap them whenever your routine shifts. The grid stays exactly where you left it, tomorrow and the week after, because you're not passing through it. You're working inside it, same layout, same six spots, every day.
 
 That's the real distinction, and it has nothing to do with widgets versus apps. A start page hands you a launch pad and steps aside. A dashboard doesn't step aside. We wrote more about that choice in [Why we built TulipLot](/blog/why-we-built-tuliplot), and if six fixed cells sounds like the wrong shape for how you compare things side by side, [how to view multiple websites at once](/blog/view-multiple-websites-at-once) covers the other ways people handle that instead.
 
