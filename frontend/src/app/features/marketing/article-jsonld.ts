@@ -19,3 +19,16 @@ export function buildArticleJsonLd(doc: ContentDoc, basePath: '/guides' | '/blog
     },
   };
 }
+
+/** schema.org FAQPage built from a doc's question-style h3 sections. */
+export function buildFaqJsonLd(faq: { q: string; a: string }[]): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  };
+}

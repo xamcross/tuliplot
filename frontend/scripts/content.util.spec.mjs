@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -78,5 +78,39 @@ describe('sitemapXml escaping', () => {
   it('escapes reserved characters in loc', () => {
     const xml = sitemapXml([{ loc: 'https://tuliplot.com/a&b/', lastmod: '2026-08-01' }]);
     expect(xml).toContain('<loc>https://tuliplot.com/a&amp;b/</loc>');
+  });
+});
+
+describe('extractFaq', () => {
+  it('pairs question headings with the paragraph that follows', () => {
+    const body = [
+      '## Questions',
+      '',
+      '### Can I switch back?',
+      '',
+      'Yes, any time, in either direction.',
+      '',
+      '### Is there a trial?',
+      '',
+      'Free is the trial. No time limit.',
+      '',
+    ].join('\n');
+    expect(extractFaq(body)).toEqual([
+      { q: 'Can I switch back?', a: 'Yes, any time, in either direction.' },
+      { q: 'Is there a trial?', a: 'Free is the trial. No time limit.' },
+    ]);
+  });
+
+  it('ignores h3s that are not questions', () => {
+    expect(extractFaq('### Installing the thing\n\nDo it like this.\n')).toEqual([]);
+  });
+
+  it('strips inline markdown from questions and answers', () => {
+    expect(extractFaq('### Is **this** safe?\n\nYes — see [the guide](/guides/x) for detail.\n'))
+      .toEqual([{ q: 'Is this safe?', a: 'Yes — see the guide for detail.' }]);
+  });
+
+  it('returns an empty array when there are no h3s', () => {
+    expect(extractFaq('## Heading\n\nJust prose.\n')).toEqual([]);
   });
 });

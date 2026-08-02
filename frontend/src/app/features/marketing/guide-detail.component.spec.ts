@@ -47,6 +47,16 @@ describe('GuideDetailComponent', () => {
     }
   });
 
+  it('emits FAQPage JSON-LD for a guide with question headings', () => {
+    const withFaq = GUIDES.find((g) => g.faq.length > 0);
+    expect(withFaq, 'expected at least one guide with question h3s').toBeTruthy();
+    render(withFaq!.slug);
+    const data = JSON.parse(document.getElementById('tl-jsonld')!.textContent ?? '[]') as Array<Record<string, unknown>>;
+    const faqBlock = data.find((d) => d['@type'] === 'FAQPage') as { mainEntity: Array<{ name: string }> } | undefined;
+    expect(faqBlock).toBeTruthy();
+    expect(faqBlock!.mainEntity[0].name).toBe(withFaq!.faq[0].q);
+  });
+
   it('resets the head when the slug does not exist', () => {
     const stale = document.createElement('script');
     stale.id = 'tl-jsonld';

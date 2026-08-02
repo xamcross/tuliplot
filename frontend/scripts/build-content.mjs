@@ -4,7 +4,7 @@ import {
 import { join, resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, extractFaq } from './content.util.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
@@ -41,6 +41,7 @@ function loadDir(kind) {
         category: data.category || '',
         order: Number.parseInt(data.order ?? '0', 10) || 0,
         readingMinutes: readingMinutes(body),
+        faq: extractFaq(body),
         html: marked.parse(stripLeadingH1(body)),
       };
     });
