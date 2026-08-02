@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, HostListener, computed, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, PLATFORM_ID, computed, inject, output, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DASHBOARD_SOURCE } from './dashboard-source';
 import { AuthStore } from '../../stores/auth.store';
@@ -79,6 +80,7 @@ export class GridComponent {
   private readonly authStore = inject(AuthStore);
   private readonly adsApi = inject(AdsApi);
   private readonly catalogApi = inject(CatalogApi);
+  private readonly platformId = inject(PLATFORM_ID);
   readonly dragging = signal(false);
   readonly focusedSlot = signal<number | null>(null);
   protected readonly asleepSlots = signal<Set<number>>(new Set());
@@ -94,7 +96,16 @@ export class GridComponent {
   readonly edit = output<number>();
 
   constructor() {
-    this.adsApi.getConfig().subscribe((c) => this.adConfig.set(c));
+    // Ads never render server-side (AdSense needs a browser, and Mediapartners-Google executes JS),
+    // so skip the fetch during SSR/prerender entirely — that also removes the build's dependency on
+    // a live backend response. A failed request (offline, blocked, backend down) leaves adConfig null
+    // and the ad cell degrades to empty instead of throwing.
+    if (isPlatformBrowser(this.platformId)) {
+      this.adsApi.getConfig().subscribe({
+        next: (c) => this.adConfig.set(c),
+        error: () => this.adConfig.set(null),
+      });
+    }
     this.catalogApi.list().subscribe((apps) => this.catalog.set(apps));
   }
 
