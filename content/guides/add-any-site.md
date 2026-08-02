@@ -12,7 +12,7 @@ Paste almost any HTTPS URL into a cell and it loads. But every so often you'll a
 
 ## Why some sites refuse to load
 
-Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — `X-Frame-Options` or a `Content-Security-Policy` with `frame-ancestors` — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold.
+Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — `X-Frame-Options` or a `Content-Security-Policy` with `frame-ancestors` — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold; [the full explanation of why sites refuse to be embedded](/guides/why-sites-wont-load) covers the headers involved and what does and doesn't fix it.
 
 The same header also blocks harmless embedding, like a cell in your grid. The browser can't tell a malicious overlay from a dashboard you built on purpose — it just sees "don't embed me" and obeys, and TulipLot can't override that at the page level. So instead of pretending it can, it tells you what happened and gives you a real option, rather than a broken pane.
 
