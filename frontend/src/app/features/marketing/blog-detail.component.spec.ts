@@ -62,5 +62,9 @@ describe('BlogDetailComponent', () => {
     expect(img).not.toBeNull();
     expect(img.getAttribute('src')).toBe(`/banners/${POSTS[0].slug}.png`);
     expect(img.getAttribute('alt')).toBe('');
+    // Intrinsic dimensions reserve aspect ratio to avoid layout shift; the
+    // .banner CSS (height: 260px, max-width: 720px) still governs actual size.
+    expect(img.getAttribute('width')).toBe('1440');
+    expect(img.getAttribute('height')).toBe('520');
   });
 });
