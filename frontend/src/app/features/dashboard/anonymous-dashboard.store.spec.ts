@@ -45,6 +45,7 @@ describe('AnonymousDashboardStore', () => {
     expect(s.cells()[0].type).toBe('EMPTY');
     s.swap(1, 4);
     expect(s.cells()[1].title).toBe('Trello');
+    expect(s.cells()[4].type).toBe('EMPTY');
   });
 
   it('round-trips through localStorage', () => {
@@ -66,5 +67,15 @@ describe('AnonymousDashboardStore', () => {
     expect(s.cells().length).toBe(6);
     expect(() => s.setCell(APP)).not.toThrow();
     expect(s.cells()[0].title).toBe('Trello');
+  });
+
+  it('falls back to the seeded state when persisted JSON is malformed', () => {
+    localStorage.setItem(TRY_STORAGE_KEY, '{"slot":0,"type":"APP"'); // truncated / hand-edited
+    let s!: AnonymousDashboardStore;
+    expect(() => (s = make())).not.toThrow();
+    expect(s.cells().length).toBe(6);
+    expect(s.cells()[5].type).toBe('AD');
+    expect(s.lockedSlots()).toEqual([2, 3, 4]);
+    expect(s.cells()[0].type).toBe('EMPTY');
   });
 });
