@@ -69,12 +69,12 @@ All in files we own; no behavioral risk. One PR.
 
 Everything on the site is under 300 words (145–213 per article, ~984 total). Nothing at this depth ranks, and thin content is the classic AdSense rejection. **Do this wave before submitting to AdSense** (cutover checklist step 5).
 
-- [ ] **3.1** `guides/getting-started` → 800–1,200 words (add screenshots, per-step detail, FAQ subsection).
-- [ ] **3.2** `guides/add-any-site` → 800–1,200 words (becomes the practical half of the iframe cluster — link to 4.1's explainer).
-- [ ] **3.3** `guides/premium-vs-free` → 800+ words (this is the decision-stage page: comparison table, billing/cancel FAQs).
-- [ ] **3.4** `blog/dashboard-productivity-tips` → 1,000+ words (real layouts with images; target "productive dashboard"/"dashboard layout").
-- [ ] **3.5** `blog/why-we-built-tuliplot` → 800+ words (target "too many browser tabs" secondary phrasing — Workona proves owned content competes here).
-- [ ] **3.6** Replace the empty decorative banner divs on posts with real illustrations (doubles as per-post og:image).
+- [x] **3.1** `guides/getting-started` → 800–1,200 words (add screenshots, per-step detail, FAQ subsection).
+- [x] **3.2** `guides/add-any-site` → 800–1,200 words (becomes the practical half of the iframe cluster — link to 4.1's explainer).
+- [x] **3.3** `guides/premium-vs-free` → 800+ words (this is the decision-stage page: comparison table, billing/cancel FAQs).
+- [x] **3.4** `blog/dashboard-productivity-tips` → 1,000+ words (real layouts with images; target "productive dashboard"/"dashboard layout").
+- [x] **3.5** `blog/why-we-built-tuliplot` → 800+ words (target "too many browser tabs" secondary phrasing — Workona proves owned content competes here).
+- [x] **3.6** Replace the empty decorative banner divs on posts with real illustrations (doubles as per-post og:image).
 
 *Accept per item:* live page ≥800 words of substantive copy, one H1, H2s carry the target phrase naturally, ≥2 internal links in, ≥2 out.
 
