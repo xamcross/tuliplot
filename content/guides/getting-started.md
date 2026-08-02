@@ -10,7 +10,7 @@ order: 1
 
 ## What you'll have in five minutes
 
-By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps within reach at once. Some load right there in the grid, live. Others — Gmail and Google Calendar are the common ones — are one click from opening in their own tab instead. Either way, you stop digging through tabs to find the thing you were just looking at — which is [the whole point](/blog/why-we-built-tuliplot).
+By the end of this guide you'll have a browser dashboard: one tab holding a fixed 3×2 grid, with your five most-used apps within reach at once. Some load right there in the grid, live. Others — Gmail and Google Calendar are the common ones — are one click from opening in their own tab instead, and [Gmail and Google Calendar side by side](/blog/gmail-and-calendar-side-by-side) covers exactly how that pairing works day to day. Either way, you stop digging through tabs to find the thing you were just looking at — which is [the whole point](/blog/why-we-built-tuliplot).
 
 Set up takes about five minutes. Here's the whole path, start to finish.
 
