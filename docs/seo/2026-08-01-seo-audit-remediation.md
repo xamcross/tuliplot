@@ -84,7 +84,15 @@ Everything on the site is under 300 words (145–213 per article, ~984 total). N
 >
 > **→ OWNER'S CHOSEN DIRECTION (2026-08-02): an anonymous try-it dashboard, public and crawlable.** Let signed-out visitors use a reduced grid — **2 usable cells** (versus 5 on the free plan and 6 on Premium) — on a public page that serves a **crawlable ad**. This resolves the blocker at its root rather than bolting an ad onto the guides: the ad then lives on a page `Mediapartners-Google` can actually fetch and render, and it doubles as a try-before-signup funnel with a natural upgrade prompt ("you're using 2 of 6 cells").
 >
-> Needs its own spec before implementation — this is a product change, not a content fix. Points the spec must settle:
+> **→ RESOLVED IN CODE (2026-08-02).** Built and merged as the `/try` page — spec `docs/superpowers/specs/2026-08-02-anonymous-try-dashboard-design.md`, plan `docs/superpowers/plans/2026-08-02-anonymous-try-dashboard.md`. Signed-out visitors get 2 usable cells, 3 signup-locked cells linking to `/register`, and the ad cell in slot 5. `GET /api/v1/config/ads` is now `permitAll`, so the ad renders for anonymous visitors; `robots.txt` allows `/try` (only `/app` is disallowed) and it is in the sitemap. **The placement blocker is cleared — what remains before submitting is entirely owner action: replace `ads.txt`'s placeholder publisher ID (6.2).**
+>
+> Two notes for whoever submits:
+> - The ad unit is **not** in the prerendered HTML — it renders after hydration, once the client fetches the ad config. This is how nearly every AdSense site works (`Mediapartners-Google` executes JavaScript), but it means a raw-HTML view of `/try` shows no ad unit.
+> - Until `adsenseClient` is configured, every visitor sees the house promo instead of a real ad. That is the expected chicken-and-egg state, not a defect.
+>
+> **Follow-up now open (not yet done):** the nine published articles, the landing `FAQ` constant, and `premium-vs-free`'s pricing table all still describe only the 5-usable / 6-Premium tiers. They are now incomplete rather than wrong. Deliberately deferred until the tier shipped; do this pass before Wave 5's comparison pages, since those state plan limits head-to-head against competitors.
+>
+> Original spec questions (all settled — kept for the reasoning):
 > - **Route and crawlability.** It cannot live under `/app` (guarded by `authGuard`, and `Disallow: /app` in robots.txt). Needs a new public route (e.g. `/try`) that is crawlable, prerendered or CSR-with-a-rendered-shell, and added to the sitemap. Remember the Wave-2 lesson: any new client-rendered route also needs its own `_redirects` row or hard navigations 404.
 > - **State without an account.** Anonymous cell contents have to persist somewhere (localStorage is the obvious candidate) with no `User` document, and `DashboardService` currently assumes a user. Decide whether anonymous state migrates into the account on signup — losing someone's two configured cells at the moment they register would be a bad first impression.
 > - **The ad-adjacency question doesn't disappear.** The ad still renders beside framed third-party sites. That was half the original policy concern; a public page makes it *more* visible to review, not less. Worth deciding deliberately whether the try page shows framed cells, launcher-only cells, or a curated safe set.
