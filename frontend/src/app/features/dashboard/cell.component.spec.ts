@@ -33,4 +33,14 @@ describe('CellComponent', () => {
     expect(f.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
     expect(f.nativeElement.querySelector('tl-safe-frame')).not.toBeNull();
   });
+
+  it('renders a signup CTA instead of the cell when locked', () => {
+    TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection(), provideRouter([])] });
+    const f = TestBed.createComponent(CellComponent);
+    f.componentRef.setInput('cell', { slot: 2, type: 'EMPTY', openMode: 'FRAME' } as Cell);
+    f.componentRef.setInput('locked', true);
+    f.detectChanges();
+    expect(f.nativeElement.querySelector('[data-testid="locked-cell"]')).not.toBeNull();
+    expect(f.nativeElement.querySelector('[data-testid="add-btn"]')).toBeNull();
+  });
 });

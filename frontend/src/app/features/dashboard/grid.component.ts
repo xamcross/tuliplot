@@ -25,14 +25,14 @@ import { Compatibility } from '../../core/models/enums';
           cdkDropList
           [cdkDropListData]="cell.slot"
           [cdkDropListSortingDisabled]="true"
-          [cdkDropListDisabled]="cell.type === 'AD'"
+          [cdkDropListDisabled]="cell.type === 'AD' || isSignupLocked(cell.slot)"
           (cdkDropListDropped)="onDropped($event)"
         >
           <div
             class="drag"
             cdkDrag
             [cdkDragData]="cell.slot"
-            [cdkDragDisabled]="cell.type !== 'APP' || isSlotLocked(i)"
+            [cdkDragDisabled]="cell.type !== 'APP' || isSlotLocked(i) || isSignupLocked(cell.slot)"
             (cdkDragStarted)="dragging.set(true)"
             (cdkDragEnded)="dragging.set(false)"
           >
@@ -42,6 +42,7 @@ import { Compatibility } from '../../core/models/enums';
               [adConfig]="adConfig()"
               [compatibility]="compatOf(cell)"
               [asleep]="asleepSlots().has(cell.slot)"
+              [locked]="isSignupLocked(cell.slot)"
               (edit)="edit.emit($event)"
               (remove)="onRemove($event)"
               (sleepToggle)="onSleepToggle($event)"
@@ -108,6 +109,11 @@ export class GridComponent {
   /** Slot 5 is the fixed ad slot; it is locked (non-editable, non-draggable) unless the user is ad-free. */
   protected isSlotLocked(index: number): boolean {
     return index === 5 && !this.authStore.adFree();
+  }
+
+  /** Slots that need an account (the /try page's 3 locked cells); always [] when signed in. */
+  protected isSignupLocked(slot: number): boolean {
+    return this.store.lockedSlots().includes(slot);
   }
 
   onDropped(event: CdkDragDrop<number>): void {
