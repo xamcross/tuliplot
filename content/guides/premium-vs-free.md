@@ -12,14 +12,21 @@ Every TulipLot account starts on the free plan, and for plenty of people that's 
 
 ## At a glance
 
-| | Free | Premium |
-|---|---|---|
-| Usable cells | 5 | 6 |
-| Ad cell | 1, bottom-right | None |
-| Price | $0, forever | $4/month |
-| Catalog + custom URLs | Yes | Yes |
-| Drag-to-arrange, focus, sleep | Yes | Yes |
-| Companion support | Yes | Yes |
+| | Try (no account) | Free | Premium |
+|---|---|---|---|
+| Usable cells | 2 | 5 | 6 |
+| Ad cell | 1 | 1, bottom-right | None |
+| Price | $0, no signup | $0, forever | $4/month |
+| Saved to | This browser only | Your account | Your account |
+| Catalog + custom URLs | Yes | Yes | Yes |
+| Drag-to-arrange, focus, sleep | Yes | Yes | Yes |
+| Companion support | Yes | Yes | Yes |
+
+## Try it before you sign up
+
+Before you commit to either plan, there's a third option: [try TulipLot](/try) with no account at all. Two cells load live immediately — pick from the catalog or paste any HTTPS URL, and they render in the grid exactly like a Free or Premium cell would. Three more cells sit locked behind a Create free account prompt, and the sixth carries an ad, so the 3×2 grid looks complete from the first click, even though only two cells are yours to fill.
+
+Everything about those two cells works the same as on Free: drag to rearrange, expand into focus mode, sleep, edit, remove, the Companion for stubborn sites, all of it. The only catch is where they live. Your cells stay in that browser's local storage, not synced to any account, so a different device or a cleared browser starts over. Sign up, though, and whatever you built carries straight into your new account's grid, no rebuilding required.
 
 ## What free actually includes
 
@@ -63,6 +70,6 @@ No. Upgrading leaves your existing five cells exactly where they are. The ad cel
 
 ### Is there a trial?
 
-Free is the trial, and it doesn't expire. Five full cells, the entire catalog, custom URLs, every cell control, no credit card required — you can run that setup for as long as you like before deciding whether the sixth cell is worth $4 a month to you.
+Two, really. [The try page](/try) needs no account at all: two live cells, no time limit. Free is the longer trial, and it doesn't expire either. Five full cells, the entire catalog, custom URLs, every cell control, no credit card required — you can run that setup for as long as you like before deciding whether the sixth cell is worth $4 a month to you.
 
 If you haven't built your grid yet, start with [Getting started with TulipLot](/guides/getting-started) — five minutes gets your first five cells filled, and you can decide about the sixth whenever you're ready. [Create a free account](/register) — no card, no deadline.

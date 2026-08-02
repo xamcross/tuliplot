@@ -62,9 +62,9 @@ Some sites send headers that tell browsers not to embed them elsewhere — a sec
 
 Read the full guide: [Adding sites that refuse to be framed](/guides/add-any-site).
 
-## Free vs Premium in one minute
+## Try, free, and Premium in one minute
 
-The free plan gives you five usable cells plus one ad in the sixth, and it costs nothing — no credit card required. Premium is $4 a month, removes the ad, and unlocks all six cells for your own apps. Everything else — the catalog, custom URLs, drag-to-swap, the Companion — works the same on both plans.
+Not ready to create an account? [Try TulipLot](/try) first: two live cells, no signup, saved to this browser only. The free plan gives you five usable cells plus one ad in the sixth, and it costs nothing — no credit card required. Premium is $4 a month, removes the ad, and unlocks all six cells for your own apps. Everything else — the catalog, custom URLs, drag-to-swap, the Companion — works the same across all three.
 
 See the full breakdown: [Premium vs Free](/guides/premium-vs-free).
 

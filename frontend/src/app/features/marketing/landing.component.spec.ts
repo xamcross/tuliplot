@@ -50,7 +50,7 @@ describe('LandingComponent', () => {
     const summaries = Array.from(document.querySelectorAll('.faq summary')).map((s) => s.textContent?.trim());
     const jsonLd = JSON.parse(document.getElementById('tl-jsonld')!.textContent ?? '[]') as Array<Record<string, unknown>>;
     const faq = jsonLd.find((d) => d['@type'] === 'FAQPage') as { mainEntity: Array<{ name: string }> };
-    expect(summaries.length).toBe(3);
+    expect(summaries.length).toBe(4);
     expect(faq.mainEntity.map((m) => m.name)).toEqual(summaries);
   });
 });

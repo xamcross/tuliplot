@@ -57,4 +57,4 @@ We're still early, and the roadmap gets shaped by what people actually run into,
 
 If you've got five minutes, our [getting started guide](/guides/getting-started) walks the whole setup, first app to sixth cell. And if something about TulipLot doesn't fit the way you actually work, or you've got an idea for what should, we'd rather hear it than guess. Reach us through [About](/about).
 
-Otherwise, the fastest way to see whether the fixed-grid bet pays off for you is to try it: [create a free account](/register), no credit card, and put your first five apps somewhere they'll actually stay.
+Otherwise, the fastest way to see whether the fixed-grid bet pays off for you is to [try it with no account](/try): two live cells, no signup. Ready for the full grid? [Create a free account](/register), no credit card, and put your first five apps somewhere they'll actually stay.
