@@ -3,13 +3,23 @@
 // (which pins the stability property) so the two can never drift apart.
 
 // Stable, ordered list of palette pairs available for slugs that aren't
-// explicitly pinned below.
+// explicitly pinned below. The first five are the original hand-picked pairs
+// (unchanged, still reachable by hash). The next five are additional
+// combinations of the same five brand pastels — no new colors introduced —
+// added so that a small batch of new posts (Wave 5's four comparison/listicle
+// pages) has enough buckets to land on distinct thumbnails instead of
+// piling into the same handful of pairs.
 export const PALETTE_PAIRS = [
   ['#A5D8FF', '#B2F2BB'],
   ['#FFB1B1', '#D0BFFF'],
   ['#D0BFFF', '#A5D8FF'],
   ['#FFD8A8', '#FFB1B1'],
   ['#B2F2BB', '#FFD8A8'],
+  ['#A5D8FF', '#FFD8A8'],
+  ['#A5D8FF', '#FFB1B1'],
+  ['#B2F2BB', '#FFB1B1'],
+  ['#B2F2BB', '#D0BFFF'],
+  ['#FFD8A8', '#D0BFFF'],
 ];
 
 // The five original posts' banners are already published and live on
@@ -26,15 +36,23 @@ export const PINNED_PALETTES = {
   'what-is-a-browser-start-page': ['#B2F2BB', '#FFD8A8'],
 };
 
-// Small, stable string hash (32-bit FNV-1a). Deliberately inline rather than
-// a dependency — this only needs to be deterministic and reasonably
-// well-distributed across a handful of palette buckets, not cryptographically
-// sound.
+// Small, stable string hash (FNV-1a style, 32-bit). Deliberately inline
+// rather than a dependency — this only needs to be deterministic and
+// reasonably well-distributed across a handful of palette buckets, not
+// cryptographically sound.
+//
+// The multiplier is Knuth's 32-bit multiplicative-hashing constant
+// (2654435761, the golden-ratio prime) rather than the canonical FNV prime
+// (16777619). Expanding PALETTE_PAIRS to 10 entries alone did not separate
+// Wave 5's four new slugs — several combinations of {expanded length} x
+// {FNV prime} still put two of the four in the same bucket. This constant,
+// checked against PALETTE_PAIRS.length === 10, does. Still a pure function
+// of the slug's own characters only.
 export function hashSlug(slug) {
   let h = 0x811c9dc5;
   for (let i = 0; i < slug.length; i++) {
     h ^= slug.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
+    h = Math.imul(h, 0x9e3779b1);
   }
   return h >>> 0;
 }
