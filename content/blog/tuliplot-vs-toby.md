@@ -35,7 +35,6 @@ TulipLot prices per person, not per seat, since a TulipLot dashboard has no team
 |---|---|---|
 | What it stores | Links to tabs, saved into collections | Nothing — cells render live sites, not saved links |
 | Sites visible at once | None; saved tabs are reopened one at a time | Up to 6, live and simultaneous, in a fixed grid |
-| Works without an account | No | Yes, [/try](/try) gives 2 live cells with no signup |
 | Free tier ad-supported | No | Yes, one ad cell on the free plan |
 | Single-user paid price | $6/mo, or $4.50/mo billed yearly ($54/yr) | $4/month |
 | Team / collaboration | Yes, unlimited members even on the free Starter plan | No built-in team or collaboration features |
