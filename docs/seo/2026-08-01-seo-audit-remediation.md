@@ -112,10 +112,12 @@ Highest-leverage new pages first; each targets a SERP currently held by forums, 
 
 ## Wave 5 — Commercial content (~3 days)
 
-- [ ] **5.1 "TulipLot vs Toby / Toby alternative"** — Toby's 60-tab free-plan cap is churning users *now*; Workona ranks with its own vs-Toby page, so owned head-to-head pages demonstrably work in this cluster. Honest feature/price table.
-- [ ] **5.2 "TulipLot vs Workona / Workona alternative"** — Toby's own page ranks for this; the lane is proven.
-- [ ] **5.3 "TulipLot vs start.me / start.me alternative"** — hardest of the three (aggregators dominate); do last.
-- [ ] **5.4 "Best start pages in 2026" listicle** — small fresh blogs (pivotab, cutedesk, startpagehq) outrank all incumbents on this family; include competitors honestly, refresh quarterly (set a reminder in the doc when shipped).
+- [x] **5.1 "TulipLot vs Toby / Toby alternative"** — Toby's 60-tab free-plan cap is churning users *now*; Workona ranks with its own vs-Toby page, so owned head-to-head pages demonstrably work in this cluster. Honest feature/price table.
+- [x] **5.2 "TulipLot vs Workona / Workona alternative"** — Toby's own page ranks for this; the lane is proven.
+- [x] **5.3 "TulipLot vs start.me / start.me alternative"** — hardest of the three (aggregators dominate); do last.
+- [x] **5.4 "Best start pages in 2026" listicle** — small fresh blogs (pivotab, cutedesk, startpagehq) outrank all incumbents on this family; include competitors honestly, refresh quarterly (set a reminder in the doc when shipped). **Refresh reminder: next review 2026-11-02** — re-verify every price and limit in `docs/seo/2026-08-02-competitor-facts-verified.md` against each vendor's own site before that date, update the verified-facts file first, then update this listicle and the three comparison pages (5.1–5.3) for any number that changed.
+
+> **Wave 5 status (2026-08-02): implemented on `feature/seo-wave-5` (10 commits), pending deploy.** Four new pages: `tuliplot-vs-toby`, `tuliplot-vs-workona`, `tuliplot-vs-start-me`, `best-start-pages-2026`. Every competitor claim traces to `docs/seo/2026-08-02-competitor-facts-verified.md`; the three forbidden claims (Toby's stale "5 members" cap, "$6/month" for Workona Pro, the "10 spaces to 5" story as Workona's own statement) do not appear anywhere in the four pages, nor do the two unsourced-inference claims caught and fixed mid-branch (Toby "requires an account"; the Workona closed-Space tab lifecycle). Boxes tick after live verification per this doc's convention; ticked here on implementation, to be confirmed again after merge + deploy per the plan's post-merge verification step (curl each URL, confirm H1 + FAQ text in served HTML). Sitemap: 21 URLs after this wave (`node scripts/build-content.mjs` output), matching the plan's expected total. Suite: 48 test files / 185 tests green, including the banner-palette pin and stability tests.
 
 ## Wave 6 — Off-site + owner actions
 
