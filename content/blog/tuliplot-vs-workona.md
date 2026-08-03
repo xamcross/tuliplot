@@ -9,13 +9,13 @@ category: Comparison
 
 Workona organizes tabs into Spaces you save and restore. TulipLot keeps a fixed grid of sites rendered live, all at once. That distinction is worth stating up front, because "workona alternative" searches split into two different needs: people who want a better way to save and restore project sessions, and people who want a handful of sites visibly live at the same time without switching between them.
 
-Workona is a project-based session manager: you group a project's tabs into a Space, it auto-saves as you work, and it syncs across your devices so you can close it down and reopen it later exactly as you left it. TulipLot is a live-rendering tool: it keeps up to six real, interactive sites open continuously in a fixed grid, with nothing to restore because nothing was ever closed. Want a dozen project workspaces you can name, save, and reopen weeks from now in the same state? Workona does that; TulipLot doesn't attempt it. Want your inbox, calendar, and a project board all visibly live at once, no switching, no restoring? That's TulipLot's job, and Workona doesn't do that either — a Space sits dormant until you open it.
+Workona is a project-based session manager: you group a project's tabs into a Space, it auto-saves as you work, and it syncs across your devices so you can close it down and pick it back up later. TulipLot is a live-rendering tool: it keeps up to six real, interactive sites open continuously in a fixed grid, with nothing to restore because nothing was ever closed. Want a dozen project workspaces you can name, save, and reopen weeks from now? Workona does that; TulipLot doesn't attempt it. Want your inbox, calendar, and a project board all visibly live at once, no switching, no restoring? That's TulipLot's job, and Workona doesn't do that either.
 
 ## What Workona does well
 
-Workona is genuinely good at project-based session management. Their own framing is "Get your tabs under control": tabs get grouped into per-project Spaces, saved automatically, and synced across devices, so a project you set aside on Monday reopens Thursday exactly as you left it. The free plan is real, if a little hidden — it's documented in a pricing-page FAQ accordion rather than shown as its own plan card, and it's capped at 5 spaces. Workona's FAQ says the free plan "can be used forever," it just stops letting you create new spaces once you hit that cap until you upgrade.
+Workona is genuinely good at project-based session management. Their own framing is "Get your tabs under control": tabs get grouped into per-project Spaces, saved automatically, and synced across devices, so a project you set aside on Monday reopens Thursday. The free plan is real, if a little hidden — it's documented in a pricing-page FAQ accordion rather than shown as its own plan card, and it's capped at 5 spaces. Workona's FAQ says the free plan "can be used forever," it just stops letting you create new spaces once you hit that cap until you upgrade.
 
-If you're running several ongoing projects at once, each with its own cluster of tabs you want saved, closed down, and restored later in the same state, Workona is built for exactly that, and TulipLot isn't a substitute for it. A TulipLot cell doesn't save a session or restore one; it only ever shows what's live in that cell right now.
+If you're running several ongoing projects at once, each with its own cluster of tabs you want saved, closed down, and restored later, Workona is built for exactly that, and TulipLot isn't a substitute for it. A TulipLot cell doesn't save a session or restore one; it only ever shows what's live in that cell right now.
 
 ## What TulipLot does differently
 
@@ -34,7 +34,7 @@ TulipLot prices per person, not per seat, since a TulipLot dashboard has no team
 | | Workona | TulipLot |
 |---|---|---|
 | What it stores | Project Spaces — tabs grouped, auto-saved, restored later | Nothing — cells render live sites, not saved sessions |
-| Sites visible at once | None while a Space is closed; tabs open when you restore it | Up to 6, live and simultaneous, in a fixed grid |
+| Sites visible at once | None; Spaces store tab references you reopen, not live views | Up to 6, live and simultaneous, in a fixed grid |
 | Session auto-save & restore | Yes, across devices | No — there's no session to save or restore |
 | Free tier ad-supported | No | Yes, one ad cell on the free plan |
 | Single-user paid price | $7/month, annual-billed | $4/month |
