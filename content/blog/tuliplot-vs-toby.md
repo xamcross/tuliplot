@@ -15,11 +15,11 @@ Toby is a bookmarking-and-collections tool: you save a tab's link into Toby, clo
 
 Toby is a genuinely good tool for what it's built to do: saving and organizing browser tabs and links into collections so you can find them again later. ("Stop Drowning in Tabs" is their own pitch, and it's an honest one.) Toby's free Starter plan lets you save and manage up to 60 tabs across all your collections, with no limit on how many members can join the account — a free Toby workspace supports a whole team, not just one person.
 
-If a session regularly ends with thirty open tabs you want captured into named collections instead of lost the moment the browser closes, Toby solves that cleanly, and TulipLot isn't a substitute for it. TulipLot has no concept of "saved for later" at all; a cell only ever shows what's live right now, not a link to something you'll open eventually.
+If a session regularly ends with thirty open tabs you want captured into collections instead of lost the moment the browser closes, Toby solves that cleanly, and TulipLot isn't a substitute for it. TulipLot has no concept of "saved for later" at all; a cell only ever shows what's live right now, not a link to something you'll open eventually.
 
 ## What TulipLot does differently
 
-TulipLot doesn't save anything for later, it renders. A TulipLot dashboard is a fixed 3×2 grid, six cells, and whatever sits in a cell is a live, interactive version of that site: an inbox showing new mail as it arrives, a project board updating as teammates move cards, a calendar you click straight into, not a link to any of those things. Free accounts get five usable cells plus one ad cell fixed in the bottom-right slot; Premium drops the ad and unlocks all six for $4 a month. You can also try it before creating an account: two live cells load immediately at [/try](/try), with everything saved to that browser only, nothing sent anywhere.
+TulipLot doesn't save anything for later, it renders. A TulipLot dashboard is a fixed 3×2 grid, six cells, and whatever sits in a cell is a live, interactive version of that site: an inbox showing new mail as it arrives, a project board updating as teammates move cards, a calendar you click straight into, not a link to any of those things. Free accounts get five usable cells plus one ad cell fixed in the bottom-right slot; Premium drops the ad and unlocks all six for $4 a month. You can also try it before creating an account: two live cells load immediately at [/try](/try), saved to that browser only, and they carry into your dashboard automatically if you sign up later.
 
 Every cell fills from the built-in catalog or from any HTTPS URL you paste in yourself, and the free TulipLot Companion, a Chrome extension, unlocks embedding for many sites that would otherwise refuse to load in a frame. Worth saying plainly, though: not every site can be embedded this way. A handful of major login-gated services, Gmail and Google Calendar among them, never allow embedding under any circumstances, Companion or not, and become one-click launchers instead: a cell you click to open the site in its own tab rather than seeing it live inline. That's a real limitation, and it's the tradeoff for rendering actual interactive sites instead of storing links to them.
 
@@ -34,14 +34,14 @@ TulipLot prices per person, not per seat, since a TulipLot dashboard has no team
 | | Toby | TulipLot |
 |---|---|---|
 | What it stores | Links to tabs, saved into collections | Nothing — cells render live sites, not saved links |
-| Sites visible at once | None; saved tabs are reopened one at a time | Up to 6, live and simultaneous, in a fixed grid |
-| Free tier ad-supported | No | Yes, one ad cell on the free plan |
+| Sites visible at once | None; Toby stores links to tabs you reopen later, not live views | Up to 6, live and simultaneous, in a fixed grid |
+| Free tier ad-supported | Not described as ad-supported | Yes, one ad cell on the free plan |
 | Single-user paid price | $6/mo, or $4.50/mo billed yearly ($54/yr) | $4/month |
 | Team / collaboration | Yes, unlimited members even on the free Starter plan | No built-in team or collaboration features |
 
 ## Which should you pick?
 
-Pick Toby if you collect more than you use at any given moment: research links, articles to read later, a growing pile of reference tabs you'd rather have organized into named collections than buried in your tab bar. The 60-tab free limit is generous for casual collecting, and Productivity removes that ceiling entirely once you outgrow it.
+Pick Toby if you collect more than you use at any given moment: research links, articles to read later, a growing pile of reference tabs you'd rather have organized into collections than buried in your tab bar. The 60-tab free limit is generous for casual collecting, and Productivity removes that ceiling entirely once you outgrow it.
 
 Pick TulipLot if the problem isn't too many tabs, it's needing a handful of specific sites open and visible at the same time, every day: an inbox, a calendar, a project board, a chat, glanced at constantly rather than reopened occasionally. If your workflow is "check five things all day" rather than "save fifty things for later," a live grid solves that in a way a saved-links tool structurally can't.
 

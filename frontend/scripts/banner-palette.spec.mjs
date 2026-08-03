@@ -13,13 +13,18 @@ describe('banner palette assignment', () => {
     // regression doesn't depend on which real posts happen to be pinned
     // right now (that set only grows over time as Wave-5 posts publish).
     const existing = ['synthetic-post-alpha', 'synthetic-post-beta', 'synthetic-post-gamma'];
-    const before = assignPalettes(existing);
+    const before = assignPalettes([...existing].sort());
 
     // A brand-new post can land anywhere in sorted order relative to the
     // existing ones (before all of them, after all of them, or in between)
     // — none of those insertions may perturb an existing slug's palette.
+    // The real pipeline (render-post-banners.mjs) always calls assignPalettes
+    // with a slug list that discoverSlugs() has already sorted, so this must
+    // sort here too — otherwise an implementation that indexes into the
+    // caller-supplied array (rather than hashing each slug independently)
+    // can pass this test while still being order-dependent in production.
     for (const addedSlug of ['a-new-post', 'synthetic-post-beta-2', 'zzz-new-post']) {
-      const after = assignPalettes([...existing, addedSlug]);
+      const after = assignPalettes([...existing, addedSlug].sort());
       for (const slug of existing) {
         expect(after[slug]).toEqual(before[slug]);
       }
