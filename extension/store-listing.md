@@ -47,7 +47,8 @@ WHAT IT NEVER DOES
   dashboard or a local development copy of it.
 • It collects no data at all — nothing is stored, transmitted, or shared.
 
-The extension is open source: https://github.com/xamcross/tuliplot
+The extension's full source is public and can be read or audited here:
+https://github.com/xamcross/tuliplot
 
 **Category:** Workflow & Planning (pick Tools if that category is not offered)
 **Language:** English
