@@ -69,11 +69,19 @@ add one sentence about it then. Don't add it before that's real.
 **One-line tagline (general use, ~79 characters):**
 > A browser dashboard: a fixed 3×2 grid where every cell holds one live web app.
 
-**Short description (~230 characters, trim if a field is stricter; verify the limit at the form):**
+**Short description (230 characters, trim if a field is stricter; verify the limit at the form):**
 > TulipLot is a browser dashboard: a fixed 3×2 grid where every cell holds
-> one live web app, whether that's Trello, Notion, Gmail, your news, or any
-> HTTPS site. Try 2 cells free with no account, or sign up for 5 (plus
-> Premium's 6) at tuliplot.com.
+> one live web app, whether that's Trello, your news, or any HTTPS site.
+> Try 2 cells free with no account, or sign up for 5 (plus Premium's 6) at
+> tuliplot.com.
+
+Only Trello is named here on purpose: per `backend/src/main/java/com/tuliplot/catalog/CatalogSeeder.java`,
+it's the sole catalog entry marked `FRAMES_CLEAN` (embeds with zero extra
+steps). Every other catalog app is `NEEDS_EXTENSION` (Notion, Todoist,
+Hacker News, YouTube; needs the not-yet-published Companion),
+`LOGIN_IN_TAB` (Gmail, Outlook), or `REFUSES_FRAME` (Google Calendar). Don't
+add any of those as a "this embeds live" example anywhere in this kit,
+including if this description gets edited later.
 
 **Long description (~215 words):**
 > TulipLot is a browser dashboard for people who live inside a handful of web
@@ -108,7 +116,22 @@ add one sentence about it then. Don't add it before that's real.
 > ads. Pricing is flat per account, not per seat. Billing runs through
 > Stripe.
 
-**Logo/screenshots to reuse:** `extension/store-assets/screenshot-1-grid.png`,
+**Logo:** `extension/icons/icon128.png`, 128×128 PNG with transparency
+(confirmed by opening the file; not just trusting the filename). It's
+TulipLot's actual brand mark, the same four-square design as
+`frontend/public/favicon.svg`, not a separate extension-only icon, so it's
+correct to use as "the TulipLot logo" on any of these sites. 128px is the
+largest square raster asset anywhere in the repo (`favicon.ico` only embeds
+16/32/48px; nothing in `frontend/public/` is both square and larger). If a
+site's logo upload wants something bigger, and several directory sites do
+ask for 200px+, that 128px file will need to be upscaled or re-rendered
+first; don't upload it as-is and assume it clears a larger minimum. The
+underlying design exists as source-quality vector at
+`frontend/public/favicon.svg` (`viewBox 0 0 100 100`), which is the better
+starting point for producing a larger square PNG than upscaling the 128px
+raster.
+
+**Screenshots to reuse:** `extension/store-assets/screenshot-1-grid.png`,
 `screenshot-2-fallback.png`, `screenshot-3-catalog.png` (captured live from
 tuliplot.com 2026-08-01) and `frontend/public/og-card.png` (1200×630 social
 card) work as generic product screenshots or thumbnails on any of these
