@@ -23,13 +23,13 @@ The free "Starter" plan costs nothing and lets you save and manage up to 60 tabs
 
 ## If you're juggling several ongoing projects: Workona
 
-Workona's framing is "Get your tabs under control," and it does that by grouping a project's tabs into a Space that auto-saves as you work and syncs across your devices. Close it down, pick it back up next week, and it's exactly how you left it. It's built for people running more than one active project at a time, each with its own cluster of tabs worth keeping organized rather than scattered across the tab bar.
+Workona's framing is "Get your tabs under control," and it does that by grouping a project's tabs into a Space that auto-saves as you work and syncs across your devices, so you can close it down and pick it back up later. It's built for people running more than one active project at a time, each with its own cluster of tabs worth keeping organized rather than scattered across the tab bar.
 
 The free plan is real, tucked into a pricing-page FAQ rather than shown as its own plan card, and capped at 5 spaces; Workona's own FAQ says it "can be used forever" below that cap, it just won't let you create a new space once you hit it. Pro is listed as "Starting at $7 / month," confirmed to be the annual-billed rate, and adds unlimited spaces, 90-day session backups, and integrations. Team starts at $8 per user per month with a 3-user minimum, again priced for groups rather than one person.
 
 ## If you want a tidy page of links and widgets: start.me
 
-start.me calls itself, in its own title tag, a "Bookmark Manager, Custom Start Page & New Tab," and its hero line sums up the pitch: "All your important links, one click away." You build a page out of mostly first-party widgets, weather, RSS feeds, notes, bookmark groups, and click through to whatever those bookmarks point at. It's a genuinely mature product: a July 2026 changelog alone shipped a bookmark clean-up tool, a rebuilt Notes editor, new timer and page-introduction widgets, wider 7-column layouts, and AI-driven site suggestions.
+start.me calls itself, in its own title tag, a "Bookmark Manager, Custom Start Page & New Tab," and its hero line sums up the pitch: "All your important links, one click away." You build a page out of widgets (weather, RSS feeds, notes, mostly first-party) plus bookmarks alongside them. A July 2026 changelog alone shipped a bookmark clean-up tool, a rebuilt Notes editor, new timer and page-introduction widgets, 7-column layouts, and AI-driven site suggestions.
 
 The free plan costs nothing, includes advertising by start.me's own description, and caps you at three personal start pages, though widgets and bookmarks inside those three pages are unlimited. Personal PRO is $25 a year (about $2.08 a month), removes the ads, unlocks unlimited pages, and adds 27 PRO-only features and widgets. Team is $25 a month billed annually for 10 users, a different, group-priced product.
 
@@ -52,7 +52,7 @@ These four charge for genuinely different things, so treat this as a price refer
 
 ## How to pick
 
-If your problem is too many tabs piling up faster than you can use them, Toby solves that. If it's several ongoing projects each needing their own saved, restorable set of tabs, that's Workona's job. If you want a tidy home page of organized links, weather, and notes, start.me does that well and has for a while. And if the problem isn't saving or organizing anything, it's wanting a handful of specific sites open and live at the same time every day, that's what TulipLot is for. None of these are mutually exclusive; plenty of people reasonably run two at once, one for what they're not actively using and one for what they check constantly.
+If your problem is too many tabs piling up faster than you can use them, Toby solves that. If it's several ongoing projects each needing their own saved, restorable set of tabs, that's Workona's job. If you want a tidy home page of organized links, weather, and notes, start.me does that well. And if the problem isn't saving or organizing anything, it's wanting a handful of specific sites open and live at the same time every day, that's what TulipLot is for. None of these are mutually exclusive; plenty of people reasonably run two at once, one for what they're not actively using and one for what they check constantly.
 
 ## How we'll keep this current
 
