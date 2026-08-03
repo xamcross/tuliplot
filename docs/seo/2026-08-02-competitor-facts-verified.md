@@ -31,6 +31,16 @@
 - **Actively shipping:** a July 2026 changelog covers a bookmark clean-up tool, a rebuilt Notes editor, timer and page-introduction widgets, 7-column pages, and AI site suggestions / smart title cleanup.
 - Sources: `start.me/pricing` (403s to plain fetches — render it), `start.me`, `support.start.me` article 9182818, `blog.start.me` July 2026 update.
 
+## Checked and NOT verifiable — do not publish these
+
+Recorded 2026-08-02 after a Wave-5 review caught an unsourced claim. These were actively looked for and not found. Absence of evidence is not evidence: do not restate them from intuition in a later wave.
+
+- **"Toby requires an account / does not work without signup."** `gettoby.com` does not address account requirements at all. Its calls to action are "Install toby" / "Install Toby" linking to the Chrome Web Store; the homepage never mentions signing up, account creation, a demo, or guest access. Plausible in reality, but **not sourceable**, so it must not appear as a factual claim or as a comparison-table row.
+- **"Workona requires an account."** `workona.com` likewise does not state this.
+- **"A Workona Space lies dormant / its tabs are closed until you restore it."** The homepage says only "Browsers are memory hogs, so we added tab suspension to keep your computer running smoothly" — a general statement about tab suspension, not about closed Spaces. Do not describe the closed-Space lifecycle as fact on this basis.
+
+**The safe way to make the try-without-signup point** is to state it about TulipLot alone ("TulipLot gives you two live cells with no account") and let the reader draw their own comparison. Never assert what a competitor requires unless their own page says it.
+
 ## Currency caveat
 
 Only Toby prints "usd" explicitly. Workona and start.me show a bare "$" with no currency code anywhere findable. Assume USD for a US reader; don't state it as their claim.
