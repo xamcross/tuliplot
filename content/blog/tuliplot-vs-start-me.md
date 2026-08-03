@@ -9,15 +9,15 @@ category: Comparison
 
 start.me builds you a start page out of bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. That's the core distinction, worth stating first, because most people searching "start.me alternative" aren't yet sure whether they want a better bookmark page or something that keeps actual apps open and clickable.
 
-start.me's own title tag calls it a "Bookmark Manager, Custom Start Page & New Tab," and the hero line on their homepage is "All your important links, one click away." You build a page out of widgets — weather, RSS feeds, notes, bookmark groups, mostly first-party — and click through to the sites those bookmarks point to. TulipLot doesn't build a page out of widgets at all; a TulipLot cell renders the actual third-party site, live and interactive, in place. Want a tidy page of organized links, weather, and notes, spread across a couple of start pages for different parts of your life? start.me does that, and does it well. Want your inbox and calendar actually visible and clickable without leaving the grid? That's TulipLot's job, and start.me's widgets don't attempt it.
+start.me's own title tag calls it a "Bookmark Manager, Custom Start Page & New Tab," and the hero line on their homepage is "All your important links, one click away." You build a page out of widgets — weather, RSS feeds, notes, mostly first-party — plus bookmarks alongside them. TulipLot doesn't build a page out of widgets at all; a TulipLot cell renders the actual third-party site, live and interactive, in place. Want a tidy page of organized links, weather, and notes? start.me does that, and does it well. Want your inbox and calendar actually visible and clickable without leaving the grid? That's TulipLot's job, and start.me's widgets don't attempt it.
 
 ## What start.me does well
 
-start.me is a mature start page and bookmark manager, and it isn't standing still. Their July 2026 changelog alone shipped a bookmark clean-up tool, a rebuilt Notes editor, timer and page-introduction widgets, wider 7-column page layouts, and AI-driven site suggestions. That's active, ongoing product work, not a page that shipped once and stopped.
+start.me is a mature start page and bookmark manager, and it isn't standing still. Their July 2026 changelog alone shipped a bookmark clean-up tool, a rebuilt Notes editor, timer and page-introduction widgets, 7-column page layouts, and AI-driven site suggestions. That's active, ongoing product work, not a page that shipped once and stopped.
 
 The free plan is real and genuinely usable: it costs nothing, and the only hard cap is on start pages themselves — start.me's help centre says "Free users can create only three personal pages." Widgets and bookmarks within those three pages are unlimited; you can pack each page as full as you want, with only basic widgets available until you upgrade. The free plan also, in start.me's own words, "Includes advertising."
 
-If what you want is a tidy home page with dozens of organized links, weather, notes, and RSS feeds arranged across a few pages, start.me is the better tool for that job, and it's more mature at it than TulipLot is. TulipLot has no widget library at all, first-party or otherwise — it wasn't built to have one.
+If what you want is a tidy home page of organized links, weather, notes, and RSS feeds, start.me is the better tool for that job, and it's more mature at it than TulipLot is. TulipLot has no widget library at all, first-party or otherwise — it wasn't built to have one.
 
 ## What TulipLot does differently
 
@@ -37,15 +37,15 @@ What TulipLot's $4 buys instead is the sixth live cell, not a cheaper way to org
 
 | | start.me | TulipLot |
 |---|---|---|
-| What it is | Widget-based start page: bookmarks, weather, RSS, notes | Live grid of real, interactive third-party sites |
-| Third-party sites rendered live | No — widgets are mostly first-party; bookmarks open in their own tab | Yes, up to 6, live and simultaneous, in a fixed grid |
+| What it is | Start page combining bookmarks with first-party widgets (weather, RSS, notes) | Live grid of real, interactive third-party sites |
+| Third-party sites rendered live | No — widgets are mostly first-party | Yes, up to 6, live and simultaneous, in a fixed grid |
 | Free tier ad-supported | Yes — free plan "Includes advertising" | Yes, one ad cell on the free plan |
 | Single-user paid price | $25/year (≈$2.08/month) | $4/month |
 | Team / collaboration | Yes, $25/month billed annually, 10 users | No built-in team or collaboration features |
 
 ## Which should you pick?
 
-Pick start.me if you want a home page: a tidy, organized collection of bookmarks, weather, notes, and RSS feeds, maybe spread across a couple of start pages for different parts of your life. It's a mature product that ships new widgets regularly, and at $25 a year it's a cheap way to get there.
+Pick start.me if you want a home page: a tidy, organized collection of bookmarks, weather, notes, and RSS feeds. It's a mature product that shipped a wave of new widgets and editor upgrades in its July 2026 changelog, and at $25 a year it's a cheap way to get there.
 
 Pick TulipLot if the problem isn't organizing links, it's needing a handful of specific sites open, live, and clickable at the same time — an inbox, a calendar, a project board, not a bookmark to any of them. If your workflow is "check five things constantly" rather than "keep a tidy page of things I might click," a live grid does that in a way a widget-based start page structurally can't, no matter how many PRO widgets get added to it.
 
@@ -55,7 +55,7 @@ Plenty of people could reasonably run both: start.me as the home page for links 
 
 ### Is TulipLot a start.me alternative?
 
-Only if what you actually want differs from what start.me offers: bookmarks and widgets organized on a page, instead of the actual third-party sites rendered live. TulipLot doesn't build start pages, manage bookmark collections, or offer a widget library; start.me does all of that well and TulipLot makes no attempt to. If your problem is organizing dozens of links, weather, notes, and RSS feeds into a tidy page, start.me solves it and TulipLot won't. TulipLot fits when you want a handful of sites visibly live and clickable all the time, not a place to collect links.
+Only if what you actually want differs from what start.me offers: bookmarks and widgets organized on a page, instead of the actual third-party sites rendered live. TulipLot doesn't build start pages, manage bookmarks, or offer a widget library; start.me does all of that well and TulipLot makes no attempt to. If your problem is organizing links, weather, notes, and RSS feeds into a tidy page, start.me solves it and TulipLot won't. TulipLot fits when you want a handful of sites visibly live and clickable all the time, not a place to collect links.
 
 ### What is start.me's free plan limit?
 
