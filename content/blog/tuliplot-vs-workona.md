@@ -36,7 +36,7 @@ TulipLot prices per person, not per seat, since a TulipLot dashboard has no team
 | What it stores | Project Spaces — tabs grouped, auto-saved, restored later | Nothing — cells render live sites, not saved sessions |
 | Sites visible at once | None; Spaces store tab references you reopen, not live views | Up to 6, live and simultaneous, in a fixed grid |
 | Session auto-save & restore | Yes, across devices | No — there's no session to save or restore |
-| Free tier ad-supported | No | Yes, one ad cell on the free plan |
+| Free tier ad-supported | Not described as ad-supported | Yes, one ad cell on the free plan |
 | Single-user paid price | $7/month, annual-billed | $4/month |
 | Team / collaboration | Yes, $8/user/month, 3-user minimum, up to 25 users | No built-in team or collaboration features |
 

@@ -85,6 +85,7 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
               <li>✓ 2 usable cells</li>
               <li>✓ Full catalog + custom URLs</li>
               <li>✓ Drag to rearrange</li>
+              <li class="dim">• One ad in the 6th cell</li>
               <li class="dim">• Saved to this browser only</li>
             </ul>
             <a routerLink="/try" class="tl-btn tl-btn--soft plan-cta">Try now</a>

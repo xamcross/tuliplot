@@ -41,7 +41,7 @@ Free accounts get five usable cells plus one ad cell fixed in the bottom-right s
 
 ## Single-user pricing, side by side
 
-These four charge for genuinely different things, so treat this as a price reference, not proof any one is a better deal. A "60 tabs vs 5 spaces vs 3 pages vs 5 cells" row would count four unrelated things as if they were the same unit, so free-tier specifics are covered in each section above instead; this table sticks to price, where a single-user comparison is fair. Toby and Workona price per team member, so the figures below are what one person alone would pay on the plan built for solo use, not the team price.
+These four charge for genuinely different things, so treat this as a price reference, not proof any one is a better deal. A "60 tabs vs 5 spaces vs 3 pages vs 5 cells" row would count four unrelated things as if they were the same unit, so free-tier specifics are covered in each section above instead; this table sticks to price, where a single-user comparison is fair. Toby and Workona price per team member, so the figures below are what one person alone would pay on each vendor's cheapest paid plan, not the team price.
 
 | Tool | Free plan | Paid plan, single user |
 |---|---|---|
