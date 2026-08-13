@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, computed, inject, input, output, signal, viewChild,
+  ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Cell } from '../../core/models/dashboard.model';
@@ -9,6 +9,7 @@ import { CellToolbarComponent } from './cell-toolbar.component';
 import { SafeFrameComponent } from './safe-frame.component';
 import { AdCellComponent } from '../ads/ad-cell.component';
 import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/services/extension-bridge.service';
+import { isSafeHttpsUrl } from '../../core/util/url.util';
 
 @Component({
   selector: 'tl-cell',
@@ -60,7 +61,13 @@ import { ExtensionBridgeService, EXTENSION_WEBSTORE_URL } from '../../core/servi
               <div class="cell-fallback state" data-testid="needs-extension" data-state="needs-extension">
                 <p>This app needs the TulipLot Companion extension to load in the grid.</p>
                 <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" (click)="onInstallExtension()">Install TulipLot Companion</button>
-                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="onEnableForThisApp()">Enable for this site</button>
+                <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab instead</button>
+              </div>
+            }
+            @case ('needs-permission') {
+              <div class="cell-fallback state" data-testid="needs-permission" data-state="needs-permission">
+                <p>Allow TulipLot Companion to load {{ cell().title }} in your grid.</p>
+                <button type="button" class="tl-btn tl-btn--primary tl-btn--sm" data-testid="enable-site-btn" (click)="onEnableForThisApp()">Enable for this site</button>
                 <button type="button" class="tl-btn tl-btn--soft tl-btn--sm" (click)="openInWindow()">Open in a tab instead</button>
               </div>
             }
@@ -127,7 +134,33 @@ export class CellComponent {
   private readonly bridge = inject(ExtensionBridgeService);
   private readonly loadFailedFlag = signal(false);
 
-  readonly frameState = computed<'frame' | 'needs-extension' | 'login-in-tab' | 'load-failed'>(() => {
+  // null = grant status unknown (probe pending). The frame mounts only on true,
+  // so a still-blocked site never flashes the browser's refused-frame page.
+  private readonly hostGranted = signal<boolean | null>(null);
+
+  // Probes the extension for this cell's origin whenever the extension becomes
+  // installed. Installing the extension is not enough: header stripping only
+  // works for origins the user has granted as an optional host permission.
+  private readonly grantProbe = effect(() => {
+    const cell = this.cell();
+    if (
+      cell.type !== 'APP' ||
+      this.compatibility() !== 'NEEDS_EXTENSION' ||
+      !this.bridge.installed() ||
+      !isSafeHttpsUrl(cell.url)
+    ) {
+      return;
+    }
+    const origin = new URL(cell.url!).origin;
+    void this.bridge.checkHost(origin).then((granted) => {
+      const current = this.cell().url;
+      if (isSafeHttpsUrl(current) && new URL(current!).origin === origin) {
+        this.hostGranted.set(granted);
+      }
+    });
+  });
+
+  readonly frameState = computed<'frame' | 'needs-extension' | 'needs-permission' | 'login-in-tab' | 'load-failed'>(() => {
     const cell = this.cell();
     if (cell.type !== 'APP') {
       return 'frame';
@@ -136,8 +169,13 @@ export class CellComponent {
       return 'load-failed';
     }
     const compat = this.compatibility();
-    if (compat === 'NEEDS_EXTENSION' && !this.bridge.installed()) {
-      return 'needs-extension';
+    if (compat === 'NEEDS_EXTENSION') {
+      if (!this.bridge.installed()) {
+        return 'needs-extension';
+      }
+      if (this.hostGranted() !== true) {
+        return 'needs-permission';
+      }
     }
     if (compat === 'LOGIN_IN_TAB' || cell.openMode === 'WINDOW') {
       return 'login-in-tab';
@@ -172,7 +210,7 @@ export class CellComponent {
     window.open(EXTENSION_WEBSTORE_URL, '_blank', 'noopener,noreferrer');
   }
 
-  /** needs-extension CTA: grant this app's origin to the extension, then retry. */
+  /** needs-permission CTA: grant this app's origin to the extension, then frame it. */
   async onEnableForThisApp(): Promise<void> {
     const url = this.cell().url;
     if (!url) {
@@ -181,6 +219,7 @@ export class CellComponent {
     const origin = new URL(url).origin;
     const granted = await this.bridge.requestHost(origin);
     if (granted) {
+      this.hostGranted.set(granted);
       this.loadFailedFlag.set(false);
     }
   }

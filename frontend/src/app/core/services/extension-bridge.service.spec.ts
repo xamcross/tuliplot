@@ -88,6 +88,58 @@ describe('ExtensionBridgeService', () => {
     expect(removeSpy).toHaveBeenCalledWith('message', expect.any(Function));
   });
 
+  it('checkHost() resolves with granted from HOST_STATUS', async () => {
+    vi.spyOn(window, 'postMessage').mockImplementation(((msg: unknown) => {
+      const m = msg as { type: string; origin: string };
+      if (m.type === 'CHECK_HOST') {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { source: 'tuliplot-ext', type: 'HOST_STATUS', origin: m.origin, granted: true },
+            source: window,
+          }),
+        );
+      }
+    }) as typeof window.postMessage);
+
+    const result = await service.checkHost('https://www.youtube.com');
+    expect(result).toBe(true);
+  });
+
+  it('checkHost() resolves false after the timeout (extension without CHECK_HOST support)', async () => {
+    vi.spyOn(window, 'postMessage').mockImplementation((() => {
+      /* a 1.0.x extension never answers CHECK_HOST */
+    }) as typeof window.postMessage);
+
+    const pending = service.checkHost('https://www.youtube.com');
+    await vi.advanceTimersByTimeAsync(1000);
+    const result = await pending;
+
+    expect(result).toBe(false);
+  });
+
+  it('checkHost() ignores a HOST_STATUS for a different origin', async () => {
+    vi.spyOn(window, 'postMessage').mockImplementation(((msg: unknown) => {
+      const m = msg as { type: string; origin: string };
+      if (m.type === 'CHECK_HOST') {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { source: 'tuliplot-ext', type: 'HOST_STATUS', origin: 'https://other.example', granted: true },
+            source: window,
+          }),
+        );
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { source: 'tuliplot-ext', type: 'HOST_STATUS', origin: m.origin, granted: false },
+            source: window,
+          }),
+        );
+      }
+    }) as typeof window.postMessage);
+
+    const result = await service.checkHost('https://www.youtube.com');
+    expect(result).toBe(false);
+  });
+
   it('requestHost() only resolves for its own origin', async () => {
     vi.spyOn(window, 'postMessage').mockImplementation(((msg: unknown) => {
       const m = msg as { type: string; origin: string };

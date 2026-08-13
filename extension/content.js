@@ -6,7 +6,9 @@ function isPageMessage(event) {
     event.source === window &&
     !!event.data &&
     event.data.source === 'tuliplot' &&
-    (event.data.type === 'PING' || event.data.type === 'REQUEST_HOST')
+    (event.data.type === 'PING' ||
+      event.data.type === 'REQUEST_HOST' ||
+      event.data.type === 'CHECK_HOST')
   );
 }
 
@@ -17,7 +19,7 @@ function handleWindowMessage(event) {
   const outbound =
     event.data.type === 'PING'
       ? { type: 'PING' }
-      : { type: 'REQUEST_HOST', origin: event.data.origin };
+      : { type: event.data.type, origin: event.data.origin };
 
   chrome.runtime.sendMessage(outbound, function (response) {
     if (response) {

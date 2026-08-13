@@ -16,6 +16,10 @@ function installChrome(overrides) {
         global.chrome.__lastRequest = spec;
         cb(Object.prototype.hasOwnProperty.call(opts, 'granted') ? opts.granted : true);
       },
+      contains: (spec, cb) => {
+        global.chrome.__lastContains = spec;
+        cb(Object.prototype.hasOwnProperty.call(opts, 'contains') ? opts.contains : false);
+      },
     },
   };
 }
@@ -90,6 +94,44 @@ test('REQUEST_HOST rejects wildcard/malformed origins without calling permission
       `permissions.request must not be called for ${JSON.stringify(origin)}`);
     assert.equal(response.granted, false, `expected granted=false for ${JSON.stringify(origin)}`);
     assert.equal(response.type, 'HOST_RESULT');
+  }
+});
+
+test('CHECK_HOST reports granted=true when the origin permission is present', () => {
+  installChrome({ contains: true });
+  const { handleMessage } = require('../background.js');
+  let response;
+  const ret = handleMessage(
+    { type: 'CHECK_HOST', origin: 'https://www.youtube.com' }, {}, (r) => { response = r; },
+  );
+  assert.equal(ret, true);
+  assert.deepEqual(global.chrome.__lastContains, { origins: ['https://www.youtube.com/*'] });
+  assert.deepEqual(response, {
+    source: 'tuliplot-ext', type: 'HOST_STATUS', origin: 'https://www.youtube.com', granted: true,
+  });
+});
+
+test('CHECK_HOST reports granted=false when the origin permission is absent', () => {
+  installChrome({ contains: false });
+  const { handleMessage } = require('../background.js');
+  let response;
+  handleMessage({ type: 'CHECK_HOST', origin: 'https://www.youtube.com' }, {}, (r) => { response = r; });
+  assert.equal(response.granted, false);
+  assert.equal(response.type, 'HOST_STATUS');
+});
+
+test('CHECK_HOST rejects wildcard/malformed origins without calling permissions.contains', () => {
+  const bad = ['*://*', 'https://*.evil.com', 'notaurl', 'https://x.com/path', ''];
+  for (const origin of bad) {
+    installChrome({ contains: true });
+    const { handleMessage } = require('../background.js');
+    let response;
+    const ret = handleMessage({ type: 'CHECK_HOST', origin: origin }, {}, (r) => { response = r; });
+    assert.equal(ret, false, `expected sync rejection for ${JSON.stringify(origin)}`);
+    assert.equal(global.chrome.__lastContains, undefined,
+      `permissions.contains must not be called for ${JSON.stringify(origin)}`);
+    assert.equal(response.granted, false, `expected granted=false for ${JSON.stringify(origin)}`);
+    assert.equal(response.type, 'HOST_STATUS');
   }
 });
 
