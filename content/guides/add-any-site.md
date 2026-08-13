@@ -42,7 +42,7 @@ Installing the Companion doesn't unlock anything by itself — it just makes unl
 2. Back in the cell, click **Enable for this site** — the required second step, specific to that one site.
 3. The cell retries and, for most sites, loads live in the grid from then on.
 
-The in-cell prompt sticks around until TulipLot detects the Companion, which happens the next time you load your dashboard — so in that first pass you can enable several sites right from their cells, one **Enable for this site** click each. Add a stubborn site after that and the cell goes straight to trying to load; if it isn't granted, you'll land on "didn't load" instead of the button. That's expected, and the fix is just as quick: open `chrome://extensions`, click **TulipLot Companion**, go to **Site access**, and add the new site there, then hit **Retry** in the cell. Same permission, same one-at-a-time scoping — just requested through Chrome's settings instead of the cell.
+The cell checks each site's grant, so the button is never lost: install the Companion, reload your dashboard, and every stubborn cell shows its own **Enable for this site** button — one click each. Add another stubborn site later and its cell asks the same way. Prefer Chrome's settings? Open `chrome://extensions`, click **TulipLot Companion**, go to **Site access**, and add the site there — same permission, same one-at-a-time scoping, just requested from the other side.
 
 ## What still can't be embedded
 
@@ -58,11 +58,11 @@ If a site that normally loads fine shows a blank cell, try reload first. A stale
 
 ### Re-grant the site
 
-If a stubborn site stops embedding, or a newly added one lands on "didn't load" instead of the Companion prompt, the fix is the same: open `chrome://extensions`, click **TulipLot Companion**, open **Site access**, and add (or re-add) the site. Hit Retry in the cell. A few seconds, and it doesn't touch your other sites.
+If a stubborn site stops embedding — say its permission was removed — its cell falls back to **Enable for this site**. Click it, approve Chrome's prompt, and the cell loads again. The manual path works too: open `chrome://extensions`, click **TulipLot Companion**, open **Site access**, and re-add the site there. Neither touches your other sites.
 
 ### Load-failed → Retry
 
-A load-failed cell often just means the Companion hasn't been granted access to that site yet — check **Site access** at `chrome://extensions` first, add the site if it's missing, then Retry. Already granted and still failing? That's more likely a genuine hiccup — a slow server or timeout — and a second Retry usually clears it. Still stuck, check the site in a regular tab; it may just be down.
+A load-failed cell means the site had its permission and started to load, but didn't finish — usually a slow server or a timeout, and a second Retry clears it. Still stuck, check the site in a regular tab; it may just be down. And if the cell shows **Enable for this site** instead, that's not a failure — the site just hasn't been granted yet, and the button is the fix.
 
 ### When in doubt, open in a tab
 
