@@ -45,10 +45,66 @@ describe('CellComponent fallback states', () => {
     expect(fixture.componentInstance.frameState()).toBe('needs-extension');
   });
 
-  it('frame when NEEDS_EXTENSION but the extension is installed', () => {
+  it('needs-permission when installed but the origin is not granted', async () => {
     bridge.installed.set(true);
+    vi.spyOn(bridge, 'checkHost').mockResolvedValue(false);
     const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.frameState()).toBe('needs-permission');
+  });
+
+  it('frame when installed and the origin is granted', async () => {
+    bridge.installed.set(true);
+    const checkSpy = vi.spyOn(bridge, 'checkHost').mockResolvedValue(true);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(checkSpy).toHaveBeenCalledWith('https://mail.google.com');
     expect(fixture.componentInstance.frameState()).toBe('frame');
+  });
+
+  it('onEnableForThisApp() flips to frame once the grant succeeds', async () => {
+    bridge.installed.set(true);
+    vi.spyOn(bridge, 'checkHost').mockResolvedValue(false);
+    vi.spyOn(bridge, 'requestHost').mockResolvedValue(true);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.frameState()).toBe('needs-permission');
+    await fixture.componentInstance.onEnableForThisApp();
+    expect(fixture.componentInstance.frameState()).toBe('frame');
+  });
+
+  it('stays in needs-permission when the grant is denied', async () => {
+    bridge.installed.set(true);
+    vi.spyOn(bridge, 'checkHost').mockResolvedValue(false);
+    vi.spyOn(bridge, 'requestHost').mockResolvedValue(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await fixture.componentInstance.onEnableForThisApp();
+    expect(fixture.componentInstance.frameState()).toBe('needs-permission');
+  });
+
+  it('the needs-extension state offers install but not enable', () => {
+    bridge.installed.set(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="needs-extension"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="enable-site-btn"]')).toBeNull();
+  });
+
+  it('the needs-permission state renders the enable button and the toolbar', async () => {
+    bridge.installed.set(true);
+    vi.spyOn(bridge, 'checkHost').mockResolvedValue(false);
+    const fixture = create(makeCell(), 'NEEDS_EXTENSION');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="needs-permission"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="enable-site-btn"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="cell-toolbar"]')).not.toBeNull();
   });
 
   it('login-in-tab when openMode is WINDOW', () => {

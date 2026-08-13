@@ -19,7 +19,10 @@ grid render inside the grid.
   local development copy of it — can detect that the extension is installed.
 - `optional_host_permissions: ["*://*/*"]` — requested **per-site, on demand**
   when you add an app to your grid that needs header stripping. Nothing is
-  granted up front; you approve each site.
+  granted up front; you approve each site. The dashboard can also send a
+  read-only `CHECK_HOST` query. The extension answers it from
+  `chrome.permissions.contains` and does not show a prompt. The dashboard uses
+  the answer to decide when to show the "Enable for this site" button.
 
 ## What it does NOT do
 

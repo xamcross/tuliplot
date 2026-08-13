@@ -31,7 +31,10 @@ function isConcreteOrigin(origin) {
 // Handles messages forwarded from the tuliplot.com content script.
 // Returning true keeps the message channel open for an async sendResponse.
 function handleMessage(message, sender, sendResponse) {
-  if (!message || (message.type !== 'PING' && message.type !== 'REQUEST_HOST')) {
+  const known =
+    message &&
+    (message.type === 'PING' || message.type === 'REQUEST_HOST' || message.type === 'CHECK_HOST');
+  if (!known) {
     return false;
   }
 
@@ -41,28 +44,35 @@ function handleMessage(message, sender, sendResponse) {
     return false; // synchronous response
   }
 
-  // REQUEST_HOST: ask for the per-site host permission for this origin.
-  // Validate that the page-supplied origin is a single concrete origin before
-  // requesting host permissions, so a wildcard/malformed value cannot escalate.
+  // REQUEST_HOST asks for the per-site host permission; CHECK_HOST only reads
+  // whether the permission is already granted. Both validate that the
+  // page-supplied origin is a single concrete origin first, so a
+  // wildcard/malformed value cannot escalate.
+  const responseType = message.type === 'REQUEST_HOST' ? 'HOST_RESULT' : 'HOST_STATUS';
   const origin = message.origin;
   if (!isConcreteOrigin(origin)) {
     sendResponse({
       source: 'tuliplot-ext',
-      type: 'HOST_RESULT',
+      type: responseType,
       origin: origin,
       granted: false,
     });
-    return false; // synchronous rejection, no permission request issued
+    return false; // synchronous rejection, no permission API call issued
   }
 
-  chrome.permissions.request({ origins: [origin + '/*'] }, function (granted) {
+  const respond = function (granted) {
     sendResponse({
       source: 'tuliplot-ext',
-      type: 'HOST_RESULT',
+      type: responseType,
       origin: origin,
       granted: !!granted,
     });
-  });
+  };
+  if (message.type === 'REQUEST_HOST') {
+    chrome.permissions.request({ origins: [origin + '/*'] }, respond);
+  } else {
+    chrome.permissions.contains({ origins: [origin + '/*'] }, respond);
+  }
   return true; // async response
 }
 

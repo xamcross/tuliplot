@@ -16,6 +16,8 @@ function setup() {
           cb({ source: 'tuliplot-ext', type: 'PONG', version: '1.0.0' });
         } else if (msg.type === 'REQUEST_HOST') {
           cb({ source: 'tuliplot-ext', type: 'HOST_RESULT', origin: msg.origin, granted: true });
+        } else if (msg.type === 'CHECK_HOST') {
+          cb({ source: 'tuliplot-ext', type: 'HOST_STATUS', origin: msg.origin, granted: true });
         }
       },
     },
@@ -38,6 +40,17 @@ test('forwards a page REQUEST_HOST and posts HOST_RESULT back', () => {
   });
   assert.deepEqual(posted, [{
     source: 'tuliplot-ext', type: 'HOST_RESULT', origin: 'https://mail.google.com', granted: true,
+  }]);
+});
+
+test('forwards a page CHECK_HOST and posts HOST_STATUS back', () => {
+  const { win, posted, mod } = setup();
+  mod.handleWindowMessage({
+    source: win,
+    data: { source: 'tuliplot', type: 'CHECK_HOST', origin: 'https://www.youtube.com' },
+  });
+  assert.deepEqual(posted, [{
+    source: 'tuliplot-ext', type: 'HOST_STATUS', origin: 'https://www.youtube.com', granted: true,
   }]);
 });
 
