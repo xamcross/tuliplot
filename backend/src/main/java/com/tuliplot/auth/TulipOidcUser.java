@@ -1,5 +1,6 @@
 package com.tuliplot.auth;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,8 +9,15 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-/** Wraps the Google-issued OidcUser and adds TulipLot identity (userId/email). */
-public class TulipOidcUser implements OidcUser, DashPrincipal {
+/**
+ * Wraps the Google-issued OidcUser and adds TulipLot identity (userId/email). Must stay
+ * Serializable: MongoSessionRepository JDK-serializes the session's SecurityContext, and this
+ * class is its principal after a Google login. The delegate is a DefaultOidcUser at runtime,
+ * which is Serializable.
+ */
+public class TulipOidcUser implements OidcUser, DashPrincipal, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final OidcUser delegate;
     private final String userId;
