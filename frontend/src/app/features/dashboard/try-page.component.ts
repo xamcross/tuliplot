@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { firstValueFrom } from 'rxjs';
@@ -8,6 +8,7 @@ import { AddUrlDialogComponent, AddUrlResult } from './add-url-dialog.component'
 import { CatalogApp } from '../../core/models/catalog.model';
 import { DASHBOARD_SOURCE } from './dashboard-source';
 import { openModeFor } from '../../core/services/compatibility.util';
+import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from '../marketing/site-header.component';
 
@@ -48,8 +49,14 @@ type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
 export class TryPageComponent {
   private readonly dialog = inject(Dialog);
   private readonly source = inject(DASHBOARD_SOURCE);
+  private readonly extensionBridge = inject(ExtensionBridgeService);
 
   constructor() {
+    // Same handshake as the dashboard page: without it, a visitor with the
+    // Companion installed still sees the install prompt on every framed cell.
+    afterNextRender(() => {
+      void this.extensionBridge.ping();
+    });
     inject(SeoService).set({
       title: 'Try TulipLot — no account needed',
       description:

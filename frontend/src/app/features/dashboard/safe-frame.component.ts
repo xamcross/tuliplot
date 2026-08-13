@@ -1,8 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, input, output, signal,
+  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, computed, effect, inject, input,
+  output, signal, untracked, viewChild,
 } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { isSafeHttpsUrl } from '../../core/util/url.util';
+
+const FRAME_SANDBOX =
+  'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads';
 
 @Component({
   selector: 'tl-safe-frame',
@@ -10,17 +13,7 @@ import { isSafeHttpsUrl } from '../../core/util/url.util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (showFrame()) {
-      <iframe
-        [src]="safeSrc()"
-        [title]="title()"
-        class="frame"
-        data-testid="app-iframe"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"
-        allow="fullscreen; clipboard-write; autoplay"
-        referrerpolicy="strict-origin-when-cross-origin"
-        (load)="onFrameLoad()"
-        (error)="loadFailed.emit()"
-      ></iframe>
+      <div class="frame-slot" #frameSlot></div>
     } @else {
       <div class="asleep" data-testid="asleep-placeholder">
         <span>{{ asleep() ? 'Sleeping — wake to reload' : 'Loading…' }}</span>
@@ -29,7 +22,7 @@ import { isSafeHttpsUrl } from '../../core/util/url.util';
   `,
   styles: [`
     :host { display: block; width: 100%; height: 100%; }
-    .frame { width: 100%; height: 100%; border: 0; display: block; }
+    .frame-slot { width: 100%; height: 100%; }
     .asleep { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--tl-ink-faint); background: var(--tl-surface); }
   `],
 })
@@ -39,9 +32,9 @@ export class SafeFrameComponent {
   asleep = input<boolean>(false);
   loadFailed = output<void>();
 
-  private sanitizer = inject(DomSanitizer);
   private cacheBuster = signal(0);
   private mounted = signal(false);
+  private frameSlot = viewChild<ElementRef<HTMLElement>>('frameSlot');
 
   private loadWatchdogId: ReturnType<typeof setTimeout> | null = null;
   private didLoad = false;
@@ -64,7 +57,7 @@ export class SafeFrameComponent {
     this.frameDestroyRef.onDestroy(() => this.cancelLoadWatchdog());
   }
 
-  /** Bound to the iframe (load) event; cancels the watchdog. */
+  /** Called by the iframe load listener; cancels the watchdog. */
   onFrameLoad(): void {
     this.didLoad = true;
     this.cancelLoadWatchdog();
@@ -92,7 +85,7 @@ export class SafeFrameComponent {
 
   protected showFrame = computed(() => this.mounted() && !this.asleep() && this.urlSafe());
 
-  protected safeSrc = computed<SafeResourceUrl | null>(() => {
+  private frameSrc = computed<string | null>(() => {
     if (!this.showFrame()) {
       return null;
     }
@@ -101,12 +94,37 @@ export class SafeFrameComponent {
     if (bust > 0) {
       u.searchParams.set('_tl', String(bust));
     }
-    return this.sanitizer.bypassSecurityTrustResourceUrl(u.toString());
+    return u.toString();
+  });
+
+  // The iframe is built imperatively so its src is set BEFORE the element enters
+  // the DOM. The Companion's header-strip rule matches on the request initiator;
+  // a src assigned to an iframe that is already in the DOM navigates with an
+  // initiator that does not match tuliplot.com, so X-Frame-Options survives and
+  // the browser refuses the frame. An Angular [src] binding always sets src
+  // after insertion, which is why a template binding cannot be used here.
+  private readonly buildFrame = effect(() => {
+    const slot = this.frameSlot()?.nativeElement;
+    const src = this.frameSrc();
+    if (!slot || !src) {
+      return;
+    }
+    const frame = slot.ownerDocument.createElement('iframe');
+    frame.setAttribute('title', untracked(() => this.title()));
+    frame.setAttribute('data-testid', 'app-iframe');
+    frame.setAttribute('sandbox', FRAME_SANDBOX);
+    frame.setAttribute('allow', 'fullscreen; clipboard-write; autoplay');
+    frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    frame.style.cssText = 'width:100%;height:100%;border:0;display:block;';
+    frame.addEventListener('load', () => this.onFrameLoad());
+    frame.addEventListener('error', () => this.loadFailed.emit());
+    frame.setAttribute('src', src);
+    slot.replaceChildren(frame);
   });
 
   reload(): void {
     this.cacheBuster.update((n) => n + 1);
-    // Bumping the cache-buster does not touch the effect's dependencies, so the
+    // The cache-buster does not touch the watchdog effect's dependencies, so the
     // watchdog is not re-armed automatically. Re-arm it here so a reload that
     // hangs still surfaces load-failed.
     if (!this.asleep() && this.showFrame()) {
