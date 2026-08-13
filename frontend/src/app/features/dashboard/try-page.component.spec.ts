@@ -3,11 +3,12 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { TryPageComponent } from './try-page.component';
 import { provideAnonymousDashboardSource } from './anonymous-dashboard.store';
+import { ExtensionBridgeService } from '../../core/services/extension-bridge.service';
 
-function render() {
+function configure() {
   TestBed.configureTestingModule({
     imports: [TryPageComponent],
     providers: [
@@ -18,6 +19,10 @@ function render() {
       provideAnonymousDashboardSource(),
     ],
   });
+}
+
+function render() {
+  configure();
   const f = TestBed.createComponent(TryPageComponent);
   f.detectChanges();
   return f;
@@ -33,5 +38,15 @@ describe('TryPageComponent', () => {
   it('sets its own page title', () => {
     render();
     expect(document.title).toBe('Try TulipLot — no account needed · TulipLot');
+  });
+
+  it('pings the extension bridge, so installed cells frame instead of asking to install', async () => {
+    configure();
+    const bridge = TestBed.inject(ExtensionBridgeService);
+    const pingSpy = vi.spyOn(bridge, 'ping').mockResolvedValue(true);
+    const f = TestBed.createComponent(TryPageComponent);
+    f.detectChanges();
+    await f.whenStable();
+    expect(pingSpy).toHaveBeenCalled();
   });
 });
