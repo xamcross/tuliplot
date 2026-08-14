@@ -1,12 +1,12 @@
 {
   "name": "tuliplot-extension",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "TulipLot Companion — strips frame-blocking headers for dashboard frames on tuliplot.com.",
   "scripts": {
     "test": "node --test",
     "icons": "node scripts/render-icons.mjs",
-    "build": "bestzip tuliplot-companion.zip manifest.json rules.json background.js content.js README.md icons/*.png"
+    "build": "bestzip tuliplot-companion.zip manifest.json background.js content.js README.md icons/*.png"
   },
   "devDependencies": {
     "bestzip": "^2.2.1",

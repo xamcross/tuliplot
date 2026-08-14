@@ -7,24 +7,33 @@ function setup() {
   const dom = new JSDOM('', { url: 'https://tuliplot.com/' });
   const win = dom.window;
   const posted = [];
+  const sent = [];
   win.postMessage = (msg) => posted.push(msg);
   global.window = win;
   global.chrome = {
     runtime: {
       sendMessage: (msg, cb) => {
+        sent.push(msg);
         if (msg.type === 'PING') {
           cb({ source: 'tuliplot-ext', type: 'PONG', version: '1.0.0' });
         } else if (msg.type === 'REQUEST_HOST') {
           cb({ source: 'tuliplot-ext', type: 'HOST_RESULT', origin: msg.origin, granted: true });
         } else if (msg.type === 'CHECK_HOST') {
           cb({ source: 'tuliplot-ext', type: 'HOST_STATUS', origin: msg.origin, granted: true });
+        } else if (cb) {
+          cb();
         }
       },
     },
   };
   delete require.cache[require.resolve('../content.js')];
-  return { win, posted, mod: require('../content.js') };
+  return { win, posted, sent, mod: require('../content.js') };
 }
+
+test('sends TAB_HELLO to the worker as soon as the script loads', () => {
+  const { sent } = setup();
+  assert.deepEqual(sent, [{ type: 'TAB_HELLO' }]);
+});
 
 test('forwards a page PING and posts PONG back to the page', () => {
   const { win, posted, mod } = setup();
