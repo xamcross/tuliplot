@@ -79,12 +79,11 @@ approved, so those sites can display inside the user's TulipLot grid.
 
 **Permission justifications** (one dashboard field per permission):
 
-- `declarativeNetRequestWithHostAccess` — Applies the static header-removal
-  ruleset (rules.json) that strips X-Frame-Options and Content-Security-Policy
-  from sub-frame responses. The rule is conditioned on initiatorDomains
-  tuliplot.com (plus localhost for development builds), so it only affects
-  frames embedded by the TulipLot dashboard, and only on hosts the user has
-  granted.
+- `declarativeNetRequestWithHostAccess` — Applies a session rule that strips
+  X-Frame-Options and Content-Security-Policy from sub-frame responses. The
+  rule is scoped to the tab ids of open TulipLot dashboard tabs (plus
+  localhost tabs for development builds), so it only affects frames inside the
+  TulipLot dashboard, and only on hosts the user has granted.
 
 - Host permission `*://tuliplot.com/*` — Injects a tiny handshake content
   script on the TulipLot web app only, so the dashboard can detect that the
@@ -131,8 +130,8 @@ categories, then certify the required disclosure statements.
 - **"localhost permission in a production extension":** reply that it enables
   local development of the open-source dashboard
   (https://github.com/xamcross/tuliplot); the rule still applies only to
-  sub-frames whose initiator is the dashboard, and the content script is an
-  inert handshake listener.
+  sub-frames inside dashboard tabs, and the content script is an inert
+  handshake listener.
 - **Re-submission mechanics:** make the fix, bump `version` in
   `manifest.json` (e.g. 1.0.0 → 1.0.1), run `npm run build`, upload the new
   zip from the item's Package tab.

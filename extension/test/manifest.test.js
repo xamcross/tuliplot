@@ -31,13 +31,9 @@ test('manifest requests only the DNR-with-host-access permission', () => {
   assert.deepEqual(m.host_permissions, ['*://tuliplot.com/*', 'http://localhost/*']);
 });
 
-test('manifest wires the static DNR ruleset', () => {
+test('manifest declares no static DNR ruleset (the worker owns a session rule)', () => {
   const m = loadManifest();
-  const resources = m.declarative_net_request.rule_resources;
-  assert.equal(resources.length, 1);
-  assert.equal(resources[0].id, 'tuliplot_frame');
-  assert.equal(resources[0].path, 'rules.json');
-  assert.equal(resources[0].enabled, true);
+  assert.equal(m.declarative_net_request, undefined);
 });
 
 test('manifest wires background worker and document_start content script', () => {
