@@ -24,6 +24,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    // Boot 4.1 split RestClientAutoConfiguration out of spring-boot-starter-web into its own module
+    // (like the webmvc-test / data-mongodb-test relocations below); FreemiusGatewayImpl needs the
+    // RestClient.Builder bean this starter registers.
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
     // Spring Session *core* only — managed by the Spring Boot 4.1 BOM (no version). Boot 4.1 ships no
     // MongoDB-backed Spring Session store; storage is the custom MongoSessionRepository added below.
     implementation("org.springframework.session:spring-session-core")

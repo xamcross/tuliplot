@@ -27,6 +27,15 @@ spring:
   # NOTE: no `spring.session.store-type` / `spring.session.mongodb.*` — those were removed with
   # Spring Session's MongoDB module in 4.0 and do not exist on Boot 4.1. Session persistence is the
   # custom MongoSessionRepository wired by SessionConfig (@EnableSpringHttpSession).
+  http:
+    clients:
+      # Bounds every Spring-managed outbound HTTP call (currently: FreemiusGatewayImpl's RestClient).
+      # Without this, an unresponsive Freemius endpoint can hang a request thread indefinitely. Set
+      # here rather than as a requestFactory(...) call inside FreemiusGatewayImpl because that call
+      # would silently replace the mock request factory MockRestServiceServer.bindTo(builder) installs
+      # on the same builder in FreemiusGatewayImplTest.
+      connect-timeout: 5s
+      read-timeout: 10s
 
 server:
   port: 8080

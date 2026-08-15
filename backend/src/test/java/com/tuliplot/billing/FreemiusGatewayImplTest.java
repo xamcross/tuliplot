@@ -11,6 +11,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -102,11 +103,22 @@ class FreemiusGatewayImplTest {
   void createPortalLoginUrl_posts_the_email_and_returns_the_url() {
     server.expect(requestTo("https://api.freemius.com/v1/products/37109/portal/login.json"))
         .andExpect(method(POST))
+        .andExpect(content().json("{\"email\":\"buyer@example.com\"}"))
         .andRespond(withSuccess("{\"url\":\"https://users.freemius.com/login/abc\"}",
             MediaType.APPLICATION_JSON));
 
     assertThat(gateway.createPortalLoginUrl("buyer@example.com"))
         .isEqualTo("https://users.freemius.com/login/abc");
+  }
+
+  @Test
+  void createPortalLoginUrl_404_raises_not_found() {
+    server.expect(requestTo("https://api.freemius.com/v1/products/37109/portal/login.json"))
+        .andExpect(method(POST))
+        .andRespond(withStatus(HttpStatus.NOT_FOUND));
+
+    assertThatExceptionOfType(FreemiusNotFoundException.class)
+        .isThrownBy(() -> gateway.createPortalLoginUrl("buyer@example.com"));
   }
 
   @Test
