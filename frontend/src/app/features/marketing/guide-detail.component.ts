@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { GUIDES, POSTS } from './content.generated';
-import { buildArticleJsonLd, buildFaqJsonLd } from './article-jsonld';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd } from './article-jsonld';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
@@ -21,7 +21,7 @@ import { pickRelated } from './related.util';
       <div class="tl-hero-band tl-hero-band--tight">
         <div class="inner">
           <a routerLink="/guides" class="tl-back">← All guides</a>
-          <div><span [class]="'tl-pill ' + pillClass(d.category)">{{ d.category }} · {{ d.readingMinutes }} min read</span></div>
+          <div><span [class]="'tl-pill ' + pillClass(d.category)">{{ d.category }} · <time [attr.datetime]="d.date">{{ d.date }}</time>@if (d.updated) { · Updated <time [attr.datetime]="d.updated">{{ d.updated }}</time>} · {{ d.readingMinutes }} min read</span></div>
           <h1>{{ d.title }}</h1>
         </div>
       </div>
@@ -81,13 +81,24 @@ export class GuideDetailComponent {
     effect(() => {
       const d = this.doc();
       if (d) {
+        const url = `https://tuliplot.com/guides/${d.slug}/`;
+        const jsonLd: object[] = [
+          buildArticleJsonLd(d, '/guides'),
+          buildBreadcrumbJsonLd([
+            { name: 'Home', url: 'https://tuliplot.com/' },
+            { name: 'Guides', url: 'https://tuliplot.com/guides/' },
+            { name: d.title, url },
+          ]),
+        ];
+        if (d.faq.length) jsonLd.push(buildFaqJsonLd(d.faq));
         seo.set({
-          title: d.title,
+          title: d.seoTitle ?? d.title,
           description: d.description,
           path: `/guides/${d.slug}`,
-          jsonLd: d.faq.length
-            ? [buildArticleJsonLd(d, '/guides'), buildFaqJsonLd(d.faq)]
-            : [buildArticleJsonLd(d, '/guides')],
+          type: 'article',
+          published: d.date,
+          modified: d.updated ?? d.date,
+          jsonLd,
         });
       } else if (this.slug()) {
         seo.set({

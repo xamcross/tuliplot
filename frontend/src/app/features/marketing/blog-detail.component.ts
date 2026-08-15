@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { POSTS, GUIDES } from './content.generated';
-import { buildArticleJsonLd, buildFaqJsonLd } from './article-jsonld';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd } from './article-jsonld';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
@@ -21,7 +21,7 @@ import { pickRelated } from './related.util';
       <div class="tl-hero-band tl-hero-band--tight">
         <div class="inner">
           <a routerLink="/blog" class="tl-back">← All posts</a>
-          <div><span [class]="'tl-pill ' + pillClass(d.category)">{{ d.category }} · {{ d.date }} · {{ d.readingMinutes }} min read</span></div>
+          <div><span [class]="'tl-pill ' + pillClass(d.category)">{{ d.category }} · <time [attr.datetime]="d.date">{{ d.date }}</time>@if (d.updated) { · Updated <time [attr.datetime]="d.updated">{{ d.updated }}</time>} · {{ d.readingMinutes }} min read</span></div>
           <h1>{{ d.title }}</h1>
         </div>
       </div>
@@ -84,13 +84,25 @@ export class BlogDetailComponent {
     effect(() => {
       const d = this.doc();
       if (d) {
+        const url = `https://tuliplot.com/blog/${d.slug}/`;
+        const jsonLd: object[] = [
+          buildArticleJsonLd(d, '/blog'),
+          buildBreadcrumbJsonLd([
+            { name: 'Home', url: 'https://tuliplot.com/' },
+            { name: 'Blog', url: 'https://tuliplot.com/blog/' },
+            { name: d.title, url },
+          ]),
+        ];
+        if (d.faq.length) jsonLd.push(buildFaqJsonLd(d.faq));
         seo.set({
-          title: d.title,
+          title: d.seoTitle ?? d.title,
           description: d.description,
           path: `/blog/${d.slug}`,
-          jsonLd: d.faq.length
-            ? [buildArticleJsonLd(d, '/blog'), buildFaqJsonLd(d.faq)]
-            : [buildArticleJsonLd(d, '/blog')],
+          type: 'article',
+          published: d.date,
+          modified: d.updated ?? d.date,
+          image: d.ogImage,
+          jsonLd,
         });
       } else if (this.slug()) {
         seo.set({
