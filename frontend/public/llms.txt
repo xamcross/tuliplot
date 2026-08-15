@@ -31,9 +31,9 @@
 - [Changelog](https://tuliplot.com/changelog/): What changed on TulipLot, newest first: features, fixes, and content updates.
 - [Guides](https://tuliplot.com/guides/): Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.
 - [Blog](https://tuliplot.com/blog/): Tab overload, browser dashboards, comparisons, and product news.
-- [Contact](https://tuliplot.com/contact/): How to reach the team for support, billing, feedback, and privacy requests.
-- [Privacy Policy](https://tuliplot.com/privacy/): What TulipLot collects, how ads and cookies work, and your choices.
-- [Terms of Service](https://tuliplot.com/terms/): The terms that govern your use of TulipLot.
+- [Contact](https://tuliplot.com/contact/): How to reach the TulipLot team for support, billing, feedback, and privacy requests, which address to use for each, and the response times to expect.
+- [Privacy Policy](https://tuliplot.com/privacy/): What TulipLot collects, how the ad cell and cookies work, how long data is kept, how to delete your account, and the rights you have over your data.
+- [Terms of Service](https://tuliplot.com/terms/): The terms that govern TulipLot: accounts, the free and Premium plans, acceptable use, disclaimer and liability, changes, and how to contact us.
 
 ## Contact
 - https://tuliplot.com/contact/

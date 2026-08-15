@@ -113,9 +113,9 @@ const STATIC_PAGES = [
   { path: '/changelog', title: 'Changelog', description: changelog.description, lastmod: changelog.updated },
   { path: '/guides', title: 'Guides', description: 'Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.', lastmod: '2026-08-01' },
   { path: '/blog', title: 'Blog', description: 'Tab overload, browser dashboards, comparisons, and product news.', lastmod: '2026-08-01' },
-  { path: '/contact', title: 'Contact', description: 'How to reach the team for support, billing, feedback, and privacy requests.', lastmod: '2026-08-01' },
-  { path: '/privacy', title: 'Privacy Policy', description: 'What TulipLot collects, how ads and cookies work, and your choices.', lastmod: '2026-08-01' },
-  { path: '/terms', title: 'Terms of Service', description: 'The terms that govern your use of TulipLot.', lastmod: '2026-08-01' },
+  { path: '/contact', title: 'Contact', description: 'How to reach the TulipLot team for support, billing, feedback, and privacy requests, which address to use for each, and the response times to expect.', lastmod: '2026-08-01' },
+  { path: '/privacy', title: 'Privacy Policy', description: 'What TulipLot collects, how the ad cell and cookies work, how long data is kept, how to delete your account, and the rights you have over your data.', lastmod: '2026-08-01' },
+  { path: '/terms', title: 'Terms of Service', description: 'The terms that govern TulipLot: accounts, the free and Premium plans, acceptable use, disclaimer and liability, changes, and how to contact us.', lastmod: '2026-08-01' },
 ];
 const withSlash = (r) => `https://tuliplot.com${r === '/' ? '/' : r + '/'}`;
 const entries = [
