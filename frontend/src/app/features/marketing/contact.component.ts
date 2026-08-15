@@ -74,7 +74,7 @@ export class ContactComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Contact',
-      description: 'How to reach the TulipLot team for support, billing, feedback, and privacy requests.',
+      description: 'How to reach the TulipLot team for support, billing, feedback, and privacy requests, which address to use for each, and the response times to expect.',
       path: '/contact',
     });
   }

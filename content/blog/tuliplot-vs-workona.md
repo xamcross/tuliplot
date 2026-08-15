@@ -1,7 +1,8 @@
 ---
 title: TulipLot vs Workona: project spaces or a live grid?
+seoTitle: TulipLot vs Workona: live grid or spaces?
 slug: tuliplot-vs-workona
-description: Workona organizes tabs into per-project spaces with auto-save and sync. TulipLot keeps a fixed grid of sites rendered live. An honest comparison of what each is for, and what they cost.
+description: Workona sorts tabs into per-project spaces with sync. TulipLot keeps a fixed grid of sites rendered live. What each one is for, and what each one costs.
 date: 2026-08-02
 category: Comparison
 ---

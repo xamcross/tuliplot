@@ -1,7 +1,7 @@
 ---
 title: Gmail and Google Calendar side by side
 slug: gmail-and-calendar-side-by-side
-description: Google's own side-panel, a second window, and a dashboard launcher — three honest ways to keep mail and calendar in view at once, including what Google won't let you embed.
+description: Google's side panel, a second window, or a dashboard launcher: three honest ways to keep Gmail and Calendar in view at once, and what Google won't embed.
 date: 2026-08-02
 category: Tips
 ---

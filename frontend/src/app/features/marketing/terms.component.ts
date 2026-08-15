@@ -89,7 +89,7 @@ export class TermsComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Terms of Service',
-      description: 'The terms that govern your use of TulipLot.',
+      description: 'The terms that govern TulipLot: accounts, the free and Premium plans, acceptable use, disclaimer and liability, changes, and how to contact us.',
       path: '/terms',
     });
   }

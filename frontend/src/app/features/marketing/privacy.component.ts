@@ -124,7 +124,7 @@ export class PrivacyComponent {
   constructor() {
     inject(SeoService).set({
       title: 'Privacy Policy',
-      description: 'What TulipLot collects, how ads and cookies work, and your choices.',
+      description: 'What TulipLot collects, how the ad cell and cookies work, how long data is kept, how to delete your account, and the rights you have over your data.',
       path: '/privacy',
     });
   }

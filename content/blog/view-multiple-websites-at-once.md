@@ -1,7 +1,7 @@
 ---
 title: How to view multiple websites at once
 slug: view-multiple-websites-at-once
-description: Five ways to see two or more websites at the same time — split screen, browser windows, extensions, and a fixed dashboard grid — and when each one is actually the right call.
+description: Five ways to see two or more websites at the same time: split screen, browser windows, extensions, and a fixed dashboard grid. When each is the right call.
 date: 2026-08-02
 category: Tips
 ---
