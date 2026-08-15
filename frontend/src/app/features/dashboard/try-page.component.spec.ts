@@ -49,4 +49,19 @@ describe('TryPageComponent', () => {
     await f.whenStable();
     expect(pingSpy).toHaveBeenCalled();
   });
+
+  it('renders the compact intro strip with the h1 and the register CTA', () => {
+    const f = render();
+    const strip = f.nativeElement.querySelector('[data-testid="try-strip"]') as HTMLElement;
+    expect(strip).not.toBeNull();
+    expect(strip.querySelector('h1')?.textContent).toContain('Try TulipLot without an account');
+    expect(strip.querySelector('a[href="/register"]')).not.toBeNull();
+  });
+
+  it('wraps the grid in a flex grid area below the strip', () => {
+    const f = render();
+    const area = f.nativeElement.querySelector('[data-testid="try-grid-area"]') as HTMLElement;
+    expect(area).not.toBeNull();
+    expect(area.querySelector('tl-grid')).not.toBeNull();
+  });
 });
