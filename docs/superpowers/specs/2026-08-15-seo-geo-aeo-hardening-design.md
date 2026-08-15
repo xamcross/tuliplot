@@ -369,3 +369,13 @@ Build gate: `npm run build` (pinned Node 22 on this machine, per the project not
 - Owner actions from the audit: Search Console and Bing verification, "Request indexing", Cloudflare
   Crawler Hints and the AI-bot toggle, directory listings, the GitHub README line, the CWS upload.
 - Any change to `/app`, `/login`, `/register`, `/try` behaviour, or `_redirects`.
+
+## Deviations recorded during implementation (2026-08-16)
+
+- `/changelog/`: the `<h2>` carries no `id`. Angular's `[innerHTML]` sanitizer strips `id`; the sanitizer is not bypassed. Per-entry anchors can come later by rendering the entries in the template.
+- Share cards: `render-post-banners.mjs` writes `tuliplot.com` on the 1200×630 card (the plan carried the wordmark; this spec said "no text").
+- `parseChangelog` returns `markdown` per entry; `build-content.mjs` renders it. `ChangelogDoc.html` is the rendered result.
+- The external-link renderer escapes `href` with `xmlEscape` and leaves `title` as `marked` 12 already escapes it. `build-content.spec.mjs` pins the exact output.
+- `STATIC_PAGES` (`build-content.mjs`) holds the sitemap `lastmod` and the `llms.txt` "Pages" descriptions; the `/about` row is `2026-08-15`; the descriptions for `/contact`, `/privacy`, `/terms` equal the component meta descriptions and must be edited together.
+- The six articles edited on this branch carry `updated: 2026-08-16`.
+- The guide detail spec has no seoTitle test (no guide sets one).
