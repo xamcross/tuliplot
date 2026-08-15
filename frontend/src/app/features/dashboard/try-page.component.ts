@@ -22,28 +22,24 @@ type CatalogChoice = CatalogApp | 'ADD_URL' | null | undefined;
   template: `
     <tl-site-header />
     <main class="try">
-      <div class="intro">
+      <div class="strip" data-testid="try-strip">
         <h1>Try TulipLot without an account</h1>
-        <p>
-          Two cells are yours right now. Add any HTTPS site or pick one from the catalog, and it
-          loads live in the grid. Sign up free for five cells, or go Premium for all six with no ad.
-        </p>
+        <p>Two cells are yours right now — sign up free to keep them and unlock five.</p>
         <a routerLink="/register" class="tl-btn tl-btn--primary tl-btn--sm">Get all five cells free →</a>
       </div>
-      <div class="grid-area">
+      <div class="grid-area" data-testid="try-grid-area">
         <tl-grid (edit)="onEdit($event)" />
       </div>
     </main>
   `,
   styles: [`
-    :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--tl-app-bg); }
-    .try { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 28px var(--tl-page-pad) 20px;
-      max-width: 1120px; margin: 0 auto; width: 100%; }
-    .intro { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .intro h1 { margin: 0; font-family: var(--tl-font-display); font-weight: 700; font-size: 32px; color: var(--tl-ink); }
-    .intro p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--tl-ink-soft); max-width: 620px; }
-    .grid-area { flex: 1; min-height: 460px; }
-    @media (max-width: 720px) { .intro h1 { font-size: 26px; } }
+    :host { display: flex; flex-direction: column; height: 100vh; background: var(--tl-app-bg); }
+    .try { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .strip { display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+      gap: 8px 16px; padding: 10px 16px 0; text-align: center; }
+    .strip h1 { margin: 0; font-family: var(--tl-font-display); font-weight: 700; font-size: 20px; color: var(--tl-ink); }
+    .strip p { margin: 0; font-size: 14px; line-height: 1.4; color: var(--tl-ink-soft); }
+    .grid-area { flex: 1; min-height: 0; padding: 12px; }
   `],
 })
 export class TryPageComponent {
