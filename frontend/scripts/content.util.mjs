@@ -169,6 +169,36 @@ export function llmsTxt({ site, guides, posts, pages }) {
   ].join('\n');
 }
 
+/**
+ * content/changelog.md: `## YYYY-MM-DD — title` headings, newest first, each followed by markdown.
+ * Returns the entries in file order and the newest date (for sitemap lastmod).
+ */
+export function parseChangelog(body) {
+  const lines = String(body).replace(/\r\n/g, '\n').split('\n');
+  const entries = [];
+  let cur = null;
+  for (const line of lines) {
+    const h = /^##\s+(.*)$/.exec(line);
+    if (h) {
+      const m = /^(\d{4}-\d{2}-\d{2})\s+—\s+(.+)$/.exec(h[1].trim());
+      if (!m) throw new Error(`changelog: heading "${h[1]}" must be "YYYY-MM-DD — title"`);
+      if (!isRealIsoDate(m[1])) throw new Error(`changelog: "${m[1]}" is not a real date`);
+      if (cur && m[1] > cur.date) throw new Error(`changelog: entries must be newest first (${m[1]} after ${cur.date})`);
+      cur = { date: m[1], title: m[2].trim(), lines: [] };
+      entries.push(cur);
+    } else if (cur) {
+      cur.lines.push(line);
+    } else if (line.trim() !== '') {
+      throw new Error('changelog: text before the first entry heading');
+    }
+  }
+  if (entries.length === 0) throw new Error('changelog: no entries');
+  return {
+    entries: entries.map((e) => ({ date: e.date, title: e.title, markdown: e.lines.join('\n').trim() })),
+    newest: entries[0].date,
+  };
+}
+
 /** llms-full.txt: the same header, then the full markdown of every guide and post. */
 export function llmsFullTxt({ site, guides, posts }) {
   const article = (d) => [

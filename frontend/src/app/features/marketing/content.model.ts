@@ -11,3 +11,10 @@ export interface ContentDoc {
   faq: { q: string; a: string }[];   // question-style h3s, for FAQPage schema
   html: string;          // pre-rendered HTML from markdown
 }
+
+export interface ChangelogDoc {
+  title: string;
+  description: string;
+  html: string;      // h2 per entry with a <time>, then the entry markdown rendered
+  updated: string;   // newest entry date — sitemap lastmod
+}

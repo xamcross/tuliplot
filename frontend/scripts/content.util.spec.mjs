@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref, llmsTxt, llmsFullTxt } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref, llmsTxt, llmsFullTxt, parseChangelog } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -209,5 +209,27 @@ describe('llmsFullTxt', () => {
     expect(txt).toContain('# G\nSource: https://tuliplot.com/guides/g/\nPublished: 2026-08-01\n\nGuide body.\n');
     expect(txt).toContain('# P\nSource: https://tuliplot.com/blog/p/\nPublished: 2026-08-02\nUpdated: 2026-08-15\n\nPost body.\n\n## Section\n');
     expect(txt.indexOf('# G')).toBeLessThan(txt.indexOf('# P'));
+  });
+});
+
+describe('parseChangelog', () => {
+  const body = ['## 2026-08-15 — Newest', '', '- a', '', '## 2026-08-02 — Older', '', 'text', ''].join('\n');
+  it('splits entries newest-first with date, title, and markdown, and reports newest', () => {
+    const r = parseChangelog(body);
+    expect(r.newest).toBe('2026-08-15');
+    expect(r.entries.map((e) => e.date)).toEqual(['2026-08-15', '2026-08-02']);
+    expect(r.entries[0]).toEqual({ date: '2026-08-15', title: 'Newest', markdown: '- a' });
+    expect(r.entries[1].markdown).toBe('text');
+  });
+  it('throws on a heading without the date — title shape', () => {
+    expect(() => parseChangelog('## Just a title\n\nx')).toThrow(/YYYY-MM-DD — title/);
+  });
+  it('throws on an impossible date and on ascending order', () => {
+    expect(() => parseChangelog('## 2026-13-45 — x\n\ny')).toThrow(/date/);
+    expect(() => parseChangelog('## 2026-08-01 — a\n\nx\n\n## 2026-08-02 — b\n\ny')).toThrow(/newest first/);
+  });
+  it('throws on text before the first heading and on an empty file', () => {
+    expect(() => parseChangelog('stray\n## 2026-08-01 — a\n\nx')).toThrow(/before the first/);
+    expect(() => parseChangelog('')).toThrow(/no entries/);
   });
 });

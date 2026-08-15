@@ -28,6 +28,7 @@
 - [Home](https://tuliplot.com/): TulipLot is a browser dashboard that shows up to six live websites side by side in a fixed 3×2 grid, in one browser tab.
 - [Try TulipLot without an account](https://tuliplot.com/try/): Two live cells with no signup; they move into a free account when you create one.
 - [About TulipLot](https://tuliplot.com/about/): Why TulipLot exists, how it works, and what Try, Free, and Premium include.
+- [Changelog](https://tuliplot.com/changelog/): What changed on TulipLot, newest first: features, fixes, and content updates.
 - [Guides](https://tuliplot.com/guides/): Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.
 - [Blog](https://tuliplot.com/blog/): Tab overload, browser dashboards, comparisons, and product news.
 - [Contact](https://tuliplot.com/contact/): How to reach the team for support, billing, feedback, and privacy requests.
