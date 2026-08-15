@@ -5,8 +5,11 @@ import com.tuliplot.auth.Subscription;
 import com.tuliplot.auth.Tier;
 import com.tuliplot.auth.User;
 import com.tuliplot.auth.UserRepository;
+import com.tuliplot.dashboard.Cell;
+import com.tuliplot.dashboard.CellType;
 import com.tuliplot.dashboard.Dashboard;
 import com.tuliplot.dashboard.DashboardService;
+import com.tuliplot.dashboard.OpenMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,12 +63,18 @@ class SubscriptionServiceStateMachineTest {
   @Test
   void active_license_grants_premium_and_reconciles_upgrade() {
     license(FUTURE, false, null);
+    // A distinct, named instance — not the @BeforeEach default — so the assertion below proves
+    // the SERVICE persists the exact object reconcileForTier returned, not just any Dashboard.
+    Dashboard reconciled = new Dashboard();
+    when(dashboards.reconcileForTier(any(), eq(true))).thenReturn(reconciled);
     service.applyLicense("555");
     assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
     assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.ACTIVE);
     assertThat(user.getSubscription().getFsLicenseId()).isEqualTo("555");
     assertThat(user.getSubscription().getCurrentPeriodEnd()).isEqualTo(FUTURE);
     verify(dashboards).reconcileForTier(any(), eq(true));
+    // The load-bearing rule: the reconciled Dashboard is SET onto the user, not merely computed.
+    assertThat(user.getDashboard()).isSameAs(reconciled);
     verify(users).save(user);
   }
 
@@ -98,10 +107,22 @@ class SubscriptionServiceStateMachineTest {
   void expired_license_downgrades_and_reconciles() {
     user.getSubscription().setTier(Tier.PREMIUM);
     license(PAST, true, null);
+    // Simulate reconcileForTier parking the displaced slot-5 app (no empty slot was free).
+    Dashboard reconciled = new Dashboard();
+    Cell parked = new Cell();
+    parked.setSlot(0);
+    parked.setType(CellType.APP);
+    parked.setUrl("https://mail.google.com");
+    parked.setOpenMode(OpenMode.FRAME);
+    reconciled.setParkedApp(parked);
+    when(dashboards.reconcileForTier(any(), eq(false))).thenReturn(reconciled);
     service.applyLicense("555");
     assertThat(user.getSubscription().getTier()).isEqualTo(Tier.FREE);
     assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
     verify(dashboards).reconcileForTier(any(), eq(false));
+    // The load-bearing rule: the FULL reconciled Dashboard is persisted — parkedApp survives.
+    assertThat(user.getDashboard()).isSameAs(reconciled);
+    assertThat(user.getDashboard().getParkedApp()).isSameAs(parked);
   }
 
   @Test
@@ -119,6 +140,17 @@ class SubscriptionServiceStateMachineTest {
     license(FUTURE, false, null);
     service.applyLicense("555");   // must not throw
     verify(users, never()).save(any());
+  }
+
+  @Test
+  void email_lookup_miss_falls_back_to_stored_license_id_and_applies() {
+    when(users.findByEmail("buyer@example.com")).thenReturn(Optional.empty());
+    when(users.findBySubscriptionFsLicenseId("555")).thenReturn(Optional.of(user));
+    license(FUTURE, false, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    assertThat(user.getSubscription().getFsLicenseId()).isEqualTo("555");
+    verify(users).save(user);
   }
 
   @Test
