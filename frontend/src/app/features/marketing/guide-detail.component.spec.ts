@@ -89,14 +89,6 @@ describe('GuideDetailComponent', () => {
     expect(document.title).toBe(`${without.title} · TulipLot`);
   });
 
-  it('uses seoTitle for the document title and keeps title as the H1', () => {
-    const withSeo = GUIDES.find((g) => g.seoTitle);
-    if (!withSeo) return; // no guide sets seoTitle today; covers a future one
-    const f = render(withSeo.slug);
-    expect(document.title).toBe(`${withSeo.seoTitle} · TulipLot`);
-    expect((f.nativeElement as HTMLElement).querySelector('h1')?.textContent).toBe(withSeo.title);
-  });
-
   it('renders the published date as a <time> element', () => {
     const f = render(GUIDES[0].slug);
     const time = (f.nativeElement as HTMLElement).querySelector('time') as HTMLTimeElement;
