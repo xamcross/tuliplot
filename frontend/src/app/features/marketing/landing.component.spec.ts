@@ -53,4 +53,32 @@ describe('LandingComponent', () => {
     expect(summaries.length).toBe(4);
     expect(faq.mainEntity.map((m) => m.name)).toEqual(summaries);
   });
+
+  it('emits an Organization with @id, sameAs, PNG logo, and description; WebSite and SoftwareApplication reference it', async () => {
+    await TestBed.configureTestingModule({
+      imports: [LandingComponent],
+      providers: [provideZonelessChangeDetection(), provideRouter([])],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(LandingComponent);
+    fixture.detectChanges();
+
+    const data = JSON.parse(document.getElementById('tl-jsonld')!.textContent ?? '[]') as Array<Record<string, unknown>>;
+    const org = data.find((d) => d['@type'] === 'Organization')!;
+    expect(org['@id']).toBe('https://tuliplot.com/#org');
+    expect(org['logo']).toBe('https://tuliplot.com/logo-512.png');
+    expect(org['sameAs']).toEqual(['https://github.com/xamcross/tuliplot']);
+    expect(org['description']).toContain('browser dashboard');
+    expect((org['contactPoint'] as Array<Record<string, string>>)[0]['url']).toBe('https://tuliplot.com/contact/');
+
+    const site = data.find((d) => d['@type'] === 'WebSite')!;
+    expect((site['publisher'] as Record<string, string>)['@id']).toBe('https://tuliplot.com/#org');
+
+    const app = data.find((d) => d['@type'] === 'SoftwareApplication')!;
+    expect(app['url']).toBe('https://tuliplot.com/');
+    expect(app['image']).toBe('https://tuliplot.com/og-card.png');
+    const offers = app['offers'] as Array<Record<string, string>>;
+    expect(offers.map((o) => o['name'])).toEqual(['Free', 'Premium']);
+    expect(offers[1]['price']).toBe('4');
+    expect(offers[1]['priceCurrency']).toBe('USD');
+  });
 });

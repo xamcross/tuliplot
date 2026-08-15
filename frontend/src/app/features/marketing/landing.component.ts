@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/services/seo.service';
+import { SITE } from '../../core/site-identity';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
 
@@ -10,6 +11,8 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
   { q: 'Is my data private?', a: 'Your dashboard is tied to your login and synced only to your account. Frames are sandboxed.' },
   { q: 'What happens if I cancel Premium?', a: 'You drop back to the free 5-cell layout. If all six cells were full, the sixth app is parked so you can re-place or discard it — nothing is deleted.' },
 ];
+
+const ORG_ID = `${SITE.url}#org`;
 
 @Component({
   selector: 'tl-landing',
@@ -206,13 +209,27 @@ export class LandingComponent {
         'Turn one tab into a browser dashboard: a fixed 3×2 grid of live web apps — Trello, Notion, news, any URL — side by side on one calm screen. Free to start.',
       path: '/',
       jsonLd: [
-        { '@context': 'https://schema.org', '@type': 'Organization', name: 'TulipLot', url: 'https://tuliplot.com/', logo: 'https://tuliplot.com/favicon.svg' },
-        { '@context': 'https://schema.org', '@type': 'WebSite', name: 'TulipLot', url: 'https://tuliplot.com/' },
+        {
+          '@context': 'https://schema.org', '@type': 'Organization', '@id': ORG_ID,
+          name: SITE.name, url: SITE.url, logo: SITE.logo, description: SITE.sentence,
+          sameAs: SITE.sameAs,
+          contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer support', url: SITE.contactUrl }],
+        },
+        {
+          '@context': 'https://schema.org', '@type': 'WebSite',
+          name: SITE.name, url: SITE.url, description: SITE.sentence,
+          publisher: { '@id': ORG_ID },
+        },
         {
           '@context': 'https://schema.org', '@type': 'SoftwareApplication',
-          name: 'TulipLot', applicationCategory: 'BrowserApplication', operatingSystem: 'Web',
-          description: 'A browser dashboard: a fixed 3×2 grid of live web apps in one tab.',
-          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          name: SITE.name, url: SITE.url, image: SITE.ogImage,
+          applicationCategory: 'BrowserApplication', operatingSystem: 'Web',
+          description: SITE.sentence, sameAs: SITE.sameAs,
+          publisher: { '@id': ORG_ID },
+          offers: [
+            { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
+            { '@type': 'Offer', name: 'Premium', price: SITE.premiumMonthlyUsd, priceCurrency: 'USD', description: 'per month' },
+          ],
         },
         {
           '@context': 'https://schema.org', '@type': 'FAQPage',
