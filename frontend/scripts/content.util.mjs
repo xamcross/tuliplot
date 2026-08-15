@@ -76,6 +76,44 @@ export function extractFaq(body) {
   return faq;
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** True for a YYYY-MM-DD string that names a real calendar day. */
+export function isRealIsoDate(s) {
+  if (typeof s !== 'string' || !ISO_DATE.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+}
+
+/** Frontmatter dates: `date` is required; `updated` is optional and must not be earlier than `date`. */
+export function validateDates(data, file) {
+  const { date, updated } = data;
+  if (!isRealIsoDate(date)) {
+    throw new Error(`content: ${file} is missing a valid frontmatter date (YYYY-MM-DD)`);
+  }
+  if (updated !== undefined && updated !== '') {
+    if (!isRealIsoDate(updated)) {
+      throw new Error(`content: ${file} has an invalid frontmatter updated (YYYY-MM-DD)`);
+    }
+    if (updated < date) {
+      throw new Error(`content: ${file} has updated (${updated}) before date (${date})`);
+    }
+    return { date, updated };
+  }
+  return { date, updated: undefined };
+}
+
+/** The ` · TulipLot` suffix adds 11 characters; 49 keeps the full <title> at or under 60. */
+export const SEO_TITLE_MAX = 49;
+
+export function validateSeoTitle(seoTitle, file) {
+  if (seoTitle === undefined || seoTitle === '') return undefined;
+  if (seoTitle.length > SEO_TITLE_MAX) {
+    throw new Error(`content: ${file} seoTitle is ${seoTitle.length} chars; max ${SEO_TITLE_MAX}`);
+  }
+  return seoTitle;
+}
+
 export function sitemapXml(entries) {
   const urls = entries
     .map(

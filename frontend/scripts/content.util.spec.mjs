@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -78,6 +78,48 @@ describe('sitemapXml escaping', () => {
   it('escapes reserved characters in loc', () => {
     const xml = sitemapXml([{ loc: 'https://tuliplot.com/a&b/', lastmod: '2026-08-01' }]);
     expect(xml).toContain('<loc>https://tuliplot.com/a&amp;b/</loc>');
+  });
+});
+
+describe('isRealIsoDate', () => {
+  it('accepts a real calendar date', () => {
+    expect(isRealIsoDate('2026-08-02')).toBe(true);
+  });
+  it('rejects wrong shapes and impossible dates', () => {
+    expect(isRealIsoDate('2026-8-2')).toBe(false);
+    expect(isRealIsoDate('2026-13-45')).toBe(false);
+    expect(isRealIsoDate('2026-02-30')).toBe(false);
+    expect(isRealIsoDate('')).toBe(false);
+    expect(isRealIsoDate(undefined)).toBe(false);
+  });
+});
+
+describe('validateDates', () => {
+  it('returns date and updated when both are valid and ordered', () => {
+    expect(validateDates({ date: '2026-08-02', updated: '2026-08-15' }, 'x.md')).toEqual({ date: '2026-08-02', updated: '2026-08-15' });
+  });
+  it('returns only date when updated is absent', () => {
+    expect(validateDates({ date: '2026-08-02' }, 'x.md')).toEqual({ date: '2026-08-02', updated: undefined });
+  });
+  it('throws on a missing or impossible date', () => {
+    expect(() => validateDates({}, 'x.md')).toThrow(/x\.md.*date/);
+    expect(() => validateDates({ date: '2026-13-45' }, 'x.md')).toThrow(/x\.md.*date/);
+  });
+  it('throws on an invalid updated or one before date', () => {
+    expect(() => validateDates({ date: '2026-08-02', updated: 'soon' }, 'x.md')).toThrow(/updated/);
+    expect(() => validateDates({ date: '2026-08-02', updated: '2026-08-01' }, 'x.md')).toThrow(/before/);
+  });
+});
+
+describe('validateSeoTitle', () => {
+  it('passes undefined and empty through as undefined', () => {
+    expect(validateSeoTitle(undefined, 'x.md')).toBeUndefined();
+    expect(validateSeoTitle('', 'x.md')).toBeUndefined();
+  });
+  it('returns a title at or under the limit and throws above it', () => {
+    const ok = 'a'.repeat(SEO_TITLE_MAX);
+    expect(validateSeoTitle(ok, 'x.md')).toBe(ok);
+    expect(() => validateSeoTitle('a'.repeat(SEO_TITLE_MAX + 1), 'x.md')).toThrow(/x\.md.*seoTitle.*49/);
   });
 });
 

@@ -4,7 +4,10 @@ import {
 import { join, resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, extractFaq } from './content.util.mjs';
+import {
+  splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, extractFaq,
+  validateDates, validateSeoTitle,
+} from './content.util.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
@@ -17,13 +20,6 @@ const outFile = resolve(
 
 marked.setOptions({ gfm: true, breaks: false });
 
-function requireDate(date, file) {
-  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    throw new Error(`content: ${file} is missing a valid frontmatter date (YYYY-MM-DD)`);
-  }
-  return date;
-}
-
 function loadDir(kind) {
   const dir = join(contentDir, kind);
   if (!existsSync(dir)) return [];
@@ -33,17 +29,25 @@ function loadDir(kind) {
       const raw = readFileSync(join(dir, f), 'utf8');
       const { data, body } = splitFrontmatter(raw);
       const slug = data.slug || basename(f, '.md');
-      return {
+      const { date, updated } = validateDates(data, f);
+      const seoTitle = validateSeoTitle(data.seoTitle, f);
+      const markdown = stripLeadingH1(body);
+      const doc = {
         slug,
         title: data.title || slug,
         description: data.description || '',
-        date: requireDate(data.date, f),
+        date,
         category: data.category || '',
         order: Number.parseInt(data.order ?? '0', 10) || 0,
         readingMinutes: readingMinutes(body),
         faq: extractFaq(body),
-        html: marked.parse(stripLeadingH1(body)),
+        html: marked.parse(markdown),
+        markdown, // build-only: llms-full.txt; stripped by serialize()
       };
+      if (updated) doc.updated = updated;
+      if (seoTitle) doc.seoTitle = seoTitle;
+      if (kind === 'blog') doc.ogImage = `https://tuliplot.com/banners/${slug}-og.png`;
+      return doc;
     });
 }
 
@@ -57,9 +61,9 @@ function sortDocs(kind, docs) {
 }
 
 function serialize(list) {
-  // strip the build-only `order` field; ContentDoc does not carry it
+  // strip build-only fields; ContentDoc does not carry them
   return JSON.stringify(
-    list.map(({ order, ...rest }) => rest),
+    list.map(({ order, markdown, ...rest }) => rest),
     null,
     2,
   );
@@ -87,8 +91,8 @@ const STATIC_LASTMOD = '2026-08-01'; // bump when static-page copy changes
 const withSlash = (r) => `https://tuliplot.com${r === '/' ? '/' : r + '/'}`;
 const entries = [
   ...staticRoutes.map((r) => ({ loc: withSlash(r), lastmod: STATIC_LASTMOD })),
-  ...guides.map((g) => ({ loc: withSlash(`/guides/${g.slug}`), lastmod: g.date })),
-  ...posts.map((p) => ({ loc: withSlash(`/blog/${p.slug}`), lastmod: p.date })),
+  ...guides.map((g) => ({ loc: withSlash(`/guides/${g.slug}`), lastmod: g.updated ?? g.date })),
+  ...posts.map((p) => ({ loc: withSlash(`/blog/${p.slug}`), lastmod: p.updated ?? p.date })),
 ];
 writeFileSync(resolve(frontendRoot, 'public/sitemap.xml'), sitemapXml(entries), 'utf8');
 console.log(`sitemap: ${entries.length} urls -> public/sitemap.xml`);
