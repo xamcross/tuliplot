@@ -36,7 +36,7 @@ class SubscriptionServiceStateMachineTest {
     gateway = mock(StripeGateway.class);
     userRepository = mock(UserRepository.class);
     dashboardService = mock(DashboardService.class);
-    ProcessedStripeEventRepository processedEvents = mock(ProcessedStripeEventRepository.class);
+    ProcessedBillingEventRepository processedEvents = mock(ProcessedBillingEventRepository.class);
     service = new SubscriptionService(processedEvents, gateway, userRepository, dashboardService);
   }
 

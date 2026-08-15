@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.index.Index;
 /**
  * Central, extensible place to declare MongoDB indexes explicitly at startup (auto-index-creation
  * stays off). The walking skeleton creates the Spring Session TTL index; later plans add their own
- * blocks here, e.g. Plan 02 adds {@code ensureUserIndexes()} and Plan 05 the {@code stripe_events} TTL.
+ * blocks here, e.g. Plan 02 adds {@code ensureUserIndexes()} and Plan 05 the {@code processed_billing_events} TTL.
  */
 @Configuration
 public class MongoIndexConfig {
@@ -34,10 +34,10 @@ public class MongoIndexConfig {
         ensureStripeEventIndexes();
     }
 
-    // --- stripe_events (Plan 05) ---
+    // --- processed_billing_events (Plan 05) ---
     private void ensureStripeEventIndexes() {
-        // stripe_events: idempotency store — expire records 30 days after processing
-        mongoTemplate.indexOps("stripe_events")
+        // processed_billing_events: idempotency store — expire records 30 days after processing
+        mongoTemplate.indexOps("processed_billing_events")
                 .ensureIndex(new Index()
                         .on("processedAt", Sort.Direction.ASC)
                         .expire(java.time.Duration.ofDays(30)));

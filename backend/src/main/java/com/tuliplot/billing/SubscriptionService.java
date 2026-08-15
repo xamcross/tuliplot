@@ -16,12 +16,12 @@ import java.time.Instant;
 @Service
 public class SubscriptionService {
 
-  private final ProcessedStripeEventRepository processedEvents;
+  private final ProcessedBillingEventRepository processedEvents;
   private final StripeGateway gateway;
   private final UserRepository userRepository;
   private final DashboardService dashboardService;
 
-  public SubscriptionService(ProcessedStripeEventRepository processedEvents,
+  public SubscriptionService(ProcessedBillingEventRepository processedEvents,
                              StripeGateway gateway,
                              UserRepository userRepository,
                              DashboardService dashboardService) {
@@ -38,7 +38,7 @@ public class SubscriptionService {
   }
 
   public void markProcessed(String eventId, String type) {
-    ProcessedStripeEvent e = new ProcessedStripeEvent();
+    ProcessedBillingEvent e = new ProcessedBillingEvent();
     e.setId(eventId);
     e.setType(type);
     e.setProcessedAt(Instant.now());
