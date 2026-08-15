@@ -37,6 +37,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {
     path: 'app',
+    title: 'Dashboard',
     canActivate: [authGuard],
     providers: [provideServerDashboardSource()],
     loadComponent: () =>
@@ -44,12 +45,14 @@ export const routes: Routes = [
   },
   {
     path: 'app/upgrade',
+    title: 'Upgrade',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/billing/upgrade.component').then((m) => m.UpgradeComponent),
   },
   {
     path: 'app/settings',
+    title: 'Settings',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/billing/settings.component').then((m) => m.SettingsComponent),
