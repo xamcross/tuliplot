@@ -5,8 +5,6 @@ import java.time.Instant;
 public class Subscription {
 
     private Tier tier = Tier.FREE;
-    private String stripeCustomerId;
-    private String stripeSubscriptionId;
     private String fsLicenseId;
     private SubStatus status = SubStatus.NONE;
     private String priceId;
@@ -15,12 +13,6 @@ public class Subscription {
 
     public Tier getTier() { return tier; }
     public void setTier(Tier tier) { this.tier = tier; }
-
-    public String getStripeCustomerId() { return stripeCustomerId; }
-    public void setStripeCustomerId(String stripeCustomerId) { this.stripeCustomerId = stripeCustomerId; }
-
-    public String getStripeSubscriptionId() { return stripeSubscriptionId; }
-    public void setStripeSubscriptionId(String stripeSubscriptionId) { this.stripeSubscriptionId = stripeSubscriptionId; }
 
     public String getFsLicenseId() { return fsLicenseId; }
     public void setFsLicenseId(String fsLicenseId) { this.fsLicenseId = fsLicenseId; }

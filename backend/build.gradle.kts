@@ -31,8 +31,6 @@ dependencies {
     // Spring Session *core* only — managed by the Spring Boot 4.1 BOM (no version). Boot 4.1 ships no
     // MongoDB-backed Spring Session store; storage is the custom MongoSessionRepository added below.
     implementation("org.springframework.session:spring-session-core")
-    // Stripe SDK — pinned; all raw calls go through StripeGateway behind a fixed API version.
-    implementation("com.stripe:stripe-java:33.0.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

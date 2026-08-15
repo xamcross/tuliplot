@@ -31,11 +31,11 @@ public class MongoIndexConfig {
         ensureSessionIndexes();
         ensureUserIndexes();
         ensurePasswordResetTokenIndexes();
-        ensureStripeEventIndexes();
+        ensureBillingEventIndexes();
     }
 
     // --- processed_billing_events (Plan 05) ---
-    private void ensureStripeEventIndexes() {
+    private void ensureBillingEventIndexes() {
         // processed_billing_events: idempotency store — expire records 30 days after processing
         mongoTemplate.indexOps("processed_billing_events")
                 .ensureIndex(new Index()
@@ -55,10 +55,6 @@ public class MongoIndexConfig {
         var ops = mongoTemplate.indexOps(User.class);
         ops.ensureIndex(new Index().on("email", Sort.Direction.ASC).unique());
         ops.ensureIndex(new Index().on("googleSub", Sort.Direction.ASC).unique().sparse());
-        ops.ensureIndex(new Index()
-                .on("subscription.stripeCustomerId", Sort.Direction.ASC).unique().sparse());
-        ops.ensureIndex(new Index()
-                .on("subscription.stripeSubscriptionId", Sort.Direction.ASC).unique().sparse());
     }
 
     // --- password reset tokens (Plan 02 Task 9) ---
