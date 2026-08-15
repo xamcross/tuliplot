@@ -17,134 +17,186 @@ import java.time.Instant;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class SubscriptionServiceStateMachineTest {
 
-  private StripeGateway gateway;
-  private UserRepository userRepository;
-  private DashboardService dashboardService;
+  private static final Instant FUTURE = Instant.parse("2027-01-01T00:00:00Z");
+  private static final Instant PAST = Instant.parse("2020-01-01T00:00:00Z");
+
+  private FreemiusGateway gateway;
+  private UserRepository users;
+  private DashboardService dashboards;
+  private ProcessedBillingEventRepository events;
+  private FreemiusConfig config;
   private SubscriptionService service;
+  private User user;
 
   @BeforeEach
-  void setup() {
-    gateway = mock(StripeGateway.class);
-    userRepository = mock(UserRepository.class);
-    dashboardService = mock(DashboardService.class);
-    ProcessedStripeEventRepository processedEvents = mock(ProcessedStripeEventRepository.class);
-    service = new SubscriptionService(processedEvents, gateway, userRepository, dashboardService);
+  void setUp() {
+    gateway = mock(FreemiusGateway.class);
+    users = mock(UserRepository.class);
+    dashboards = mock(DashboardService.class);
+    events = mock(ProcessedBillingEventRepository.class);
+    config = new FreemiusConfig();
+    config.setProductId("37109");
+    config.setApiToken("test");
+    service = new SubscriptionService(config, events, gateway, users, dashboards);
+
+    user = new User();
+    user.setEmail("buyer@example.com");
+    user.setSubscription(new Subscription());
+    when(users.findByEmail("buyer@example.com")).thenReturn(Optional.of(user));
+    when(gateway.retrieveUserEmail("42")).thenReturn("buyer@example.com");
+    when(dashboards.reconcileForTier(any(), org.mockito.ArgumentMatchers.anyBoolean()))
+        .thenReturn(new Dashboard());
   }
 
-  private User user(Tier tier, SubStatus status, String customerId) {
-    User u = new User();
-    u.setId("u_" + customerId);
-    Subscription sub = new Subscription();
-    sub.setTier(tier);
-    sub.setStatus(status);
-    sub.setStripeCustomerId(customerId);
-    sub.setStripeSubscriptionId("sub_pre");
-    u.setSubscription(sub);
-    u.setDashboard(Dashboard.defaultFor(tier == Tier.PREMIUM));
-    return u;
-  }
-
-  @Test
-  void activateReconcilesDashboardOnUpgrade() {
-    User u = user(Tier.FREE, SubStatus.NONE, "cus_1");
-    // A FREE dashboard has an AD cell in slot 5; the premium reconcile turns it into EMPTY.
-    Dashboard reconciled = Dashboard.defaultFor(true);
-    when(gateway.retrieveSubscription("sub_1")).thenReturn(
-        new StripeSubscriptionSnapshot("sub_1", "cus_1", "active", "price_abc", 1893456000L, false));
-    when(userRepository.findBySubscriptionStripeCustomerId("cus_1")).thenReturn(Optional.of(u));
-    when(dashboardService.reconcileForTier(any(), eq(true))).thenReturn(reconciled);
-
-    service.applyFromStripe("sub_1");
-
-    assertThat(u.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
-    assertThat(u.getSubscription().getStatus()).isEqualTo(SubStatus.ACTIVE);
-    assertThat(u.getSubscription().getStripeSubscriptionId()).isEqualTo("sub_1");
-    assertThat(u.getSubscription().getPriceId()).isEqualTo("price_abc");
-    assertThat(u.getSubscription().getCurrentPeriodEnd()).isEqualTo(Instant.ofEpochSecond(1893456000L));
-    assertThat(u.getSubscription().isCancelAtPeriodEnd()).isFalse();
-    // On FREE->PREMIUM the dashboard MUST be reconciled for the premium tier...
-    verify(dashboardService).reconcileForTier(any(), eq(true));
-    // ...and the persisted user carries that reconciled dashboard, whose slot 5 is no longer an AD.
-    assertThat(u.getDashboard()).isSameAs(reconciled);
-    assertThat(u.getDashboard().getCells().get(5).getType()).isNotEqualTo(CellType.AD);
-    assertThat(u.getDashboard().getCells().get(5).getType()).isEqualTo(CellType.EMPTY);
-    verify(userRepository).save(u);
+  private void license(Instant expiration, boolean cancelled, Instant trialEnds) {
+    when(gateway.retrieveLicense("555")).thenReturn(
+        new FreemiusLicenseSnapshot("555", "61603", "42", expiration, cancelled));
+    when(gateway.retrieveSubscription("555")).thenReturn(
+        new FreemiusSubscriptionSnapshot(trialEnds, null, null));
   }
 
   @Test
-  void cancelDowngradesAndReconciles() {
-    User u = user(Tier.PREMIUM, SubStatus.ACTIVE, "cus_2");
+  void active_license_grants_premium_and_reconciles_upgrade() {
+    license(FUTURE, false, null);
+    // A distinct, named instance — not the @BeforeEach default — so the assertion below proves
+    // the SERVICE persists the exact object reconcileForTier returned, not just any Dashboard.
+    Dashboard reconciled = new Dashboard();
+    when(dashboards.reconcileForTier(any(), eq(true))).thenReturn(reconciled);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.ACTIVE);
+    assertThat(user.getSubscription().getFsLicenseId()).isEqualTo("555");
+    assertThat(user.getSubscription().getCurrentPeriodEnd()).isEqualTo(FUTURE);
+    verify(dashboards).reconcileForTier(any(), eq(true));
+    // The load-bearing rule: the reconciled Dashboard is SET onto the user, not merely computed.
+    assertThat(user.getDashboard()).isSameAs(reconciled);
+    verify(users).save(user);
+  }
+
+  @Test
+  void lifetime_license_null_expiration_grants_premium() {
+    license(null, false, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    assertThat(user.getSubscription().getCurrentPeriodEnd()).isNull();
+  }
+
+  @Test
+  void trial_maps_to_trialing_and_premium() {
+    license(FUTURE, false, FUTURE);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.TRIALING);
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+  }
+
+  @Test
+  void cancelled_but_not_expired_keeps_premium_with_cancel_flag() {
+    license(FUTURE, true, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    assertThat(user.getSubscription().isCancelAtPeriodEnd()).isTrue();
+    assertThat(user.getSubscription().getCurrentPeriodEnd()).isEqualTo(FUTURE);
+  }
+
+  @Test
+  void expired_license_downgrades_and_reconciles() {
+    user.getSubscription().setTier(Tier.PREMIUM);
+    license(PAST, true, null);
     // Simulate reconcileForTier parking the displaced slot-5 app (no empty slot was free).
-    Dashboard reconciled = Dashboard.defaultFor(false);
+    Dashboard reconciled = new Dashboard();
     Cell parked = new Cell();
     parked.setSlot(0);
     parked.setType(CellType.APP);
     parked.setUrl("https://mail.google.com");
     parked.setOpenMode(OpenMode.FRAME);
     reconciled.setParkedApp(parked);
-    when(gateway.retrieveSubscription("sub_2")).thenReturn(
-        new StripeSubscriptionSnapshot("sub_2", "cus_2", "canceled", "price_abc", null, false));
-    when(userRepository.findBySubscriptionStripeCustomerId("cus_2")).thenReturn(Optional.of(u));
-    when(dashboardService.reconcileForTier(any(), eq(false))).thenReturn(reconciled);
-
-    service.applyFromStripe("sub_2");
-
-    assertThat(u.getSubscription().getTier()).isEqualTo(Tier.FREE);
-    assertThat(u.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
-    verify(dashboardService).reconcileForTier(any(), eq(false));
-    // The FULL reconciled Dashboard is persisted — parkedApp must NOT be dropped.
-    assertThat(u.getDashboard()).isSameAs(reconciled);
-    assertThat(u.getDashboard().getParkedApp()).isSameAs(parked);
-    verify(userRepository).save(u);
+    when(dashboards.reconcileForTier(any(), eq(false))).thenReturn(reconciled);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.FREE);
+    assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
+    verify(dashboards).reconcileForTier(any(), eq(false));
+    // The load-bearing rule: the FULL reconciled Dashboard is persisted — parkedApp survives.
+    assertThat(user.getDashboard()).isSameAs(reconciled);
+    assertThat(user.getDashboard().getParkedApp()).isSameAs(parked);
   }
 
   @Test
-  void pastDueRemovesPremium() {
-    User u = user(Tier.PREMIUM, SubStatus.ACTIVE, "cus_3");
-    when(gateway.retrieveSubscription("sub_3")).thenReturn(
-        new StripeSubscriptionSnapshot("sub_3", "cus_3", "past_due", "price_abc", null, false));
-    when(userRepository.findBySubscriptionStripeCustomerId("cus_3")).thenReturn(Optional.of(u));
-    when(dashboardService.reconcileForTier(any(), eq(false))).thenReturn(Dashboard.defaultFor(false));
-
-    service.applyFromStripe("sub_3");
-
-    assertThat(u.getSubscription().getStatus()).isEqualTo(SubStatus.PAST_DUE);
-    assertThat(u.getSubscription().getTier()).isEqualTo(Tier.FREE);
-    verify(dashboardService).reconcileForTier(any(), eq(false));
+  void no_tier_change_skips_reconcile() {
+    user.getSubscription().setTier(Tier.PREMIUM);
+    license(FUTURE, false, null);
+    service.applyLicense("555");
+    verify(dashboards, never()).reconcileForTier(any(), org.mockito.ArgumentMatchers.anyBoolean());
   }
 
   @Test
-  void disputeRevokesPremium() {
-    User u = user(Tier.PREMIUM, SubStatus.ACTIVE, "cus_4");
-    when(gateway.retrieveChargeCustomerId("ch_1")).thenReturn("cus_4");
-    when(userRepository.findBySubscriptionStripeCustomerId("cus_4")).thenReturn(Optional.of(u));
-    when(dashboardService.reconcileForTier(any(), eq(false))).thenReturn(Dashboard.defaultFor(false));
-
-    service.handleDispute("ch_1");
-
-    assertThat(u.getSubscription().getTier()).isEqualTo(Tier.FREE);
-    assertThat(u.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
-    verify(dashboardService).reconcileForTier(any(), eq(false));
-    verify(userRepository).save(u);
+  void unknown_email_falls_back_to_stored_license_id_then_gives_up_silently() {
+    when(users.findByEmail("buyer@example.com")).thenReturn(Optional.empty());
+    when(users.findBySubscriptionFsLicenseId("555")).thenReturn(Optional.empty());
+    license(FUTURE, false, null);
+    service.applyLicense("555");   // must not throw
+    verify(users, never()).save(any());
   }
 
   @Test
-  void ignoresUnknownCustomer() {
-    when(gateway.retrieveSubscription("sub_x")).thenReturn(
-        new StripeSubscriptionSnapshot("sub_x", "cus_unknown", "active", "p", null, false));
-    when(userRepository.findBySubscriptionStripeCustomerId("cus_unknown")).thenReturn(Optional.empty());
+  void email_lookup_miss_falls_back_to_stored_license_id_and_applies() {
+    when(users.findByEmail("buyer@example.com")).thenReturn(Optional.empty());
+    when(users.findBySubscriptionFsLicenseId("555")).thenReturn(Optional.of(user));
+    license(FUTURE, false, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    assertThat(user.getSubscription().getFsLicenseId()).isEqualTo("555");
+    verify(users).save(user);
+  }
 
-    service.applyFromStripe("sub_x");
+  // Finding 2 (final review): account emails are stored lowercase (see AuthController /
+  // TulipOidcUserService); the buyer email from the Freemius API is not guaranteed to be.
+  // A mixed-case (or padded) hosted-checkout purchase must still match the stored account.
+  @Test
+  void mixed_case_and_padded_buyer_email_is_normalized_before_the_account_lookup() {
+    when(gateway.retrieveUserEmail("42")).thenReturn("Buyer@Example.COM ");
+    license(FUTURE, false, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    verify(users).save(user);
+  }
 
-    verify(userRepository, never()).save(any());
+  @Test
+  void deleted_license_404_revokes_premium_via_stored_id() {
+    user.getSubscription().setTier(Tier.PREMIUM);
+    user.getSubscription().setFsLicenseId("555");
+    when(gateway.retrieveLicense("555")).thenThrow(new FreemiusNotFoundException("gone"));
+    when(users.findBySubscriptionFsLicenseId("555")).thenReturn(Optional.of(user));
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.FREE);
+    assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
+    verify(dashboards).reconcileForTier(any(), eq(false));
+  }
+
+  // Finding 3 (final review): a blank FREEMIUS_PRODUCT_ID makes the gateway GET
+  // /products//licenses/{id}.json, which 404s -- applyLicense would then treat the license
+  // as deleted and silently ack+markProcessed. Fail fast instead, before any gateway call.
+  @Test
+  void blank_product_id_fails_fast_before_any_gateway_call_or_save() {
+    FreemiusConfig unconfigured = new FreemiusConfig();
+    unconfigured.setProductId("");
+    unconfigured.setApiToken("test");
+    SubscriptionService misconfigured =
+        new SubscriptionService(unconfigured, events, gateway, users, dashboards);
+
+    assertThatThrownBy(() -> misconfigured.applyLicense("555"))
+        .isInstanceOf(FreemiusGatewayException.class);
+    verifyNoInteractions(gateway);
+    verify(users, never()).save(any());
   }
 }

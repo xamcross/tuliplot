@@ -14,15 +14,15 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
-class ProcessedStripeEventRepositoryTest {
+class ProcessedBillingEventRepositoryTest {
 
   @DynamicPropertySource
   static void props(DynamicPropertyRegistry r) {
-    r.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(ProcessedStripeEventRepositoryTest.class));
+    r.add("spring.mongodb.uri", () -> MongoTestUri.uriFor(ProcessedBillingEventRepositoryTest.class));
   }
 
   @Autowired
-  ProcessedStripeEventRepository repo;
+  ProcessedBillingEventRepository repo;
 
   // Testcontainers may reuse the mongo container across runs; start from a clean collection
   // so the "not present before save" assertion does not see a leftover evt_1.
@@ -35,7 +35,7 @@ class ProcessedStripeEventRepositoryTest {
   void existsByIdReflectsSavedEvent() {
     assertThat(repo.existsById("evt_1")).isFalse();
 
-    ProcessedStripeEvent e = new ProcessedStripeEvent();
+    ProcessedBillingEvent e = new ProcessedBillingEvent();
     e.setId("evt_1");
     e.setType("customer.subscription.updated");
     e.setProcessedAt(Instant.now());

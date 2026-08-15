@@ -108,7 +108,7 @@ const FAQ: ReadonlyArray<{ q: string; a: string }> = [
               <li>✓ All 6 cells unlocked</li>
               <li>✓ Zero ads, ever</li>
               <li>✓ Everything in Free</li>
-              <li>✓ Cancel anytime via Stripe</li>
+              <li>✓ Cancel anytime via Freemius</li>
             </ul>
             <a routerLink="/register" class="tl-btn tl-btn--primary plan-cta">Go Premium</a>
           </div>

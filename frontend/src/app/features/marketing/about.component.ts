@@ -42,7 +42,7 @@ import { SiteFooterComponent } from './site-footer.component';
         Not ready for an account? <a routerLink="/try">Try TulipLot</a> first: two live
         cells, no signup required. The free tier gives you five usable cells plus one
         ad-supported cell. Premium removes the ad and unlocks all six cells. Billing runs
-        through Stripe; we never see your card details.
+        through Freemius; we never see your card details.
       </p>
       <h2>Contact</h2>
       <p>

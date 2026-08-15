@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document("stripe_events")
-public class ProcessedStripeEvent {
+@Document("processed_billing_events")
+public class ProcessedBillingEvent {
 
   @Id
-  private String id;      // = Stripe event id
+  private String id;      // = billing-provider event id
   private String type;
   private Instant processedAt;
 

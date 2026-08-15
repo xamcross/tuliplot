@@ -11,15 +11,19 @@ import static org.mockito.Mockito.when;
 
 class SubscriptionServiceDedupeTest {
 
-  private ProcessedStripeEventRepository repo;
+  private ProcessedBillingEventRepository repo;
   private SubscriptionService service;
 
   @BeforeEach
   void setup() {
-    repo = mock(ProcessedStripeEventRepository.class);
+    repo = mock(ProcessedBillingEventRepository.class);
+    FreemiusConfig config = new FreemiusConfig();
+    config.setProductId("37109");
+    config.setApiToken("test");
     service = new SubscriptionService(
+        config,
         repo,
-        mock(StripeGateway.class),
+        mock(FreemiusGateway.class),
         mock(com.tuliplot.auth.UserRepository.class),
         mock(com.tuliplot.dashboard.DashboardService.class));
   }
@@ -37,7 +41,7 @@ class SubscriptionServiceDedupeTest {
   void markProcessedSavesEventWithIdAndType() {
     service.markProcessed("evt_9", "invoice.paid");
 
-    ArgumentCaptor<ProcessedStripeEvent> saved = ArgumentCaptor.forClass(ProcessedStripeEvent.class);
+    ArgumentCaptor<ProcessedBillingEvent> saved = ArgumentCaptor.forClass(ProcessedBillingEvent.class);
     verify(repo).save(saved.capture());
     assertThat(saved.getValue().getId()).isEqualTo("evt_9");
     assertThat(saved.getValue().getType()).isEqualTo("invoice.paid");

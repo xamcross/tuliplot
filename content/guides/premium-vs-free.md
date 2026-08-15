@@ -44,13 +44,13 @@ Who reaches for that space varies, but a common pattern is one more thing that d
 
 ## How billing works
 
-Billing runs entirely through Stripe. To upgrade, go to Settings and click **Go Premium** — that takes you to an upgrade page where you enter payment details directly with Stripe. TulipLot never sees your card number; there's no card form built into the app itself, because the app never needs to touch it.
+Billing runs entirely through Freemius. To upgrade, go to Settings and click **Go Premium** — that takes you to an upgrade page where you enter payment details directly with Freemius. TulipLot never sees your card number; there's no card form built into the app itself, because the app never needs to touch it.
 
-Managing or canceling works the same way, any time you want: Settings → **Manage billing** opens the Stripe billing portal. That's where your payment method, invoices, and cancellation all live — TulipLot hands the whole job to Stripe rather than building a second version of it. Before you confirm anything, the portal shows you exactly when your subscription ends, so there's no guessing about timing. Premium bills monthly, with no annual contract.
+Managing or canceling works the same way, any time you want: Settings → **Manage billing** opens the Freemius customer portal. That's where your payment method, invoices, and cancellation all live — TulipLot hands the whole job to Freemius rather than building a second version of it. Before you confirm anything, the portal shows you exactly when your subscription ends, so there's no guessing about timing. Premium bills monthly, with no annual contract.
 
 ## What happens when you cancel
 
-Cancellation itself happens in the Stripe billing portal, and it tells you exactly when your subscription ends before you confirm. When that date arrives, your account reverts to the free plan automatically — no extra step required from you.
+Cancellation itself happens in the Freemius customer portal, and it tells you exactly when your subscription ends before you confirm. When that date arrives, your account reverts to the free plan automatically — no extra step required from you.
 
 Reverting means the bottom-right cell becomes the ad slot again. What happens to whatever was in your sixth cell depends on the rest of your grid at that moment:
 
