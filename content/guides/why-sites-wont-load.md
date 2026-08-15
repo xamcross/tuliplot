@@ -20,9 +20,9 @@ Nothing you did caused this. The tool tried to load the site the normal way, the
 
 That refusal travels as a header: a small piece of information a website sends back alongside its page, invisible on the page itself but read by your browser before anything is displayed. Two different headers can carry this particular instruction, and knowing which one you're dealing with helps make sense of what you're seeing.
 
-`X-Frame-Options` is the older of the two, and it's blunt on purpose. A site sets it to one of two values: `DENY`, which blocks every attempt to frame it with no exceptions, or `SAMEORIGIN`, which allows framing only by pages on that exact same site. There's no middle ground and no list of trusted outsiders, just those two settings.
+[`X-Frame-Options`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options) is the older of the two, and it's blunt on purpose. A site sets it to one of two values: `DENY`, which blocks every attempt to frame it with no exceptions, or `SAMEORIGIN`, which allows framing only by pages on that exact same site. There's no middle ground and no list of trusted outsiders, just those two settings.
 
-`Content-Security-Policy: frame-ancestors` is the newer replacement, and it works more like a guest list. Instead of an on-or-off switch, a site names the exact sources allowed to frame it, anything from nobody at all to a short list of specific approved sites. A site that wants to block embedding entirely can still use it; it just leaves that list empty.
+[`Content-Security-Policy: frame-ancestors`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors) is the newer replacement, and it works more like a guest list. Instead of an on-or-off switch, a site names the exact sources allowed to frame it, anything from nobody at all to a short list of specific approved sites. A site that wants to block embedding entirely can still use it; it just leaves that list empty.
 
 ## Why sites do this — and why it's mostly reasonable
 

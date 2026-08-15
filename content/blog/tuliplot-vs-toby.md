@@ -33,7 +33,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 ## Price, single-user
 
-Toby's free Starter plan is $0 with up to 60 saved tabs across your collections. Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year), and adds unlimited saved tabs, advanced search, and duplicate removal. Team is $10 USD per member per month, or $8 billed yearly ($96/year), and adds SSO, priority support, and centralized billing. Toby prices per member because it's built as a collaboration tool: the cost scales with how many teammates share your collections.
+[Toby's free Starter plan](https://www.gettoby.com/pricing) is $0 with up to 60 saved tabs across your collections. Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year), and adds unlimited saved tabs, advanced search, and duplicate removal. Team is $10 USD per member per month, or $8 billed yearly ($96/year), and adds SSO, priority support, and centralized billing. Toby prices per member because it's built as a collaboration tool: the cost scales with how many teammates share your collections.
 
 TulipLot prices per person, not per seat, since a TulipLot dashboard has no team or collections concept the way Toby does. You can try it with no account, move to a free account with five usable cells and one ad, or go Premium for all six cells with zero ads at $4 a month. Compared single-user to single-user: one person on Toby's Productivity tier pays $4.50–$6 a month, and one person on TulipLot Premium pays $4 a month.
 

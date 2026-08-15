@@ -94,7 +94,7 @@ Paste almost any HTTPS URL into a cell and it loads. But every so often you'll a
 
 ## Why some sites refuse to load
 
-Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — `X-Frame-Options` or a `Content-Security-Policy` with `frame-ancestors` — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold; [the full explanation of why sites refuse to be embedded](/guides/why-sites-wont-load) covers the headers involved and what does and doesn't fix it.
+Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — [`X-Frame-Options`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options) or a `Content-Security-Policy` with [`frame-ancestors`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors) — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold; [the full explanation of why sites refuse to be embedded](/guides/why-sites-wont-load) covers the headers involved and what does and doesn't fix it.
 
 The same header also blocks harmless embedding, like a cell in your grid. The browser can't tell a malicious overlay from a dashboard you built on purpose — it just sees "don't embed me" and obeys, and TulipLot can't override that at the page level. So instead of pretending it can, it tells you what happened and gives you a real option, rather than a broken pane.
 
@@ -110,7 +110,7 @@ None of these is a dead end — each gives you the fastest working path for that
 
 ## Install the TulipLot Companion
 
-The TulipLot Companion is a free, optional Chrome extension, and it's the reason most stubborn sites end up embedding anyway. What it does is narrow: it adjusts frame-blocking headers only for sites you've explicitly enabled, one at a time. It doesn't touch any other site, and it collects nothing about you or your browsing.
+The TulipLot Companion is a free, optional Chrome extension, and it's the reason most stubborn sites end up embedding anyway. What it does is narrow: it [adjusts frame-blocking headers](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest) only for sites you've explicitly enabled, one at a time. It doesn't touch any other site, and it collects nothing about you or your browsing.
 
 To install it, click **Install TulipLot Companion** on any cell that needs it. That opens the Chrome Web Store listing, where installation happens the normal Chrome way. Once it's installed, come back to your dashboard — the cell is still waiting for the second step.
 
@@ -256,9 +256,9 @@ Nothing you did caused this. The tool tried to load the site the normal way, the
 
 That refusal travels as a header: a small piece of information a website sends back alongside its page, invisible on the page itself but read by your browser before anything is displayed. Two different headers can carry this particular instruction, and knowing which one you're dealing with helps make sense of what you're seeing.
 
-`X-Frame-Options` is the older of the two, and it's blunt on purpose. A site sets it to one of two values: `DENY`, which blocks every attempt to frame it with no exceptions, or `SAMEORIGIN`, which allows framing only by pages on that exact same site. There's no middle ground and no list of trusted outsiders, just those two settings.
+[`X-Frame-Options`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options) is the older of the two, and it's blunt on purpose. A site sets it to one of two values: `DENY`, which blocks every attempt to frame it with no exceptions, or `SAMEORIGIN`, which allows framing only by pages on that exact same site. There's no middle ground and no list of trusted outsiders, just those two settings.
 
-`Content-Security-Policy: frame-ancestors` is the newer replacement, and it works more like a guest list. Instead of an on-or-off switch, a site names the exact sources allowed to frame it, anything from nobody at all to a short list of specific approved sites. A site that wants to block embedding entirely can still use it; it just leaves that list empty.
+[`Content-Security-Policy: frame-ancestors`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors) is the newer replacement, and it works more like a guest list. Instead of an on-or-off switch, a site names the exact sources allowed to frame it, anything from nobody at all to a short list of specific approved sites. A site that wants to block embedding entirely can still use it; it just leaves that list empty.
 
 ## Why sites do this — and why it's mostly reasonable
 
@@ -462,7 +462,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 This is the one page in this series where the ad comparison is actually fair. start.me's free plan "Includes advertising," stated plainly on their own pricing page, the same way TulipLot's free plan carries one ad cell. Toby and Workona don't describe their free tiers as ad-supported at all, so that comparison doesn't apply to them — but it applies here, and it's a genuine point of similarity between the two products rather than a stretch.
 
-Above free, the honest number is one that doesn't flatter TulipLot: start.me's Personal PRO plan is $25 per year, about $2.08 a month, and it removes ads entirely, unlocks unlimited start pages, and adds 27 PRO-only features and widgets plus AI tools. TulipLot Premium is $4 a month, with no annual option. Compared however you like, start.me's paid tier is cheaper than TulipLot's, and that's worth stating plainly rather than talking around it. (start.me's Team plan, $25/month billed annually for 10 users, is a different product built for groups and isn't part of this single-user comparison.)
+Above free, the honest number is one that doesn't flatter TulipLot: [start.me's Personal PRO plan](https://start.me/pricing) is $25 per year, about $2.08 a month, and it removes ads entirely, unlocks unlimited start pages, and adds 27 PRO-only features and widgets plus AI tools. TulipLot Premium is $4 a month, with no annual option. Compared however you like, start.me's paid tier is cheaper than TulipLot's, and that's worth stating plainly rather than talking around it. (start.me's Team plan, $25/month billed annually for 10 users, is a different product built for groups and isn't part of this single-user comparison.)
 
 What TulipLot's $4 buys instead is the sixth live cell, not a cheaper way to organize more bookmarks — the two plans aren't priced for the same job. But a reader weighing two subscription numbers deserves the real ones, not a comparison that quietly flatters whichever page they're reading.
 
@@ -535,7 +535,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 ## Price, single-user
 
-Toby's free Starter plan is $0 with up to 60 saved tabs across your collections. Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year), and adds unlimited saved tabs, advanced search, and duplicate removal. Team is $10 USD per member per month, or $8 billed yearly ($96/year), and adds SSO, priority support, and centralized billing. Toby prices per member because it's built as a collaboration tool: the cost scales with how many teammates share your collections.
+[Toby's free Starter plan](https://www.gettoby.com/pricing) is $0 with up to 60 saved tabs across your collections. Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year), and adds unlimited saved tabs, advanced search, and duplicate removal. Team is $10 USD per member per month, or $8 billed yearly ($96/year), and adds SSO, priority support, and centralized billing. Toby prices per member because it's built as a collaboration tool: the cost scales with how many teammates share your collections.
 
 TulipLot prices per person, not per seat, since a TulipLot dashboard has no team or collections concept the way Toby does. You can try it with no account, move to a free account with five usable cells and one ad, or go Premium for all six cells with zero ads at $4 a month. Compared single-user to single-user: one person on Toby's Productivity tier pays $4.50–$6 a month, and one person on TulipLot Premium pays $4 a month.
 
@@ -604,7 +604,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 ## Price, single-user
 
-Workona's free plan is $0, capped at 5 spaces, usable forever below that cap. Pro is listed as "Starting at $7 / month," confirmed to be the annual-billed rate — Workona's checkout resolves to the annual term by default, and a separate monthly-only price isn't displayed distinctly anywhere on their site, so there's no monthly figure to quote here. Pro adds unlimited spaces and sections, 90-day session backups, integrations, and templates. Team is "Starting at $8 / user / month," with a 3-user minimum and room for up to 25 users; Enterprise is contact-sales only. Workona prices per seat because it's built as a collaboration tool — the Team plan requires at least three people by design.
+[Workona's free plan](https://workona.com/pricing/) is $0, capped at 5 spaces, usable forever below that cap. Pro is listed as "Starting at $7 / month," confirmed to be the annual-billed rate — Workona's checkout resolves to the annual term by default, and a separate monthly-only price isn't displayed distinctly anywhere on their site, so there's no monthly figure to quote here. Pro adds unlimited spaces and sections, 90-day session backups, integrations, and templates. Team is "Starting at $8 / user / month," with a 3-user minimum and room for up to 25 users; Enterprise is contact-sales only. Workona prices per seat because it's built as a collaboration tool — the Team plan requires at least three people by design.
 
 TulipLot prices per person, not per seat, since a TulipLot dashboard has no team or collaboration concept the way Workona's Spaces do. Compared single-user to single-user: one person on Workona Pro pays $7 a month (annual-billed), and one person on TulipLot Premium pays $4 a month.
 
@@ -667,7 +667,7 @@ The first four live inside whatever browser you already use. The fifth is a diff
 
 ## Method 1: your operating system's split screen
 
-Windows has Snap: drag a window to either edge of the screen, or press the Windows key plus an arrow, and it fills exactly half, with a menu offering to fill the other half with a second window. macOS has Split View: hold down the green button in a window's top-left corner and choose a side, or drag one window to the edge while another sits ready to fill the rest. Both take about ten seconds and need nothing installed.
+Windows has [Snap](https://support.microsoft.com/en-US/Windows/Experience/snap-your-windows): drag a window to either edge of the screen, or press the Windows key plus an arrow, and it fills exactly half, with a menu offering to fill the other half with a second window. macOS has [Split View](https://support.apple.com/en-us/102573): hold down the green button in a window's top-left corner and choose a side, or drag one window to the edge while another sits ready to fill the rest. Both take about ten seconds and need nothing installed.
 
 This is genuinely the fastest way to get two websites in view right now. It's built into the computer you already have, it costs nothing, and it works with any two windows, not just a browser, so the same trick handles a browser next to a spreadsheet just as easily as two browser windows.
 

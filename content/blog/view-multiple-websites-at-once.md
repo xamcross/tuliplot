@@ -25,7 +25,7 @@ The first four live inside whatever browser you already use. The fifth is a diff
 
 ## Method 1: your operating system's split screen
 
-Windows has Snap: drag a window to either edge of the screen, or press the Windows key plus an arrow, and it fills exactly half, with a menu offering to fill the other half with a second window. macOS has Split View: hold down the green button in a window's top-left corner and choose a side, or drag one window to the edge while another sits ready to fill the rest. Both take about ten seconds and need nothing installed.
+Windows has [Snap](https://support.microsoft.com/en-US/Windows/Experience/snap-your-windows): drag a window to either edge of the screen, or press the Windows key plus an arrow, and it fills exactly half, with a menu offering to fill the other half with a second window. macOS has [Split View](https://support.apple.com/en-us/102573): hold down the green button in a window's top-left corner and choose a side, or drag one window to the edge while another sits ready to fill the rest. Both take about ten seconds and need nothing installed.
 
 This is genuinely the fastest way to get two websites in view right now. It's built into the computer you already have, it costs nothing, and it works with any two windows, not just a browser, so the same trick handles a browser next to a spreadsheet just as easily as two browser windows.
 
