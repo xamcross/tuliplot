@@ -1,0 +1,38 @@
+# TulipLot
+
+> TulipLot is a browser dashboard that shows up to six live websites side by side in a fixed 3×2 grid, in one browser tab.
+
+## Facts
+- Try: 2 usable cells, no account. Free: 5 usable cells + 1 ad cell, $0. Premium: 6 cells, no ad, $4/month.
+- Most sites embed live. Some need the optional TulipLot Companion (a Chrome extension). A few never embed and open in their own tab from the grid.
+- Chrome-first. Public site: https://tuliplot.com/
+
+## Guides
+- [Getting started with TulipLot](https://tuliplot.com/guides/getting-started/): Create your account, build your first 3×2 grid, and learn every cell control — a complete five-minute setup guide for your TulipLot browser dashboard.
+- [Adding sites that refuse to be framed](https://tuliplot.com/guides/add-any-site/): Why some sites show "refused to connect" in a dashboard, and how the TulipLot Companion extension unlocks them safely, one site at a time.
+- [Premium vs Free — what you get](https://tuliplot.com/guides/premium-vs-free/): Everything the free plan includes, exactly what $4/month adds, and what happens to your grid when you upgrade, downgrade, or cancel.
+- [Why some sites won't load in a dashboard](https://tuliplot.com/guides/why-sites-wont-load/): "Refused to connect" isn't a bug in your dashboard. Here's what that message actually means, which sites do it, and what can and can't be done about it.
+
+## Blog
+- [The best start pages in 2026](https://tuliplot.com/blog/best-start-pages-2026/): An honest look at the start pages and dashboard tools worth using in 2026 — what each one is actually for, what the free tiers include, and how to pick.
+- [Gmail and Google Calendar side by side](https://tuliplot.com/blog/gmail-and-calendar-side-by-side/): Google's own side-panel, a second window, and a dashboard launcher — three honest ways to keep mail and calendar in view at once, including what Google won't let you embed.
+- [TulipLot vs start.me: widgets and links, or live sites?](https://tuliplot.com/blog/tuliplot-vs-start-me/): start.me builds a start page from bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. Both have ad-supported free tiers — here's how they differ and what each costs.
+- [TulipLot vs Toby: which one fits how you actually work?](https://tuliplot.com/blog/tuliplot-vs-toby/): Toby saves and organizes tabs you reopen later. TulipLot keeps a fixed grid of sites live at once. They solve different problems — here's an honest look at both, including price.
+- [TulipLot vs Workona: project spaces or a live grid?](https://tuliplot.com/blog/tuliplot-vs-workona/): Workona organizes tabs into per-project spaces with auto-save and sync. TulipLot keeps a fixed grid of sites rendered live. An honest comparison of what each is for, and what they cost.
+- [How to view multiple websites at once](https://tuliplot.com/blog/view-multiple-websites-at-once/): Five ways to see two or more websites at the same time — split screen, browser windows, extensions, and a fixed dashboard grid — and when each one is actually the right call.
+- [What is a browser start page (and do you still need one)?](https://tuliplot.com/blog/what-is-a-browser-start-page/): Start pages, home pages, and new-tab pages are three different things. Here's what each one does, why iGoogle's descendants keep dying, and what replaced them.
+- [Five ways to lay out a productive dashboard](https://tuliplot.com/blog/dashboard-productivity-tips/): Five field-tested ways to lay out a six-cell dashboard — by role, by rhythm, and by attention — plus the placement rules that make any layout stick.
+- [Why we built TulipLot](https://tuliplot.com/blog/why-we-built-tuliplot/): Tab overload is a workflow problem, not a willpower problem. Why we think a fixed grid beats a wall of tabs — and what we deliberately left out.
+
+## Pages
+- [Home](https://tuliplot.com/): TulipLot is a browser dashboard that shows up to six live websites side by side in a fixed 3×2 grid, in one browser tab.
+- [Try TulipLot without an account](https://tuliplot.com/try/): Two live cells with no signup; they move into a free account when you create one.
+- [About TulipLot](https://tuliplot.com/about/): Why TulipLot exists, how it works, and what Try, Free, and Premium include.
+- [Guides](https://tuliplot.com/guides/): Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.
+- [Blog](https://tuliplot.com/blog/): Tab overload, browser dashboards, comparisons, and product news.
+- [Contact](https://tuliplot.com/contact/): How to reach the team for support, billing, feedback, and privacy requests.
+- [Privacy Policy](https://tuliplot.com/privacy/): What TulipLot collects, how ads and cookies work, and your choices.
+- [Terms of Service](https://tuliplot.com/terms/): The terms that govern your use of TulipLot.
+
+## Contact
+- https://tuliplot.com/contact/

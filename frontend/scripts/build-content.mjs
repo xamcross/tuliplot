@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import {
   splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, extractFaq,
-  validateDates, validateSeoTitle,
+  validateDates, validateSeoTitle, llmsTxt, llmsFullTxt,
 } from './content.util.mjs';
 import { externalLinkExtension } from './build-content.util.mjs';
 
@@ -14,6 +14,7 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
 const repoRoot = resolve(frontendRoot, '..');
 const contentDir = resolve(repoRoot, 'content');
+const SITE = JSON.parse(readFileSync(resolve(frontendRoot, 'src/app/core/site-identity.json'), 'utf8'));
 const outFile = resolve(
   frontendRoot,
   'src/app/features/marketing/content.generated.ts',
@@ -88,13 +89,34 @@ console.log(
   `content: ${guides.length} guides, ${posts.length} posts -> ${outFile}`,
 );
 
-const staticRoutes = ['/', '/about', '/privacy', '/terms', '/contact', '/guides', '/blog', '/try'];
-const STATIC_LASTMOD = '2026-08-01'; // bump when static-page copy changes
+// Static pages: sitemap lastmod + the llms.txt "Pages" section.
+// RULE: when the copy of a static page changes, bump its lastmod here in the same PR.
+const STATIC_PAGES = [
+  { path: '/', title: 'Home', description: SITE.sentence, lastmod: '2026-08-02' },
+  { path: '/try', title: 'Try TulipLot without an account', description: 'Two live cells with no signup; they move into a free account when you create one.', lastmod: '2026-08-15' },
+  { path: '/about', title: 'About TulipLot', description: 'Why TulipLot exists, how it works, and what Try, Free, and Premium include.', lastmod: '2026-08-02' },
+  { path: '/guides', title: 'Guides', description: 'Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.', lastmod: '2026-08-01' },
+  { path: '/blog', title: 'Blog', description: 'Tab overload, browser dashboards, comparisons, and product news.', lastmod: '2026-08-01' },
+  { path: '/contact', title: 'Contact', description: 'How to reach the team for support, billing, feedback, and privacy requests.', lastmod: '2026-08-01' },
+  { path: '/privacy', title: 'Privacy Policy', description: 'What TulipLot collects, how ads and cookies work, and your choices.', lastmod: '2026-08-01' },
+  { path: '/terms', title: 'Terms of Service', description: 'The terms that govern your use of TulipLot.', lastmod: '2026-08-01' },
+];
 const withSlash = (r) => `https://tuliplot.com${r === '/' ? '/' : r + '/'}`;
 const entries = [
-  ...staticRoutes.map((r) => ({ loc: withSlash(r), lastmod: STATIC_LASTMOD })),
+  ...STATIC_PAGES.map((p) => ({ loc: withSlash(p.path), lastmod: p.lastmod })),
   ...guides.map((g) => ({ loc: withSlash(`/guides/${g.slug}`), lastmod: g.updated ?? g.date })),
   ...posts.map((p) => ({ loc: withSlash(`/blog/${p.slug}`), lastmod: p.updated ?? p.date })),
 ];
 writeFileSync(resolve(frontendRoot, 'public/sitemap.xml'), sitemapXml(entries), 'utf8');
 console.log(`sitemap: ${entries.length} urls -> public/sitemap.xml`);
+
+const llmsDoc = (basePath) => (d) => ({
+  title: d.title, url: withSlash(`${basePath}/${d.slug}`), description: d.description,
+  date: d.date, updated: d.updated, markdown: d.markdown,
+});
+const llmsGuides = guides.map(llmsDoc('/guides'));
+const llmsPosts = posts.map(llmsDoc('/blog'));
+const llmsPages = STATIC_PAGES.map((p) => ({ title: p.title, url: withSlash(p.path), description: p.description }));
+writeFileSync(resolve(frontendRoot, 'public/llms.txt'), llmsTxt({ site: SITE, guides: llmsGuides, posts: llmsPosts, pages: llmsPages }), 'utf8');
+writeFileSync(resolve(frontendRoot, 'public/llms-full.txt'), llmsFullTxt({ site: SITE, guides: llmsGuides, posts: llmsPosts }), 'utf8');
+console.log('llms: public/llms.txt, public/llms-full.txt');

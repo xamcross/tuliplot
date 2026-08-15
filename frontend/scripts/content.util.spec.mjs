@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref, llmsTxt, llmsFullTxt } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -169,5 +169,45 @@ describe('isExternalHref', () => {
     expect(isExternalHref('/guides/add-any-site')).toBe(false);
     expect(isExternalHref('#faq')).toBe(false);
     expect(isExternalHref('mailto:hello@tuliplot.com')).toBe(false);
+  });
+});
+
+const site = {
+  name: 'TulipLot', url: 'https://tuliplot.com/', contactUrl: 'https://tuliplot.com/contact/', premiumMonthlyUsd: '4',
+  sentence: 'TulipLot is a browser dashboard that shows up to six live websites side by side in a fixed 3×2 grid, in one browser tab.',
+};
+
+describe('llmsTxt', () => {
+  it('renders the header, facts, and one line per doc under Guides, Blog, Pages, then Contact', () => {
+    const txt = llmsTxt({
+      site,
+      guides: [{ title: 'Getting started', url: 'https://tuliplot.com/guides/getting-started/', description: 'First grid.' }],
+      posts: [{ title: 'Vs Toby', url: 'https://tuliplot.com/blog/tuliplot-vs-toby/', description: 'Compare.' }],
+      pages: [{ title: 'Home', url: 'https://tuliplot.com/', description: site.sentence }],
+    });
+    const lines = txt.split('\n');
+    expect(lines[0]).toBe('# TulipLot');
+    expect(lines[2]).toBe(`> ${site.sentence}`);
+    expect(txt).toContain('## Facts\n- Try: 2 usable cells, no account. Free: 5 usable cells + 1 ad cell, $0. Premium: 6 cells, no ad, $4/month.');
+    expect(txt).toContain('## Guides\n- [Getting started](https://tuliplot.com/guides/getting-started/): First grid.');
+    expect(txt).toContain('## Blog\n- [Vs Toby](https://tuliplot.com/blog/tuliplot-vs-toby/): Compare.');
+    expect(txt).toContain('## Pages\n- [Home](https://tuliplot.com/): ');
+    expect(txt.trimEnd().endsWith('## Contact\n- https://tuliplot.com/contact/')).toBe(true);
+    const order = ['## Facts', '## Guides', '## Blog', '## Pages', '## Contact'].map((h) => txt.indexOf(h));
+    expect([...order].sort((a, b) => a - b)).toEqual(order);
+  });
+});
+
+describe('llmsFullTxt', () => {
+  it('renders the header, then each article with source, dates, and the body', () => {
+    const txt = llmsFullTxt({
+      site,
+      guides: [{ title: 'G', url: 'https://tuliplot.com/guides/g/', date: '2026-08-01', markdown: 'Guide body.' }],
+      posts: [{ title: 'P', url: 'https://tuliplot.com/blog/p/', date: '2026-08-02', updated: '2026-08-15', markdown: 'Post body.\n\n## Section' }],
+    });
+    expect(txt.startsWith('# TulipLot\n\n> ')).toBe(true);
+    expect(txt).toContain('# G\nSource: https://tuliplot.com/guides/g/\nPublished: 2026-08-01\n\nGuide body.\n');
+    expect(txt).toContain('# P\nSource: https://tuliplot.com/blog/p/\nPublished: 2026-08-02\nUpdated: 2026-08-15\n\nPost body.\n\n## Section\n');
+    expect(txt.indexOf('# G')).toBeLessThan(txt.indexOf('# P'));
   });
 });

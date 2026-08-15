@@ -135,3 +135,61 @@ export function sitemapXml(entries) {
     `\n</urlset>\n`
   );
 }
+
+const LLMS_FACTS = (site) => [
+  `- Try: 2 usable cells, no account. Free: 5 usable cells + 1 ad cell, $0. Premium: 6 cells, no ad, $${site.premiumMonthlyUsd}/month.`,
+  '- Most sites embed live. Some need the optional TulipLot Companion (a Chrome extension). A few never embed and open in their own tab from the grid.',
+  `- Chrome-first. Public site: ${site.url}`,
+];
+
+const llmsLine = (d) => `- [${d.title}](${d.url}): ${d.description}`;
+
+/** llms.txt: a short, curated map of the site for language models. */
+export function llmsTxt({ site, guides, posts, pages }) {
+  return [
+    `# ${site.name}`,
+    '',
+    `> ${site.sentence}`,
+    '',
+    '## Facts',
+    ...LLMS_FACTS(site),
+    '',
+    '## Guides',
+    ...guides.map(llmsLine),
+    '',
+    '## Blog',
+    ...posts.map(llmsLine),
+    '',
+    '## Pages',
+    ...pages.map(llmsLine),
+    '',
+    '## Contact',
+    `- ${site.contactUrl}`,
+    '',
+  ].join('\n');
+}
+
+/** llms-full.txt: the same header, then the full markdown of every guide and post. */
+export function llmsFullTxt({ site, guides, posts }) {
+  const article = (d) => [
+    `# ${d.title}`,
+    `Source: ${d.url}`,
+    `Published: ${d.date}`,
+    ...(d.updated ? [`Updated: ${d.updated}`] : []),
+    '',
+    String(d.markdown).trim(),
+    '',
+    '---',
+    '',
+  ];
+  return [
+    `# ${site.name}`,
+    '',
+    `> ${site.sentence}`,
+    '',
+    'Full text of every guide and blog post. llms.txt lists the same pages with one line each.',
+    '',
+    ...guides.flatMap(article),
+    ...posts.flatMap(article),
+  ].join('\n');
+}
