@@ -114,6 +114,13 @@ export function validateSeoTitle(seoTitle, file) {
   return seoTitle;
 }
 
+/** True when a link leaves tuliplot.com over http(s). Relative paths, anchors, and mailto are internal. */
+export function isExternalHref(href) {
+  const s = String(href ?? '');
+  if (!/^https?:\/\//i.test(s)) return false;
+  return !/^https?:\/\/(www\.)?tuliplot\.com(\/|$)/i.test(s);
+}
+
 export function sitemapXml(entries) {
   const urls = entries
     .map(

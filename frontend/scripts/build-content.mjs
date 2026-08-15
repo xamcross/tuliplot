@@ -8,6 +8,7 @@ import {
   splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, extractFaq,
   validateDates, validateSeoTitle,
 } from './content.util.mjs';
+import { externalLinkExtension } from './build-content.util.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
@@ -19,6 +20,7 @@ const outFile = resolve(
 );
 
 marked.setOptions({ gfm: true, breaks: false });
+marked.use(externalLinkExtension());
 
 function loadDir(kind) {
   const dir = join(contentDir, kind);

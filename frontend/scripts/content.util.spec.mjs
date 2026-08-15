@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -154,5 +154,20 @@ describe('extractFaq', () => {
 
   it('returns an empty array when there are no h3s', () => {
     expect(extractFaq('## Heading\n\nJust prose.\n')).toEqual([]);
+  });
+});
+
+describe('isExternalHref', () => {
+  it('is true for http(s) hosts other than tuliplot.com', () => {
+    expect(isExternalHref('https://developer.mozilla.org/en-US/docs/Web/HTTP')).toBe(true);
+    expect(isExternalHref('http://example.com')).toBe(true);
+    expect(isExternalHref('https://tuliplot.com.evil.example/')).toBe(true);
+  });
+  it('is false for tuliplot.com, www.tuliplot.com, relative paths, anchors, and mailto', () => {
+    expect(isExternalHref('https://tuliplot.com/guides/')).toBe(false);
+    expect(isExternalHref('https://www.tuliplot.com/')).toBe(false);
+    expect(isExternalHref('/guides/add-any-site')).toBe(false);
+    expect(isExternalHref('#faq')).toBe(false);
+    expect(isExternalHref('mailto:hello@tuliplot.com')).toBe(false);
   });
 });
