@@ -54,6 +54,12 @@ tuliplot:
     checkout-cancel-url: ${STRIPE_CHECKOUT_CANCEL_URL:https://tuliplot.com/app/upgrade?checkout=cancel}
     portal-return-url: ${STRIPE_PORTAL_RETURN_URL:https://tuliplot.com/app/settings}
     api-version: ${STRIPE_API_VERSION:2025-08-27.basil}
+  freemius:
+    # Freemius (env-driven; empty defaults keep the app bootable in dev without billing)
+    product-id: ${FREEMIUS_PRODUCT_ID:}
+    secret-key: ${FREEMIUS_SECRET_KEY:}
+    api-token: ${FREEMIUS_API_TOKEN:}
+    api-base-url: ${FREEMIUS_API_BASE_URL:https://api.freemius.com/v1}
 
 # AdSense keys (env-driven; empty until AdSense is approved). Relaxed binding maps
 # ADSENSE_CLIENT/ADSENSE_SLOT onto adsense.client/adsense.slot.
