@@ -4,6 +4,7 @@ seoTitle: TulipLot vs Toby: live grid or saved tabs?
 slug: tuliplot-vs-toby
 description: Toby saves tabs you reopen later. TulipLot keeps a fixed grid of sites live at once. An honest look at both, with prices and free-plan limits.
 date: 2026-08-02
+updated: 2026-08-16
 category: Comparison
 ---
 # TulipLot vs Toby: which one fits how you actually work?

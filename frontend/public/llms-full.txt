@@ -89,6 +89,7 @@ Your dashboard is ready whenever you are. [Get started free](/register) and have
 # Adding sites that refuse to be framed
 Source: https://tuliplot.com/guides/add-any-site/
 Published: 2026-08-01
+Updated: 2026-08-16
 
 Paste almost any HTTPS URL into a cell and it loads. But every so often you'll add a site and the cell says the site refuses to connect, or that it won't load here. That's not a TulipLot bug — it's the site itself, and there's a fix for most of them.
 
@@ -243,6 +244,7 @@ If you haven't built your grid yet, start with [Getting started with TulipLot](/
 # Why some sites won't load in a dashboard
 Source: https://tuliplot.com/guides/why-sites-wont-load/
 Published: 2026-08-02
+Updated: 2026-08-16
 
 ## What "refused to connect" actually means
 
@@ -432,6 +434,7 @@ Want both in view without hunting through tabs? [Create a free TulipLot account]
 # TulipLot vs start.me: widgets and links, or live sites?
 Source: https://tuliplot.com/blog/tuliplot-vs-start-me/
 Published: 2026-08-02
+Updated: 2026-08-16
 
 **Key facts**
 
@@ -509,6 +512,7 @@ If a tidy page of organized links, widgets, and bookmarks is what you're after, 
 # TulipLot vs Toby: which one fits how you actually work?
 Source: https://tuliplot.com/blog/tuliplot-vs-toby/
 Published: 2026-08-02
+Updated: 2026-08-16
 
 **Key facts**
 
@@ -578,6 +582,7 @@ If you save more than you use, [Toby](https://gettoby.com) is the better tool, p
 # TulipLot vs Workona: project spaces or a live grid?
 Source: https://tuliplot.com/blog/tuliplot-vs-workona/
 Published: 2026-08-02
+Updated: 2026-08-16
 
 **Key facts**
 
@@ -648,6 +653,7 @@ If you're juggling a dozen ongoing projects and want them saved and restorable, 
 # How to view multiple websites at once
 Source: https://tuliplot.com/blog/view-multiple-websites-at-once/
 Published: 2026-08-02
+Updated: 2026-08-16
 
 Two situations send most people searching for this. You're comparing two things directly: two flight prices, two apartment listings, two drafts of the same document, and switching back and forth between tabs makes it hard to hold both in your head at once. Or you're watching one thing while working in another: a dashboard you want visible while you answer email, a video call running next to your notes. Either way, the goal is the same. You want to see two websites at the same time, not alternate between them all day.
 

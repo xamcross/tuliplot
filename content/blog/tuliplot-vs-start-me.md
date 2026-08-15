@@ -4,6 +4,7 @@ seoTitle: TulipLot vs start.me: live sites or widgets?
 slug: tuliplot-vs-start-me
 description: start.me builds a start page from bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. How the two differ, and what each one costs.
 date: 2026-08-02
+updated: 2026-08-16
 category: Comparison
 ---
 # TulipLot vs start.me: widgets and links, or live sites?

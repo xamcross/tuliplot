@@ -3,6 +3,7 @@ title: Adding sites that refuse to be framed
 slug: add-any-site
 description: Why some sites show "refused to connect" in a dashboard, and how the TulipLot Companion extension unlocks them safely, one site at a time.
 date: 2026-08-01
+updated: 2026-08-16
 category: Advanced
 order: 2
 ---

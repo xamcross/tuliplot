@@ -3,6 +3,7 @@ title: Why some sites won't load in a dashboard
 slug: why-sites-wont-load
 description: "Refused to connect" isn't a bug in your dashboard. Here's what that message actually means, which sites do it, and what can and can't be done about it.
 date: 2026-08-02
+updated: 2026-08-16
 category: Advanced
 order: 4
 ---
