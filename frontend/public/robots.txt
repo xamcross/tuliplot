@@ -13,5 +13,6 @@ User-agent: Google-Extended
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /app
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://tuliplot.com/sitemap.xml
