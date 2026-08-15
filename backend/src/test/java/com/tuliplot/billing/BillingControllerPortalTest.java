@@ -1,6 +1,7 @@
 package com.tuliplot.billing;
 
 import com.tuliplot.auth.DashPrincipal;
+import com.tuliplot.auth.Subscription;
 import com.tuliplot.auth.User;
 import com.tuliplot.auth.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +16,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BillingControllerPortalTest {
 
-  private StripeService stripeService;
+  private FreemiusGateway gateway;
   private UserRepository userRepository;
   private MockMvc mockMvc;
 
@@ -33,6 +34,7 @@ class BillingControllerPortalTest {
     @Override public String getEmail() { return "a@b.com"; }
   };
 
+  /** Resolves @AuthenticationPrincipal DashPrincipal to a fixed test principal, no SecurityContext needed. */
   private static final HandlerMethodArgumentResolver PRINCIPAL_RESOLVER = new HandlerMethodArgumentResolver() {
     @Override public boolean supportsParameter(MethodParameter p) {
       return DashPrincipal.class.isAssignableFrom(p.getParameterType());
@@ -45,34 +47,49 @@ class BillingControllerPortalTest {
 
   @BeforeEach
   void setup() {
-    stripeService = mock(StripeService.class);
+    gateway = mock(FreemiusGateway.class);
     userRepository = mock(UserRepository.class);
-    BillingController controller = new BillingController(stripeService, userRepository);
+    BillingController controller = new BillingController(gateway, userRepository);
     mockMvc = MockMvcBuilders.standaloneSetup(controller)
         .setCustomArgumentResolvers(PRINCIPAL_RESOLVER)
         .build();
-    User user = new User();
-    user.setId("u1");
-    when(userRepository.findById("u1")).thenReturn(Optional.of(user));
   }
 
   @Test
-  void returnsPortalUrl() throws Exception {
-    when(stripeService.createPortalSession(any()))
-        .thenReturn("https://billing.stripe.com/p/session/test_9");
+  void returnsPortalUrlAndGatewayReceivesTheUsersEmail() throws Exception {
+    User user = new User();
+    user.setId("u1");
+    user.setEmail("a@b.com");
+    Subscription subscription = new Subscription();
+    subscription.setFsLicenseId("lic-123");
+    user.setSubscription(subscription);
+    when(userRepository.findById("u1")).thenReturn(Optional.of(user));
+    when(gateway.createPortalLoginUrl("a@b.com"))
+        .thenReturn("https://users.freemius.com/login/abc");
 
     mockMvc.perform(post("/api/v1/billing/portal-session"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.url").value("https://billing.stripe.com/p/session/test_9"));
+        .andExpect(jsonPath("$.url").value("https://users.freemius.com/login/abc"));
+
+    verify(gateway).createPortalLoginUrl("a@b.com");
   }
 
   @Test
-  void returns400WhenNoCustomer() throws Exception {
-    when(stripeService.createPortalSession(any()))
-        .thenThrow(new NoStripeCustomerException("u1"));
+  void returns400WhenNoSubscription() throws Exception {
+    User user = new User();
+    user.setId("u1");
+    user.setEmail("a@b.com");
+    user.setSubscription(new Subscription());
+    when(userRepository.findById("u1")).thenReturn(Optional.of(user));
 
     mockMvc.perform(post("/api/v1/billing/portal-session"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("no_stripe_customer"));
+        .andExpect(jsonPath("$.code").value("no_subscription"));
+  }
+
+  @Test
+  void checkoutSessionEndpointNoLongerExists() throws Exception {
+    mockMvc.perform(post("/api/v1/billing/checkout-session"))
+        .andExpect(status().isNotFound());
   }
 }
