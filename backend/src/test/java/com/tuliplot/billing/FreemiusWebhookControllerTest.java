@@ -111,12 +111,31 @@ class FreemiusWebhookControllerTest {
             .content(body).header("X-Signature", sign(body)))
         .andExpect(status().isOk());
     verify(subscriptionService, never()).applyLicense(org.mockito.ArgumentMatchers.any());
+    verify(subscriptionService).markProcessed("evt-2", "user.updated");
   }
 
   @Test
   void gateway_failure_is_500_and_not_marked_so_freemius_retries() throws Exception {
     when(subscriptionService.alreadyProcessed("evt-1")).thenReturn(false);
     doThrow(new FreemiusGatewayException("api down"))
+        .when(subscriptionService).applyLicense("555");
+    mvc.perform(post("/api/v1/billing/webhook")
+            .content(LICENSE_CREATED)
+            .header("X-Signature", sign(LICENSE_CREATED)))
+        .andExpect(status().isInternalServerError());
+    verify(subscriptionService, never()).markProcessed(org.mockito.ArgumentMatchers.any(),
+        org.mockito.ArgumentMatchers.any());
+  }
+
+  // Finding 1 (final review): the handler must not be narrowed to FreemiusGatewayException.
+  // A plain RuntimeException from applyLicense (e.g. a Mongo DataAccessException, or a
+  // FreemiusNotFoundException from retrieveSubscription/retrieveUserEmail) must ALSO answer
+  // 500, not fall through to /error (which SecurityConfig blocks) and surface as a
+  // permanent-looking 401.
+  @Test
+  void unhandled_runtime_exception_is_500_and_not_marked_so_freemius_retries() throws Exception {
+    when(subscriptionService.alreadyProcessed("evt-1")).thenReturn(false);
+    doThrow(new RuntimeException("boom"))
         .when(subscriptionService).applyLicense("555");
     mvc.perform(post("/api/v1/billing/webhook")
             .content(LICENSE_CREATED)

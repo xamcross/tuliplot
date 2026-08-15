@@ -67,14 +67,18 @@ public class FreemiusWebhookController {
   }
 
   /**
-   * Explicit 500: an UNHANDLED exception on this unauthenticated endpoint would hit the
-   * /error dispatch, which SecurityConfig does not permit, and surface as 401 (the known
+   * Explicit 500 for EVERY post-signature failure, not only FreemiusGatewayException: a
+   * FreemiusNotFoundException from retrieveSubscription/retrieveUserEmail, a Mongo
+   * DataAccessException from existsById/save/markProcessed, or a Jackson parse exception
+   * must all land here too. A narrower handler would let those escape to the /error
+   * dispatch, which SecurityConfig does not permit, and surface as 401 (the known
    * error-masking defect from PR #15). Freemius may treat a 4xx as permanent and stop the
-   * retries; a real 500 keeps them coming until the API call succeeds.
+   * retries; a real 500 keeps them coming until the failure clears. The 401 above stays
+   * exclusive to signature verification.
    */
-  @org.springframework.web.bind.annotation.ExceptionHandler(FreemiusGatewayException.class)
-  public ResponseEntity<String> handleGatewayFailure(FreemiusGatewayException e) {
-    return ResponseEntity.status(500).body("freemius api failure");
+  @org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<String> handleProcessingFailure(RuntimeException e) {
+    return ResponseEntity.status(500).body("webhook processing failure");
   }
 
   private boolean signatureMatches(byte[] payload, String signature) {

@@ -17,11 +17,13 @@ import java.time.Instant;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class SubscriptionServiceStateMachineTest {
@@ -33,6 +35,7 @@ class SubscriptionServiceStateMachineTest {
   private UserRepository users;
   private DashboardService dashboards;
   private ProcessedBillingEventRepository events;
+  private FreemiusConfig config;
   private SubscriptionService service;
   private User user;
 
@@ -42,7 +45,10 @@ class SubscriptionServiceStateMachineTest {
     users = mock(UserRepository.class);
     dashboards = mock(DashboardService.class);
     events = mock(ProcessedBillingEventRepository.class);
-    service = new SubscriptionService(events, gateway, users, dashboards);
+    config = new FreemiusConfig();
+    config.setProductId("37109");
+    config.setApiToken("test");
+    service = new SubscriptionService(config, events, gateway, users, dashboards);
 
     user = new User();
     user.setEmail("buyer@example.com");
@@ -153,6 +159,18 @@ class SubscriptionServiceStateMachineTest {
     verify(users).save(user);
   }
 
+  // Finding 2 (final review): account emails are stored lowercase (see AuthController /
+  // TulipOidcUserService); the buyer email from the Freemius API is not guaranteed to be.
+  // A mixed-case (or padded) hosted-checkout purchase must still match the stored account.
+  @Test
+  void mixed_case_and_padded_buyer_email_is_normalized_before_the_account_lookup() {
+    when(gateway.retrieveUserEmail("42")).thenReturn("Buyer@Example.COM ");
+    license(FUTURE, false, null);
+    service.applyLicense("555");
+    assertThat(user.getSubscription().getTier()).isEqualTo(Tier.PREMIUM);
+    verify(users).save(user);
+  }
+
   @Test
   void deleted_license_404_revokes_premium_via_stored_id() {
     user.getSubscription().setTier(Tier.PREMIUM);
@@ -163,5 +181,22 @@ class SubscriptionServiceStateMachineTest {
     assertThat(user.getSubscription().getTier()).isEqualTo(Tier.FREE);
     assertThat(user.getSubscription().getStatus()).isEqualTo(SubStatus.CANCELED);
     verify(dashboards).reconcileForTier(any(), eq(false));
+  }
+
+  // Finding 3 (final review): a blank FREEMIUS_PRODUCT_ID makes the gateway GET
+  // /products//licenses/{id}.json, which 404s -- applyLicense would then treat the license
+  // as deleted and silently ack+markProcessed. Fail fast instead, before any gateway call.
+  @Test
+  void blank_product_id_fails_fast_before_any_gateway_call_or_save() {
+    FreemiusConfig unconfigured = new FreemiusConfig();
+    unconfigured.setProductId("");
+    unconfigured.setApiToken("test");
+    SubscriptionService misconfigured =
+        new SubscriptionService(unconfigured, events, gateway, users, dashboards);
+
+    assertThatThrownBy(() -> misconfigured.applyLicense("555"))
+        .isInstanceOf(FreemiusGatewayException.class);
+    verifyNoInteractions(gateway);
+    verify(users, never()).save(any());
   }
 }

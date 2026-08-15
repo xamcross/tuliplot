@@ -18,15 +18,18 @@ public class SubscriptionService {
 
   private static final Logger log = LoggerFactory.getLogger(SubscriptionService.class);
 
+  private final FreemiusConfig config;
   private final ProcessedBillingEventRepository processedEvents;
   private final FreemiusGateway gateway;
   private final UserRepository userRepository;
   private final DashboardService dashboardService;
 
-  public SubscriptionService(ProcessedBillingEventRepository processedEvents,
+  public SubscriptionService(FreemiusConfig config,
+                             ProcessedBillingEventRepository processedEvents,
                              FreemiusGateway gateway,
                              UserRepository userRepository,
                              DashboardService dashboardService) {
+    this.config = config;
     this.processedEvents = processedEvents;
     this.gateway = gateway;
     this.userRepository = userRepository;
@@ -53,8 +56,15 @@ public class SubscriptionService {
    * Fetch the license from the Freemius API and resync the user's tier from it.
    * The webhook payload is only a trigger; the API is the source of truth.
    * A 404 means the license was deleted — revoke via the stored license id.
+   *
+   * <p>Guard first: a blank product id or api token would make the gateway call
+   * /products//licenses/{id}.json, which 404s — that would be treated as a deleted
+   * license and silently ack+markProcessed instead of retrying.
    */
   public void applyLicense(String licenseId) {
+    if (isBlank(config.getProductId()) || isBlank(config.getApiToken())) {
+      throw new FreemiusGatewayException("freemius not configured: product id or api token missing");
+    }
     FreemiusLicenseSnapshot license;
     try {
       license = gateway.retrieveLicense(licenseId);
@@ -63,7 +73,11 @@ public class SubscriptionService {
       return;
     }
     FreemiusSubscriptionSnapshot subscription = gateway.retrieveSubscription(licenseId);
-    String email = gateway.retrieveUserEmail(license.userId());
+    // Account emails are stored lowercase (see AuthController / TulipOidcUserService); the
+    // Freemius API's buyer email is not guaranteed to match that case, so normalize before
+    // the lookup. retrieveUserEmail can return "" (missing field) rather than null.
+    String rawEmail = gateway.retrieveUserEmail(license.userId());
+    String email = rawEmail == null ? null : rawEmail.trim().toLowerCase();
 
     User user = userRepository.findByEmail(email)
         .or(() -> userRepository.findBySubscriptionFsLicenseId(licenseId))
@@ -112,6 +126,10 @@ public class SubscriptionService {
       reconcileIfTierChanged(user, wasPremium, false);
       userRepository.save(user);
     });
+  }
+
+  private static boolean isBlank(String s) {
+    return s == null || s.isBlank();
   }
 
   private void reconcileIfTierChanged(User user, boolean wasPremium, boolean premium) {

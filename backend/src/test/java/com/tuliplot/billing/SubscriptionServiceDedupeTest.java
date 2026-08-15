@@ -17,7 +17,11 @@ class SubscriptionServiceDedupeTest {
   @BeforeEach
   void setup() {
     repo = mock(ProcessedBillingEventRepository.class);
+    FreemiusConfig config = new FreemiusConfig();
+    config.setProductId("37109");
+    config.setApiToken("test");
     service = new SubscriptionService(
+        config,
         repo,
         mock(FreemiusGateway.class),
         mock(com.tuliplot.auth.UserRepository.class),
