@@ -88,8 +88,7 @@ describe('BlogDetailComponent', () => {
   });
 
   it('uses seoTitle for the document title and keeps title as the H1', () => {
-    const withSeo = POSTS.find((p) => p.seoTitle);
-    if (!withSeo) return; // inert until Task 13 adds seoTitle values
+    const withSeo = POSTS.find((p) => p.seoTitle)!;
     const f = render(withSeo.slug);
     expect(document.title).toBe(`${withSeo.seoTitle} · TulipLot`);
     expect((f.nativeElement as HTMLElement).querySelector('h1')?.textContent).toBe(withSeo.title);
