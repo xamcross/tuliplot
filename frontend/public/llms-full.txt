@@ -433,6 +433,13 @@ Want both in view without hunting through tabs? [Create a free TulipLot account]
 Source: https://tuliplot.com/blog/tuliplot-vs-start-me/
 Published: 2026-08-02
 
+**Key facts**
+
+- start.me is a bookmark manager and custom start page built from links and widgets. Its own title tag: "Bookmark Manager, Custom Start Page & New Tab."
+- start.me's free plan is $0, allows a maximum of 3 start pages, and includes advertising.
+- start.me Personal PRO is $25 per year, with unlimited start pages and no ads.
+- TulipLot renders live sites, not bookmarks or widgets, in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
+
 start.me builds you a start page out of bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. That's the core distinction, worth stating first, because most people searching "start.me alternative" aren't yet sure whether they want a better bookmark page or something that keeps actual apps open and clickable.
 
 start.me's own title tag calls it a "Bookmark Manager, Custom Start Page & New Tab," and the hero line on their homepage is "All your important links, one click away." You build a page out of widgets — weather, RSS feeds, notes, mostly first-party — plus bookmarks alongside them. TulipLot doesn't build a page out of widgets at all; a TulipLot cell renders the actual third-party site, live and interactive, in place. Want a tidy page of organized links, weather, and notes? start.me does that, and does it well. Want your inbox and calendar actually visible and clickable without leaving the grid? That's TulipLot's job, and start.me's widgets don't attempt it.
@@ -503,6 +510,13 @@ If a tidy page of organized links, widgets, and bookmarks is what you're after, 
 Source: https://tuliplot.com/blog/tuliplot-vs-toby/
 Published: 2026-08-02
 
+**Key facts**
+
+- Toby is a visual workspace that saves and organizes browser tabs and links into collections. Its own words: "Stop Drowning in Tabs."
+- Toby's free Starter plan is $0 and allows up to 60 saved tabs across all your collections.
+- Toby Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year).
+- TulipLot does not save tabs. It keeps up to six sites live in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
+
 Toby saves tabs. TulipLot renders sites live. That's the whole distinction, and it's worth stating before anything else, because most people searching "tuliplot vs toby" aren't sure yet which category they actually need.
 
 Toby is a bookmarking-and-collections tool: you save a tab's link into Toby, close the tab, and reopen the saved link later when you want it again. TulipLot is a rendering tool: it keeps up to six real, interactive sites open at once, all the time, in a fixed grid, with nothing to reopen because nothing closed in the first place. Want to stash forty research links and come back to them next week? Toby does that; TulipLot doesn't do it at all. Want your inbox, calendar, and project board visibly live at the same time, no switching? That's TulipLot's job, and Toby doesn't do that either.
@@ -564,6 +578,13 @@ If you save more than you use, [Toby](https://gettoby.com) is the better tool, p
 # TulipLot vs Workona: project spaces or a live grid?
 Source: https://tuliplot.com/blog/tuliplot-vs-workona/
 Published: 2026-08-02
+
+**Key facts**
+
+- Workona is a tab and project workspace manager: tabs go into per-project Spaces with auto-save and cross-device sync. Its own words: "Get your tabs under control."
+- Workona's free plan is $0 and is capped at 5 spaces. Workona's FAQ says it "can be used forever."
+- Workona Pro is listed as "Starting at $7 / month," which is the annual-billed rate.
+- TulipLot does not save or restore sessions. It keeps up to six sites live in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
 
 Workona organizes tabs into Spaces you save and restore. TulipLot keeps a fixed grid of sites rendered live, all at once. That distinction is worth stating up front, because "workona alternative" searches split into two different needs: people who want a better way to save and restore project sessions, and people who want a handful of sites visibly live at the same time without switching between them.
 

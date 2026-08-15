@@ -8,6 +8,13 @@ category: Comparison
 ---
 # TulipLot vs start.me: widgets and links, or live sites?
 
+**Key facts**
+
+- start.me is a bookmark manager and custom start page built from links and widgets. Its own title tag: "Bookmark Manager, Custom Start Page & New Tab."
+- start.me's free plan is $0, allows a maximum of 3 start pages, and includes advertising.
+- start.me Personal PRO is $25 per year, with unlimited start pages and no ads.
+- TulipLot renders live sites, not bookmarks or widgets, in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
+
 start.me builds you a start page out of bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. That's the core distinction, worth stating first, because most people searching "start.me alternative" aren't yet sure whether they want a better bookmark page or something that keeps actual apps open and clickable.
 
 start.me's own title tag calls it a "Bookmark Manager, Custom Start Page & New Tab," and the hero line on their homepage is "All your important links, one click away." You build a page out of widgets — weather, RSS feeds, notes, mostly first-party — plus bookmarks alongside them. TulipLot doesn't build a page out of widgets at all; a TulipLot cell renders the actual third-party site, live and interactive, in place. Want a tidy page of organized links, weather, and notes? start.me does that, and does it well. Want your inbox and calendar actually visible and clickable without leaving the grid? That's TulipLot's job, and start.me's widgets don't attempt it.

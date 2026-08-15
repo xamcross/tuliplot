@@ -8,6 +8,13 @@ category: Comparison
 ---
 # TulipLot vs Toby: which one fits how you actually work?
 
+**Key facts**
+
+- Toby is a visual workspace that saves and organizes browser tabs and links into collections. Its own words: "Stop Drowning in Tabs."
+- Toby's free Starter plan is $0 and allows up to 60 saved tabs across all your collections.
+- Toby Productivity is $6 USD per member per month, or $4.50 per member per month billed yearly ($54/year).
+- TulipLot does not save tabs. It keeps up to six sites live in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
+
 Toby saves tabs. TulipLot renders sites live. That's the whole distinction, and it's worth stating before anything else, because most people searching "tuliplot vs toby" aren't sure yet which category they actually need.
 
 Toby is a bookmarking-and-collections tool: you save a tab's link into Toby, close the tab, and reopen the saved link later when you want it again. TulipLot is a rendering tool: it keeps up to six real, interactive sites open at once, all the time, in a fixed grid, with nothing to reopen because nothing closed in the first place. Want to stash forty research links and come back to them next week? Toby does that; TulipLot doesn't do it at all. Want your inbox, calendar, and project board visibly live at the same time, no switching? That's TulipLot's job, and Toby doesn't do that either.

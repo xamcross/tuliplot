@@ -8,6 +8,13 @@ category: Comparison
 ---
 # TulipLot vs Workona: project spaces or a live grid?
 
+**Key facts**
+
+- Workona is a tab and project workspace manager: tabs go into per-project Spaces with auto-save and cross-device sync. Its own words: "Get your tabs under control."
+- Workona's free plan is $0 and is capped at 5 spaces. Workona's FAQ says it "can be used forever."
+- Workona Pro is listed as "Starting at $7 / month," which is the annual-billed rate.
+- TulipLot does not save or restore sessions. It keeps up to six sites live in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
+
 Workona organizes tabs into Spaces you save and restore. TulipLot keeps a fixed grid of sites rendered live, all at once. That distinction is worth stating up front, because "workona alternative" searches split into two different needs: people who want a better way to save and restore project sessions, and people who want a handful of sites visibly live at the same time without switching between them.
 
 Workona is a project-based session manager: you group a project's tabs into a Space, it auto-saves as you work, and it syncs across your devices so you can close it down and pick it back up later. TulipLot is a live-rendering tool: it keeps up to six real, interactive sites open continuously in a fixed grid, with nothing to restore because nothing was ever closed. Want a dozen project workspaces you can name, save, and reopen weeks from now? Workona does that; TulipLot doesn't attempt it. Want your inbox, calendar, and a project board all visibly live at once, no switching, no restoring? That's TulipLot's job, and Workona doesn't do that either.
