@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/services/seo.service';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteFooterComponent } from './site-footer.component';
+import { SITE } from '../../core/site-identity';
 
 @Component({
   selector: 'tl-about',
@@ -19,7 +20,7 @@ import { SiteFooterComponent } from './site-footer.component';
     </div>
     <main class="tl-prose">
       <p class="tl-lead">
-        TulipLot is an independent productivity tool built for people who live
+        {{ sentence }} It is an independent productivity tool built for people who live
         in a handful of web apps all day. Instead of a wall of browser tabs, you
         get a single fixed grid — a personal cockpit for the sites you actually
         use.
@@ -48,6 +49,8 @@ import { SiteFooterComponent } from './site-footer.component';
       <p>
         Questions, feedback, or press: email
         <a href="mailto:hello&#64;tuliplot.com">hello&#64;tuliplot.com</a>.
+        The code is public on
+        <a [href]="github" target="_blank" rel="noopener">GitHub</a>.
       </p>
     </main>
     <tl-site-footer />
@@ -58,6 +61,9 @@ import { SiteFooterComponent } from './site-footer.component';
   `],
 })
 export class AboutComponent {
+  protected readonly sentence = SITE.sentence;
+  protected readonly github = SITE.sameAs[0];
+
   constructor() {
     inject(SeoService).set({
       title: 'About TulipLot — why we built a browser dashboard',

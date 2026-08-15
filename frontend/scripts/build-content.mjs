@@ -109,7 +109,7 @@ console.log(
 const STATIC_PAGES = [
   { path: '/', title: 'Home', description: SITE.sentence, lastmod: '2026-08-02' },
   { path: '/try', title: 'Try TulipLot without an account', description: 'Two live cells with no signup; they move into a free account when you create one.', lastmod: '2026-08-15' },
-  { path: '/about', title: 'About TulipLot', description: 'Why TulipLot exists, how it works, and what Try, Free, and Premium include.', lastmod: '2026-08-02' },
+  { path: '/about', title: 'About TulipLot', description: 'Why TulipLot exists, how it works, and what Try, Free, and Premium include.', lastmod: '2026-08-15' },
   { path: '/changelog', title: 'Changelog', description: changelog.description, lastmod: changelog.updated },
   { path: '/guides', title: 'Guides', description: 'Step-by-step help: your first grid, sites that refuse to embed, and Premium vs Free.', lastmod: '2026-08-01' },
   { path: '/blog', title: 'Blog', description: 'Tab overload, browser dashboards, comparisons, and product news.', lastmod: '2026-08-01' },
