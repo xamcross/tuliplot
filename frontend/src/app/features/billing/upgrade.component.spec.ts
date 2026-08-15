@@ -92,6 +92,31 @@ describe('UpgradeComponent', () => {
     expect(loadMe).toHaveBeenCalledTimes(3);
   });
 
+  it('ignores a second success fire for the same checkout — only one poll loop runs', () => {
+    vi.useFakeTimers();
+    const fixture = TestBed.createComponent(UpgradeComponent);
+    fixture.detectChanges();
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+
+    clickUpgrade(fixture);
+    const onSuccess = capturedOnSuccess();
+    onSuccess();
+    onSuccess();
+    fixture.detectChanges();
+    expect(loadMe).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(2000);
+    expect(loadMe).toHaveBeenCalledTimes(2);
+
+    tierSignal.set('PREMIUM');
+    vi.advanceTimersByTime(2000);
+    fixture.detectChanges();
+
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith('/app');
+  });
+
   it('shows the pending-activation copy after 15 polls (30s) without a flip', () => {
     vi.useFakeTimers();
     const fixture = TestBed.createComponent(UpgradeComponent);

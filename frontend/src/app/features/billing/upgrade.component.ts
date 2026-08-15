@@ -86,6 +86,10 @@ export class UpgradeComponent implements OnDestroy {
 
   /** The webhook flips the tier; poll /auth/me until the flip lands. */
   private onPurchased(): void {
+    if (this.pollTimer !== null) {
+      // A second success fire for the same checkout has nothing new to do.
+      return;
+    }
     this.state.set('finalizing');
     this.polls = 0;
     this.authStore.loadMe();
