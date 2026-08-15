@@ -4,16 +4,16 @@ description: What changed on TulipLot, newest first: features, fixes, and conten
 ---
 ## 2026-08-15 — Companion 1.2.0 and a full-size try grid
 
-- TulipLot Companion 1.2.0: the header rule is now scoped to open dashboard tabs. Sites you enable, such as YouTube, render live in the grid.
+- TulipLot Companion 1.2.0 is in the repository, not yet on the Chrome Web Store: the header rule is now scoped to open dashboard tabs. Sites you enable, such as YouTube, render live in the grid once the store listing updates.
 - The `/try` page renders its six cells at the same size as the signed-in dashboard.
 
 ## 2026-08-14 — Google sign-in fix, per-site enable, ads.txt
 
-- Google sign-in works again. A session save failed after a successful Google login since 2026-08-02.
-- The Companion asks for the per-site host grant from the cell after installation. Before, install alone unlocked nothing.
+- Google sign-in works again. A session save failed after a successful Google login.
+- The Companion (1.1.0, in the repository, not yet on the Chrome Web Store) asks for the per-site host grant from the cell after installation. Before, install alone unlocked nothing.
 - `ads.txt` carries the real AdSense publisher id.
 
-## 2026-08-04 — Comparison pages and a start-page listicle
+## 2026-08-03 — Comparison pages and a start-page listicle
 
 - New posts: TulipLot vs Toby, TulipLot vs Workona, TulipLot vs start.me, and The best start pages in 2026. Every competitor number comes from each vendor's own pages.
 
