@@ -42,9 +42,9 @@ describe('SettingsComponent', () => {
 
     const req = httpMock.expectOne(`${environment.apiBaseUrl}/billing/portal-session`);
     expect(req.request.method).toBe('POST');
-    req.flush({ url: 'https://billing.stripe.com/p/session/test_1' });
+    req.flush({ url: 'https://customer-portal.freemius.com/session/test_1' });
 
-    expect(redirect).toHaveBeenCalledWith('https://billing.stripe.com/p/session/test_1');
+    expect(redirect).toHaveBeenCalledWith('https://customer-portal.freemius.com/session/test_1');
     httpMock.verify();
   });
 
@@ -58,5 +58,21 @@ describe('SettingsComponent', () => {
 
     expect(TestBed.inject(AuthStore).logout).toHaveBeenCalled();
     expect(nav).toHaveBeenCalledWith('/');
+  });
+
+  it('displays the Freemius portal hint text', () => {
+    const fixture = TestBed.createComponent(SettingsComponent);
+    fixture.detectChanges();
+
+    const hint = fixture.nativeElement.querySelector('.hint');
+    expect(hint.textContent).toBe('Manage payment method, invoices, and cancellation through the Freemius customer portal.');
+  });
+
+  it('does not render the word "Stripe" anywhere on the page', () => {
+    const fixture = TestBed.createComponent(SettingsComponent);
+    fixture.detectChanges();
+
+    const pageText = fixture.nativeElement.textContent;
+    expect(pageText).not.toContain('Stripe');
   });
 });

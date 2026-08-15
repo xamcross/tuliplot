@@ -104,7 +104,7 @@ export class DashboardPageComponent implements OnInit {
     this.store.load();
   }
 
-  /** After returning from Stripe Checkout (/app?checkout=success) refresh auth + dashboard so premium reflects. */
+  /** After returning from checkout (/app?checkout=success) refresh auth + dashboard so premium reflects. */
   private handleCheckoutReturn(): void {
     if (this.route.snapshot.queryParamMap.get('checkout') === 'success') {
       this.authStore.loadMe();

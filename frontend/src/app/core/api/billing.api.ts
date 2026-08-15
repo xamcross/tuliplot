@@ -8,10 +8,6 @@ export class BillingApi {
   private readonly http = inject(HttpClient);
   private readonly base = environment.apiBaseUrl;
 
-  createCheckoutSession(): Observable<{ url: string }> {
-    return this.http.post<{ url: string }>(`${this.base}/billing/checkout-session`, {});
-  }
-
   createPortalSession(): Observable<{ url: string }> {
     return this.http.post<{ url: string }>(`${this.base}/billing/portal-session`, {});
   }

@@ -44,7 +44,7 @@ import { SiteFooterComponent } from './site-footer.component';
       <p>
         The free plan includes five usable cells and one advertising cell.
         Premium removes advertising and unlocks all six cells. Subscriptions are
-        billed through Stripe and renew until cancelled. You may cancel anytime
+        billed through Freemius and renew until cancelled. You may cancel anytime
         through the billing portal; access continues until the end of the paid
         period.
       </p>

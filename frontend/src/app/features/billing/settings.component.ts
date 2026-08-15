@@ -40,7 +40,7 @@ import { AppTopbarComponent } from '../../shared/app-topbar.component';
           </div>
           <div class="hr"></div>
           <div class="row">
-            <p class="hint">Manage payment method, invoices, and cancellation through the Stripe billing portal.</p>
+            <p class="hint">Manage payment method, invoices, and cancellation through the Freemius customer portal.</p>
             <button type="button" class="manage tl-btn tl-btn--soft tl-btn--sm"
               (click)="manageBilling()" [disabled]="loading()">Manage billing</button>
           </div>

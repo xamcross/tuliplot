@@ -37,8 +37,8 @@ import { SiteFooterComponent } from './site-footer.component';
           titles, and icons you add to your grid.
         </li>
         <li>
-          <strong>Billing data:</strong> a Stripe customer and subscription
-          identifier. Card numbers are handled entirely by Stripe; TulipLot never
+          <strong>Billing data:</strong> a Freemius customer and subscription
+          identifier. Card numbers are handled entirely by Freemius; TulipLot never
           receives them.
         </li>
         <li>
@@ -93,7 +93,7 @@ import { SiteFooterComponent } from './site-footer.component';
 
       <h2>Data retention and deletion</h2>
       <p>
-        Account and dashboard data persist until you delete your account. Stripe
+        Account and dashboard data persist until you delete your account. Freemius
         webhook events are retained briefly for idempotency and then expire
         automatically. To request deletion, email
         <a href="mailto:privacy&#64;tuliplot.com">privacy&#64;tuliplot.com</a>.
