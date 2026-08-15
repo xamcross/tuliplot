@@ -166,7 +166,10 @@ with guidance. Full suites green before merge.
 
 ## Configuration and deployment
 
-- New Fly secrets: `FREEMIUS_SECRET_KEY`, `FREEMIUS_PRODUCT_ID=37109`.
+- New Fly secrets: `FREEMIUS_SECRET_KEY` (signs webhooks),
+  `FREEMIUS_API_TOKEN` (Bearer for the product-scoped API — the
+  dashboard issues it under Settings → API Token; it is NOT the secret
+  key), `FREEMIUS_PRODUCT_ID=37109`.
 - The `STRIPE_*` secrets were never set; nothing to remove on Fly.
 - No other deployment change. The merge auto-deploys both halves.
 
@@ -175,13 +178,21 @@ with guidance. Full suites green before merge.
 Annual pricing, trials UI, coupons, the affiliate program, invoice UI
 (the hosted portal covers it), data migration (no subscribers exist).
 
-## Open items to pin during implementation
+## Open items — resolution (2026-08-15)
 
-1. The exact checkout script URL and the `FS.Checkout` option names —
-   from the overlay-checkout doc and the dashboard-generated snippet.
-2. The API base URL and the exact Bearer credential form — verified in
-   sandbox before the webhook code is finalized.
-3. Whether the overlay requires the public key (`pk_...`). The owner
-   supplies it from the Freemius dashboard settings page if so.
-4. The exact shape of the license JSON (field names for expiration,
-   cancellation, trial) — pinned from a sandbox API response.
+1. RESOLVED. Script: `https://checkout.freemius.com/js/v1/`.
+   Constructor: `new FS.Checkout({ product_id, plan_id, public_key })`.
+   `open()` accepts `user_email`, `readonly_user`, and a `success`
+   callback (overlay-checkout doc + SaaS integration doc).
+2. RESOLVED. API base: `https://api.freemius.com/v1/`. Auth: a
+   product-scoped **API Bearer token** from the dashboard (Settings →
+   API Token tab). The secret key is only the webhook HMAC key. The
+   signature header is `x-signature`.
+3. RESOLVED. The overlay takes the public key:
+   `pk_dd68d3c56014484d645d69d91d734` (public by design).
+4. PARTLY RESOLVED. The reference site does not render the entity
+   schema server-side. The plan pins the documented names (`id`,
+   `plan_id`, `user_id`, `expiration` nullable datetime,
+   `is_cancelled`; subscription `canceled_at`, `next_payment`,
+   `trial_ends`) and parses tolerantly (unknown fields ignored). The
+   final sandbox check validates them against a real response.
