@@ -38,6 +38,7 @@ export class FreemiusCheckoutService {
         script.async = true;
         script.onload = () => resolve();
         script.onerror = () => {
+          script.remove();
           this.scriptPromise = null;
           reject(new Error('freemius checkout script failed to load'));
         };
