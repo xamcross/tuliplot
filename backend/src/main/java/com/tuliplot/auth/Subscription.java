@@ -7,6 +7,7 @@ public class Subscription {
     private Tier tier = Tier.FREE;
     private String stripeCustomerId;
     private String stripeSubscriptionId;
+    private String fsLicenseId;
     private SubStatus status = SubStatus.NONE;
     private String priceId;
     private Instant currentPeriodEnd;
@@ -20,6 +21,9 @@ public class Subscription {
 
     public String getStripeSubscriptionId() { return stripeSubscriptionId; }
     public void setStripeSubscriptionId(String stripeSubscriptionId) { this.stripeSubscriptionId = stripeSubscriptionId; }
+
+    public String getFsLicenseId() { return fsLicenseId; }
+    public void setFsLicenseId(String fsLicenseId) { this.fsLicenseId = fsLicenseId; }
 
     public SubStatus getStatus() { return status; }
     public void setStatus(SubStatus status) { this.status = status; }

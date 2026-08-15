@@ -19,7 +19,7 @@ class SubscriptionServiceDedupeTest {
     repo = mock(ProcessedBillingEventRepository.class);
     service = new SubscriptionService(
         repo,
-        mock(StripeGateway.class),
+        mock(FreemiusGateway.class),
         mock(com.tuliplot.auth.UserRepository.class),
         mock(com.tuliplot.dashboard.DashboardService.class));
   }
