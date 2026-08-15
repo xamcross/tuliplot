@@ -81,7 +81,7 @@ function loadChangelog() {
   const { entries, newest } = parseChangelog(body);
   const html = entries
     .map((e) =>
-      `<h2 id="${e.date}"><time datetime="${e.date}">${e.date}</time> — ${xmlEscape(e.title)}</h2>\n` +
+      `<h2><time datetime="${e.date}">${e.date}</time> — ${xmlEscape(e.title)}</h2>\n` +
       marked.parse(e.markdown),
     )
     .join('\n');
