@@ -84,8 +84,9 @@ Rules: applies only to hrefs that start with `/` and not `//`; the path part gai
 
 ### 3. Tests
 
-- `trailing-slash-url.serializer.spec.ts` (new): `withTrailingSlash` for `''`, `/`, `/guides`, `/guides/`, `/app?checkout=success`, `/guides#faq`; the serializer round-trips `parse('/guides/')` and `parse('/guides')` to `/guides/`; a `TestBed` with the provider renders `routerLink="/guides"` as `href="/guides/"` and `routerLink="/"` as `href="/"`.
-- Existing specs that assert slash-less hrefs are updated to the slash form: `site-footer.spec.ts` (the eight-link array), `site-header.spec.ts`, `landing.component.spec.ts` (`a[href="/register/"]`), `try-page.component.spec.ts`, `ad-cell.component.spec.ts` (`/register/`, `/app/upgrade/`), `not-found.component.spec.ts` keeps `a[href="/"]`, `app-topbar.spec.ts` (`/app/upgrade/`, `/app/settings/`). `blog-detail`/`guide-detail` "Keep reading" tests keep their `not.toContain(slug)` shape.
+- `trailing-slash-url.serializer.spec.ts` (new): `withTrailingSlash` for `''`, `/`, `/guides`, `/guides/`, `/app?checkout=success`, `/guides#faq`; the serializer round-trips `parse('/guides/')` and `parse('/guides')` to `/guides/`; a `TestBed` with `provideRouter` plus the provider renders `routerLink="/guides"` as `href="/guides/"` and `routerLink="/"` as `href="/"`.
+- `app.config.spec.ts` (new): `appConfig.providers` contains `{ provide: UrlSerializer, useClass: TrailingSlashUrlSerializer }` — the wiring guard.
+- Component specs configure their own `provideRouter([])` and therefore keep Angular's default serializer; their existing slash-less assertions stay valid and unchanged. One representative component spec, `site-footer.spec.ts`, adds the provider and asserts the eight slash-terminated hrefs, which proves a real component renders the new form.
 - `content.util.spec.mjs`: `normalizeInternalHref` cases (internal path, path with query, path with fragment, root, external, `#anchor`, `mailto:`, protocol-relative `//host`).
 - `build-content.spec.mjs`: `[Try](/try)` renders `<a href="/try/">Try</a>`; `[x](/guides/a#faq)` renders `href="/guides/a/#faq"`; the existing external-link assertions stay green.
 - Full suite green; `npm run build` (pinned Node 22) prerenders 23 routes.
