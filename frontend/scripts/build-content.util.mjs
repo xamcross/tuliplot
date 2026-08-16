@@ -1,7 +1,7 @@
-// marked extension: external links open in a new tab with rel="noopener".
+// marked extension: external links open in a new tab with rel="noopener"; internal links get the canonical trailing slash.
 // marked 12 renderer methods take positional arguments (href, title, text);
 // the object form ({ href, title, tokens }) arrives only in marked 13+.
-import { isExternalHref, xmlEscape } from './content.util.mjs';
+import { isExternalHref, normalizeInternalHref, xmlEscape } from './content.util.mjs';
 
 export function externalLinkExtension() {
   return {
@@ -12,9 +12,10 @@ export function externalLinkExtension() {
         // escaping it again here would double-escape entities. `href` is passed
         // through raw, so it still needs escaping here.
         if (href === null || href === undefined) return text;
-        const safeHref = xmlEscape(href);
+        const external = isExternalHref(href);
+        const safeHref = xmlEscape(external ? href : normalizeInternalHref(href));
         const titleAttr = title ? ` title="${title}"` : '';
-        const ext = isExternalHref(href) ? ' target="_blank" rel="noopener"' : '';
+        const ext = external ? ' target="_blank" rel="noopener"' : '';
         return `<a href="${safeHref}"${titleAttr}${ext}>${text}</a>`;
       },
     },
