@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 
 /** Chrome Web Store listing for the TulipLot Companion extension. */
-export const EXTENSION_WEBSTORE_URL = 'https://chromewebstore.google.com/search/TulipLot%20Companion';
+export const EXTENSION_WEBSTORE_URL =
+  'https://chromewebstore.google.com/detail/tuliplot-companion/kepkjnlmnnbhbaemjadcnaalieacnmok';
 
 interface ExtMessage {
   source?: string;
