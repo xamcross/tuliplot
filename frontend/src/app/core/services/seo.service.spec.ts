@@ -52,4 +52,37 @@ describe('SeoService', () => {
     seo.set({ title: 'C', description: 'd', path: '/c' });
     expect(document.getElementById('tl-jsonld')).toBeNull();
   });
+
+  it('emits og:type=article with published and modified times, and removes them on the next website call', () => {
+    const seo = TestBed.inject(SeoService);
+    const meta = TestBed.inject(Meta);
+    seo.set({ title: 'Post', description: 'd', path: '/blog/post', type: 'article', published: '2026-08-02', modified: '2026-08-15' });
+    expect(meta.getTag('property="og:type"')?.content).toBe('article');
+    expect(meta.getTag('property="article:published_time"')?.content).toBe('2026-08-02');
+    expect(meta.getTag('property="article:modified_time"')?.content).toBe('2026-08-15');
+
+    seo.set({ title: 'Blog', description: 'd', path: '/blog' });
+    expect(meta.getTag('property="og:type"')?.content).toBe('website');
+    expect(meta.getTag('property="article:published_time"')).toBeNull();
+    expect(meta.getTag('property="article:modified_time"')).toBeNull();
+  });
+
+  it('falls back modified_time to published_time when modified is absent', () => {
+    const seo = TestBed.inject(SeoService);
+    const meta = TestBed.inject(Meta);
+    seo.set({ title: 'Post', description: 'd', path: '/blog/post', type: 'article', published: '2026-08-02' });
+    expect(meta.getTag('property="article:modified_time"')?.content).toBe('2026-08-02');
+  });
+
+  it('uses the given image for og:image and twitter:image, and the site card by default', () => {
+    const seo = TestBed.inject(SeoService);
+    const meta = TestBed.inject(Meta);
+    seo.set({ title: 'Post', description: 'd', path: '/blog/post', image: 'https://tuliplot.com/banners/post-og.png' });
+    expect(meta.getTag('property="og:image"')?.content).toBe('https://tuliplot.com/banners/post-og.png');
+    expect(meta.getTag('name="twitter:image"')?.content).toBe('https://tuliplot.com/banners/post-og.png');
+
+    seo.set({ title: 'Blog', description: 'd', path: '/blog' });
+    expect(meta.getTag('property="og:image"')?.content).toBe('https://tuliplot.com/og-card.png');
+    expect(meta.getTag('name="twitter:image"')?.content).toBe('https://tuliplot.com/og-card.png');
+  });
 });

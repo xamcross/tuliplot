@@ -27,6 +27,8 @@ export const routes: Routes = [
       import('./features/marketing/blog-list.component').then((m) => m.BlogListComponent) },
   { path: 'blog/:slug', loadComponent: () =>
       import('./features/marketing/blog-detail.component').then((m) => m.BlogDetailComponent) },
+  { path: 'changelog', loadComponent: () =>
+      import('./features/marketing/changelog.component').then((m) => m.ChangelogComponent) },
   {
     path: 'try',
     providers: [provideAnonymousDashboardSource()],

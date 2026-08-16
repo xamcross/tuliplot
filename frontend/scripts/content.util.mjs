@@ -76,6 +76,51 @@ export function extractFaq(body) {
   return faq;
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** True for a YYYY-MM-DD string that names a real calendar day. */
+export function isRealIsoDate(s) {
+  if (typeof s !== 'string' || !ISO_DATE.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+}
+
+/** Frontmatter dates: `date` is required; `updated` is optional and must not be earlier than `date`. */
+export function validateDates(data, file) {
+  const { date, updated } = data;
+  if (!isRealIsoDate(date)) {
+    throw new Error(`content: ${file} is missing a valid frontmatter date (YYYY-MM-DD)`);
+  }
+  if (updated !== undefined && updated !== '') {
+    if (!isRealIsoDate(updated)) {
+      throw new Error(`content: ${file} has an invalid frontmatter updated (YYYY-MM-DD)`);
+    }
+    if (updated < date) {
+      throw new Error(`content: ${file} has updated (${updated}) before date (${date})`);
+    }
+    return { date, updated };
+  }
+  return { date, updated: undefined };
+}
+
+/** The ` · TulipLot` suffix adds 11 characters; 49 keeps the full <title> at or under 60. */
+export const SEO_TITLE_MAX = 49;
+
+export function validateSeoTitle(seoTitle, file) {
+  if (seoTitle === undefined || seoTitle === '') return undefined;
+  if (seoTitle.length > SEO_TITLE_MAX) {
+    throw new Error(`content: ${file} seoTitle is ${seoTitle.length} chars; max ${SEO_TITLE_MAX}`);
+  }
+  return seoTitle;
+}
+
+/** True when a link leaves tuliplot.com over http(s). Relative paths, anchors, and mailto are internal. */
+export function isExternalHref(href) {
+  const s = String(href ?? '');
+  if (!/^https?:\/\//i.test(s)) return false;
+  return !/^https?:\/\/(www\.)?tuliplot\.com(\/|$)/i.test(s);
+}
+
 export function sitemapXml(entries) {
   const urls = entries
     .map(
@@ -89,4 +134,92 @@ export function sitemapXml(entries) {
     urls +
     `\n</urlset>\n`
   );
+}
+
+const LLMS_FACTS = (site) => [
+  `- Try: 2 usable cells, no account. Free: 5 usable cells + 1 ad cell, $0. Premium: 6 cells, no ad, $${site.premiumMonthlyUsd}/month.`,
+  '- Most sites embed live. Some need the optional TulipLot Companion (a Chrome extension). A few never embed and open in their own tab from the grid.',
+  `- Chrome-first. Public site: ${site.url}`,
+];
+
+const llmsLine = (d) => `- [${d.title}](${d.url}): ${d.description}`;
+
+/** llms.txt: a short, curated map of the site for language models. */
+export function llmsTxt({ site, guides, posts, pages }) {
+  return [
+    `# ${site.name}`,
+    '',
+    `> ${site.sentence}`,
+    '',
+    '## Facts',
+    ...LLMS_FACTS(site),
+    '',
+    '## Guides',
+    ...guides.map(llmsLine),
+    '',
+    '## Blog',
+    ...posts.map(llmsLine),
+    '',
+    '## Pages',
+    ...pages.map(llmsLine),
+    '',
+    '## Contact',
+    `- ${site.contactUrl}`,
+    '',
+  ].join('\n');
+}
+
+/**
+ * content/changelog.md: `## YYYY-MM-DD — title` headings, newest first, each followed by markdown.
+ * Returns the entries in file order and the newest date (for sitemap lastmod).
+ */
+export function parseChangelog(body) {
+  const lines = String(body).replace(/\r\n/g, '\n').split('\n');
+  const entries = [];
+  let cur = null;
+  for (const line of lines) {
+    const h = /^##\s+(.*)$/.exec(line);
+    if (h) {
+      const m = /^(\d{4}-\d{2}-\d{2})\s+—\s+(.+)$/.exec(h[1].trim());
+      if (!m) throw new Error(`changelog: heading "${h[1]}" must be "YYYY-MM-DD — title"`);
+      if (!isRealIsoDate(m[1])) throw new Error(`changelog: "${m[1]}" is not a real date`);
+      if (cur && m[1] > cur.date) throw new Error(`changelog: entries must be newest first (${m[1]} after ${cur.date})`);
+      cur = { date: m[1], title: m[2].trim(), lines: [] };
+      entries.push(cur);
+    } else if (cur) {
+      cur.lines.push(line);
+    } else if (line.trim() !== '') {
+      throw new Error('changelog: text before the first entry heading');
+    }
+  }
+  if (entries.length === 0) throw new Error('changelog: no entries');
+  return {
+    entries: entries.map((e) => ({ date: e.date, title: e.title, markdown: e.lines.join('\n').trim() })),
+    newest: entries[0].date,
+  };
+}
+
+/** llms-full.txt: the same header, then the full markdown of every guide and post. */
+export function llmsFullTxt({ site, guides, posts }) {
+  const article = (d) => [
+    `# ${d.title}`,
+    `Source: ${d.url}`,
+    `Published: ${d.date}`,
+    ...(d.updated ? [`Updated: ${d.updated}`] : []),
+    '',
+    String(d.markdown).trim(),
+    '',
+    '---',
+    '',
+  ];
+  return [
+    `# ${site.name}`,
+    '',
+    `> ${site.sentence}`,
+    '',
+    'Full text of every guide and blog post. llms.txt lists the same pages with one line each.',
+    '',
+    ...guides.flatMap(article),
+    ...posts.flatMap(article),
+  ].join('\n');
 }

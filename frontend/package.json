@@ -13,7 +13,8 @@
     "postbuild": "node scripts/copy-404.mjs",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
     "og": "node scripts/render-og-card.mjs",
-    "banners": "node scripts/render-post-banners.mjs"
+    "banners": "node scripts/render-post-banners.mjs",
+    "logo": "node scripts/render-logo.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

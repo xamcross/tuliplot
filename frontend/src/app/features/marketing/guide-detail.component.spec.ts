@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { Meta } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GuideDetailComponent } from './guide-detail.component';
@@ -68,5 +69,30 @@ describe('GuideDetailComponent', () => {
 
     expect(document.title).toBe('Guide not found · TulipLot');
     expect(document.getElementById('tl-jsonld')).toBeNull();
+  });
+
+  it('sets article og tags and a BreadcrumbList', () => {
+    render(GUIDES[0].slug);
+    const meta = TestBed.inject(Meta);
+    expect(meta.getTag('property="og:type"')?.content).toBe('article');
+    expect(meta.getTag('property="article:published_time"')?.content).toBe(GUIDES[0].date);
+    expect(meta.getTag('property="article:modified_time"')?.content).toBe(GUIDES[0].updated ?? GUIDES[0].date);
+    expect(meta.getTag('property="og:image"')?.content).toBe('https://tuliplot.com/og-card.png');
+    const data = JSON.parse(document.getElementById('tl-jsonld')!.textContent ?? '[]') as Array<Record<string, unknown>>;
+    const crumbs = data.find((d) => d['@type'] === 'BreadcrumbList') as { itemListElement: Array<Record<string, unknown>> };
+    expect(crumbs.itemListElement.map((i) => i['name'])).toEqual(['Home', 'Guides', GUIDES[0].title]);
+  });
+
+  it('uses title for the document title when a guide has no seoTitle', () => {
+    const without = GUIDES.find((g) => !g.seoTitle)!;
+    render(without.slug);
+    expect(document.title).toBe(`${without.title} · TulipLot`);
+  });
+
+  it('renders the published date as a <time> element', () => {
+    const f = render(GUIDES[0].slug);
+    const time = (f.nativeElement as HTMLElement).querySelector('time') as HTMLTimeElement;
+    expect(time).toBeTruthy();
+    expect(time.getAttribute('datetime')).toBe(GUIDES[0].date);
   });
 });

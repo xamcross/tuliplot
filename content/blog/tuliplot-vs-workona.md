@@ -1,11 +1,20 @@
 ---
 title: TulipLot vs Workona: project spaces or a live grid?
+seoTitle: TulipLot vs Workona: live grid or spaces?
 slug: tuliplot-vs-workona
-description: Workona organizes tabs into per-project spaces with auto-save and sync. TulipLot keeps a fixed grid of sites rendered live. An honest comparison of what each is for, and what they cost.
+description: Workona sorts tabs into per-project spaces with sync. TulipLot keeps a fixed grid of sites rendered live. What each one is for, and what each one costs.
 date: 2026-08-02
+updated: 2026-08-16
 category: Comparison
 ---
 # TulipLot vs Workona: project spaces or a live grid?
+
+**Key facts**
+
+- Workona is a tab and project workspace manager: tabs go into per-project Spaces with auto-save and cross-device sync. Its own words: "Get your tabs under control."
+- Workona's free plan is $0 and is capped at 5 spaces. Workona's FAQ says it "can be used forever."
+- Workona Pro is listed as "Starting at $7 / month," which is the annual-billed rate.
+- TulipLot does not save or restore sessions. It keeps up to six sites live in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
 
 Workona organizes tabs into Spaces you save and restore. TulipLot keeps a fixed grid of sites rendered live, all at once. That distinction is worth stating up front, because "workona alternative" searches split into two different needs: people who want a better way to save and restore project sessions, and people who want a handful of sites visibly live at the same time without switching between them.
 
@@ -25,7 +34,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 ## Price, single-user
 
-Workona's free plan is $0, capped at 5 spaces, usable forever below that cap. Pro is listed as "Starting at $7 / month," confirmed to be the annual-billed rate — Workona's checkout resolves to the annual term by default, and a separate monthly-only price isn't displayed distinctly anywhere on their site, so there's no monthly figure to quote here. Pro adds unlimited spaces and sections, 90-day session backups, integrations, and templates. Team is "Starting at $8 / user / month," with a 3-user minimum and room for up to 25 users; Enterprise is contact-sales only. Workona prices per seat because it's built as a collaboration tool — the Team plan requires at least three people by design.
+[Workona's free plan](https://workona.com/pricing/) is $0, capped at 5 spaces, usable forever below that cap. Pro is listed as "Starting at $7 / month," confirmed to be the annual-billed rate — Workona's checkout resolves to the annual term by default, and a separate monthly-only price isn't displayed distinctly anywhere on their site, so there's no monthly figure to quote here. Pro adds unlimited spaces and sections, 90-day session backups, integrations, and templates. Team is "Starting at $8 / user / month," with a 3-user minimum and room for up to 25 users; Enterprise is contact-sales only. Workona prices per seat because it's built as a collaboration tool — the Team plan requires at least three people by design.
 
 TulipLot prices per person, not per seat, since a TulipLot dashboard has no team or collaboration concept the way Workona's Spaces do. Compared single-user to single-user: one person on Workona Pro pays $7 a month (annual-billed), and one person on TulipLot Premium pays $4 a month.
 

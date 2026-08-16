@@ -1,5 +1,6 @@
 ---
 title: What is a browser start page (and do you still need one)?
+seoTitle: What is a browser start page? Do you need one?
 slug: what-is-a-browser-start-page
 description: Start pages, home pages, and new-tab pages are three different things. Here's what each one does, why iGoogle's descendants keep dying, and what replaced them.
 date: 2026-08-02

@@ -3,6 +3,7 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { splitFrontmatter } from './content.util.mjs';
+import sharp from 'sharp';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const frontendRoot = resolve(scriptDir, '..');
@@ -29,5 +30,14 @@ describe('blog post banners', () => {
       (slug) => !existsSync(join(bannersDir, `${slug}.png`)),
     );
     expect(missing).toEqual([]);
+  });
+
+  it('has a 1200x630 og variant for every post (used as og:image and Article image)', async () => {
+    for (const slug of blogSlugs()) {
+      const file = join(bannersDir, `${slug}-og.png`);
+      expect(existsSync(file), `${slug}-og.png missing — run npm run banners`).toBe(true);
+      const meta = await sharp(file).metadata();
+      expect([meta.width, meta.height], `${slug}-og.png size`).toEqual([1200, 630]);
+    }
   });
 });

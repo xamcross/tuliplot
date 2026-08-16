@@ -1,11 +1,20 @@
 ---
 title: TulipLot vs start.me: widgets and links, or live sites?
+seoTitle: TulipLot vs start.me: live sites or widgets?
 slug: tuliplot-vs-start-me
-description: start.me builds a start page from bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. Both have ad-supported free tiers — here's how they differ and what each costs.
+description: start.me builds a start page from bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. How the two differ, and what each one costs.
 date: 2026-08-02
+updated: 2026-08-16
 category: Comparison
 ---
 # TulipLot vs start.me: widgets and links, or live sites?
+
+**Key facts**
+
+- start.me is a bookmark manager and custom start page built from links and widgets. Its own title tag: "Bookmark Manager, Custom Start Page & New Tab."
+- start.me's free plan is $0, allows a maximum of 3 start pages, and includes advertising.
+- start.me Personal PRO is $25 per year, with unlimited start pages and no ads.
+- TulipLot renders live sites, not bookmarks or widgets, in a fixed grid: Try is 2 cells with no account, Free is 5 cells plus 1 ad cell at $0, Premium is 6 cells with no ad at $4/month.
 
 start.me builds you a start page out of bookmarks and widgets. TulipLot renders a fixed grid of real sites, live. That's the core distinction, worth stating first, because most people searching "start.me alternative" aren't yet sure whether they want a better bookmark page or something that keeps actual apps open and clickable.
 
@@ -29,7 +38,7 @@ Every cell fills from the built-in catalog or from any HTTPS URL you paste in yo
 
 This is the one page in this series where the ad comparison is actually fair. start.me's free plan "Includes advertising," stated plainly on their own pricing page, the same way TulipLot's free plan carries one ad cell. Toby and Workona don't describe their free tiers as ad-supported at all, so that comparison doesn't apply to them — but it applies here, and it's a genuine point of similarity between the two products rather than a stretch.
 
-Above free, the honest number is one that doesn't flatter TulipLot: start.me's Personal PRO plan is $25 per year, about $2.08 a month, and it removes ads entirely, unlocks unlimited start pages, and adds 27 PRO-only features and widgets plus AI tools. TulipLot Premium is $4 a month, with no annual option. Compared however you like, start.me's paid tier is cheaper than TulipLot's, and that's worth stating plainly rather than talking around it. (start.me's Team plan, $25/month billed annually for 10 users, is a different product built for groups and isn't part of this single-user comparison.)
+Above free, the honest number is one that doesn't flatter TulipLot: [start.me's Personal PRO plan](https://start.me/pricing) is $25 per year, about $2.08 a month, and it removes ads entirely, unlocks unlimited start pages, and adds 27 PRO-only features and widgets plus AI tools. TulipLot Premium is $4 a month, with no annual option. Compared however you like, start.me's paid tier is cheaper than TulipLot's, and that's worth stating plainly rather than talking around it. (start.me's Team plan, $25/month billed annually for 10 users, is a different product built for groups and isn't part of this single-user comparison.)
 
 What TulipLot's $4 buys instead is the sixth live cell, not a cheaper way to organize more bookmarks — the two plans aren't priced for the same job. But a reader weighing two subscription numbers deserves the real ones, not a comparison that quietly flatters whichever page they're reading.
 

@@ -10,6 +10,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <footer class="ftr">
       <a routerLink="/" class="brand">TulipLot</a>
       <nav class="links">
+        <a routerLink="/guides" routerLinkActive="active">Guides</a>
+        <a routerLink="/blog" routerLinkActive="active">Blog</a>
+        <a routerLink="/try" routerLinkActive="active">Try</a>
+        <a routerLink="/changelog" routerLinkActive="active">Changelog</a>
         <a routerLink="/about" routerLinkActive="active">About</a>
         <a routerLink="/contact" routerLinkActive="active">Contact</a>
         <a routerLink="/privacy" routerLinkActive="active">Privacy</a>
@@ -24,7 +28,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       font-size: 14px; color: var(--tl-ink-soft); }
     .brand { text-decoration: none; font-family: var(--tl-font-display); font-weight: 700;
       font-size: 18px; color: var(--tl-ink); }
-    .links { display: flex; gap: 22px; }
+    .links { display: flex; flex-wrap: wrap; gap: 12px 22px; }
     .links a { text-decoration: none; color: var(--tl-ink-soft); }
     .links a:hover, .links a.active { color: var(--tl-primary); }
     .copy { font-family: var(--tl-font-mono); color: var(--tl-ink-faint); }

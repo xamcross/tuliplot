@@ -3,6 +3,7 @@ title: Adding sites that refuse to be framed
 slug: add-any-site
 description: Why some sites show "refused to connect" in a dashboard, and how the TulipLot Companion extension unlocks them safely, one site at a time.
 date: 2026-08-01
+updated: 2026-08-16
 category: Advanced
 order: 2
 ---
@@ -12,7 +13,7 @@ Paste almost any HTTPS URL into a cell and it loads. But every so often you'll a
 
 ## Why some sites refuse to load
 
-Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — `X-Frame-Options` or a `Content-Security-Policy` with `frame-ancestors` — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold; [the full explanation of why sites refuse to be embedded](/guides/why-sites-wont-load) covers the headers involved and what does and doesn't fix it.
+Browsers let any site send an instruction that means "don't let other pages frame me." It comes through as a response header — [`X-Frame-Options`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options) or a `Content-Security-Policy` with [`frame-ancestors`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors) — for a real reason: without it, someone could load your bank's login page inside a hidden frame on their own site and trick you into typing your password into what looks like the real thing. Blocking embedding stops that cold; [the full explanation of why sites refuse to be embedded](/guides/why-sites-wont-load) covers the headers involved and what does and doesn't fix it.
 
 The same header also blocks harmless embedding, like a cell in your grid. The browser can't tell a malicious overlay from a dashboard you built on purpose — it just sees "don't embed me" and obeys, and TulipLot can't override that at the page level. So instead of pretending it can, it tells you what happened and gives you a real option, rather than a broken pane.
 
@@ -28,7 +29,7 @@ None of these is a dead end — each gives you the fastest working path for that
 
 ## Install the TulipLot Companion
 
-The TulipLot Companion is a free, optional Chrome extension, and it's the reason most stubborn sites end up embedding anyway. What it does is narrow: it adjusts frame-blocking headers only for sites you've explicitly enabled, one at a time. It doesn't touch any other site, and it collects nothing about you or your browsing.
+The TulipLot Companion is a free, optional Chrome extension, and it's the reason most stubborn sites end up embedding anyway. What it does is narrow: it [adjusts frame-blocking headers](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest) only for sites you've explicitly enabled, one at a time. It doesn't touch any other site, and it collects nothing about you or your browsing.
 
 To install it, click **Install TulipLot Companion** on any cell that needs it. That opens the Chrome Web Store listing, where installation happens the normal Chrome way. Once it's installed, come back to your dashboard — the cell is still waiting for the second step.
 
