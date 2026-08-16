@@ -4,7 +4,10 @@
   "sentence": "TulipLot is a browser dashboard that shows up to six live websites side by side in a fixed 3×2 grid, in one browser tab.",
   "logo": "https://tuliplot.com/logo-512.png",
   "ogImage": "https://tuliplot.com/og-card.png",
-  "sameAs": ["https://github.com/xamcross/tuliplot"],
+  "sameAs": [
+    "https://github.com/xamcross/tuliplot",
+    "https://chromewebstore.google.com/detail/tuliplot-companion/kepkjnlmnnbhbaemjadcnaalieacnmok"
+  ],
   "contactUrl": "https://tuliplot.com/contact/",
   "premiumMonthlyUsd": "4"
 }

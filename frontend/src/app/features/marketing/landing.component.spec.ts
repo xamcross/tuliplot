@@ -66,7 +66,10 @@ describe('LandingComponent', () => {
     const org = data.find((d) => d['@type'] === 'Organization')!;
     expect(org['@id']).toBe('https://tuliplot.com/#org');
     expect(org['logo']).toBe('https://tuliplot.com/logo-512.png');
-    expect(org['sameAs']).toEqual(['https://github.com/xamcross/tuliplot']);
+    expect(org['sameAs']).toEqual([
+      'https://github.com/xamcross/tuliplot',
+      'https://chromewebstore.google.com/detail/tuliplot-companion/kepkjnlmnnbhbaemjadcnaalieacnmok',
+    ]);
     expect(org['description']).toContain('browser dashboard');
     expect((org['contactPoint'] as Array<Record<string, string>>)[0]['url']).toBe('https://tuliplot.com/contact/');
 

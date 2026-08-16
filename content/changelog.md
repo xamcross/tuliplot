@@ -2,15 +2,21 @@
 title: Changelog
 description: What changed on TulipLot, newest first: features, fixes, and content updates.
 ---
+## 2026-08-16 — Companion 1.2.0 on the Chrome Web Store; internal links
+
+- [TulipLot Companion 1.2.0](https://chromewebstore.google.com/detail/tuliplot-companion/kepkjnlmnnbhbaemjadcnaalieacnmok) is live on the Chrome Web Store. The "Install TulipLot Companion" button opens the listing.
+- Every internal link on the site now points at the canonical URL with a trailing slash, with no redirect hop.
+- Public site: `llms.txt`, per-post share cards, a changelog page, and richer structured data.
+
 ## 2026-08-15 — Companion 1.2.0 and a full-size try grid
 
-- TulipLot Companion 1.2.0 is in the repository, not yet on the Chrome Web Store: the header rule is now scoped to open dashboard tabs. Sites you enable, such as YouTube, render live in the grid once the store listing updates.
+- TulipLot Companion 1.2.0: the header rule is now scoped to open dashboard tabs. Sites you enable, such as YouTube, render live in the grid.
 - The `/try` page renders its six cells at the same size as the signed-in dashboard.
 
 ## 2026-08-14 — Google sign-in fix, per-site enable, ads.txt
 
 - Google sign-in works again. A session save failed after a successful Google login.
-- The Companion (1.1.0, in the repository, not yet on the Chrome Web Store) asks for the per-site host grant from the cell after installation. Before, install alone unlocked nothing.
+- The Companion (1.1.0) asks for the per-site host grant from the cell after installation. Before, install alone unlocked nothing.
 - `ads.txt` carries the real AdSense publisher id.
 
 ## 2026-08-03 — Comparison pages and a start-page listicle

@@ -151,7 +151,7 @@ describe('CellComponent fallback states', () => {
     const fixture = create(makeCell(), 'NEEDS_EXTENSION');
     fixture.componentInstance.onInstallExtension();
     expect(openSpy).toHaveBeenCalledWith(
-      'https://chromewebstore.google.com/search/TulipLot%20Companion',
+      'https://chromewebstore.google.com/detail/tuliplot-companion/kepkjnlmnnbhbaemjadcnaalieacnmok',
       '_blank',
       'noopener,noreferrer',
     );
