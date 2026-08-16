@@ -121,6 +121,20 @@ export function isExternalHref(href) {
   return !/^https?:\/\/(www\.)?tuliplot\.com(\/|$)/i.test(s);
 }
 
+/**
+ * Internal links match the canonical trailing-slash URL: "/guides/x" → "/guides/x/".
+ * Keeps "?…" and "#…"; leaves "/", "#anchor", "mailto:", "http(s)://…", and "//host" unchanged.
+ */
+export function normalizeInternalHref(href) {
+  const s = String(href ?? '');
+  if (!s.startsWith('/') || s.startsWith('//')) return s;
+  const m = /^([^?#]*)(.*)$/.exec(s);
+  const path = m[1];
+  const rest = m[2];
+  if (path === '/' || path.endsWith('/')) return s;
+  return `${path}/${rest}`;
+}
+
 export function sitemapXml(entries) {
   const urls = entries
     .map(

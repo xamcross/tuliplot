@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref, llmsTxt, llmsFullTxt, parseChangelog } from './content.util.mjs';
+import { splitFrontmatter, readingMinutes, stripLeadingH1, sitemapXml, xmlEscape, extractFaq, isRealIsoDate, validateDates, validateSeoTitle, SEO_TITLE_MAX, isExternalHref, normalizeInternalHref, llmsTxt, llmsFullTxt, parseChangelog } from './content.util.mjs';
 
 describe('splitFrontmatter', () => {
   it('parses frontmatter keys and returns the body', () => {
@@ -169,6 +169,24 @@ describe('isExternalHref', () => {
     expect(isExternalHref('/guides/add-any-site')).toBe(false);
     expect(isExternalHref('#faq')).toBe(false);
     expect(isExternalHref('mailto:hello@tuliplot.com')).toBe(false);
+  });
+});
+
+describe('normalizeInternalHref', () => {
+  it('adds a trailing slash to internal paths and keeps query and fragment', () => {
+    expect(normalizeInternalHref('/try')).toBe('/try/');
+    expect(normalizeInternalHref('/guides/premium-vs-free')).toBe('/guides/premium-vs-free/');
+    expect(normalizeInternalHref('/guides/a#faq')).toBe('/guides/a/#faq');
+    expect(normalizeInternalHref('/app?checkout=success')).toBe('/app/?checkout=success');
+  });
+  it('leaves already-slashed paths, the root, anchors, mailto, external, and protocol-relative links alone', () => {
+    expect(normalizeInternalHref('/try/')).toBe('/try/');
+    expect(normalizeInternalHref('/')).toBe('/');
+    expect(normalizeInternalHref('#faq')).toBe('#faq');
+    expect(normalizeInternalHref('mailto:hello@tuliplot.com')).toBe('mailto:hello@tuliplot.com');
+    expect(normalizeInternalHref('https://developer.mozilla.org/x')).toBe('https://developer.mozilla.org/x');
+    expect(normalizeInternalHref('//cdn.example/x')).toBe('//cdn.example/x');
+    expect(normalizeInternalHref('')).toBe('');
   });
 });
 

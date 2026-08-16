@@ -7,7 +7,7 @@ describe('externalLinkExtension', () => {
     marked.use(externalLinkExtension());
     const html = marked.parse('[MDN](https://developer.mozilla.org/x) and [guide](/guides/x)');
     expect(html).toContain('<a href="https://developer.mozilla.org/x" target="_blank" rel="noopener">MDN</a>');
-    expect(html).toContain('<a href="/guides/x">guide</a>');
+    expect(html).toContain('<a href="/guides/x/">guide</a>');
   });
 
   it('escapes special characters in title and href', () => {
@@ -18,5 +18,13 @@ describe('externalLinkExtension', () => {
     );
     const html2 = marked.parse('[q](https://example.com/?a=1&b=2)');
     expect(html2).toContain('href="https://example.com/?a=1&amp;b=2"');
+  });
+
+  it('gives internal links a trailing slash and keeps fragments', () => {
+    marked.use(externalLinkExtension());
+    const html = marked.parse('[Try](/try) and [FAQ](/guides/a#faq) and [home](/)');
+    expect(html).toContain('<a href="/try/">Try</a>');
+    expect(html).toContain('<a href="/guides/a/#faq">FAQ</a>');
+    expect(html).toContain('<a href="/">home</a>');
   });
 });
